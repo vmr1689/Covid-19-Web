@@ -10,5 +10,18 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
   <app-root></app-root>
+  <script src="./assets/dist/js/jquery.min.js"></script>
+  <script>
+    $(function () {
+      $('#dataTable').DataTable({
+        'paging'      : true,
+        'lengthChange': false,
+        'searching'   : true,
+        'ordering'    : true,
+        'info'        : true,
+        'autoWidth'   : true
+      })
+    })
+  </script>
 </body>
 </html>
