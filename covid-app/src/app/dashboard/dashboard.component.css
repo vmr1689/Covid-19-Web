@@ -4,3 +4,14 @@
 .product-info {
     margin-left: 0px !important;
 }
+
+.info-box-content {
+    text-align: center;
+}
+
+td.child-table {
+    background-color: #bfdbff;
+}
+
+
+
