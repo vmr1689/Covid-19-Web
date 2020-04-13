@@ -7,12 +7,13 @@ import SampleDataJson from '../../sample_data.json';
 import StateDistrictWiseDataJson from '../../sample_state-district-wise.json';
 import SampleBannerJson from '../../sample_web_data.json';
 import SampleUpdatesJson from '../../sample_updates.json';
-
+import SampleLocationsJson from '../../locations.json';
 import {
     SampleData,
     SampleStateDistrictWiseData,
     SampleUpdatesData,
-    SampleWebData
+    SampleWebData,
+    Location
 } from '../models';
 
 // array in local storage for registered users
@@ -48,6 +49,14 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return bannerData();
                 case url.endsWith('dashboard/getUpdates') && method === 'GET':
                     return updatesData();
+                case url.endsWith('location/getAllLocations') && method === 'GET':
+                    return getAllLocations();
+                case url.match(/\/getLocationById\/\d+$/) && method === 'GET':
+                    return getLocation();
+                case url.endsWith('location/createLocation') && method === 'POST':
+                    return createLocation();
+                case url.endsWith('location/editLocation') && method === 'PUT':
+                    return editLocation();
                 default:
                     // pass through any requests not handled above
                     return next.handle(request);
@@ -147,6 +156,29 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             const mainData = SampleUpdatesJson;
             const castObject = mainData as SampleUpdatesData;
             return ok(castObject);
+        }
+
+        function getAllLocations() {
+            const mainData = SampleLocationsJson;
+            const castObject = mainData as Location[];
+            return ok(castObject);
+        }
+
+        function createLocation() {
+            const user = body;
+            return ok(true);
+        }
+
+        function editLocation() {
+            const user = body;
+            return ok(true);
+        }
+
+        function getLocation() {
+            const mainData = SampleLocationsJson;
+            const castObject = mainData as Location[];
+            const aa = castObject[2];
+            return ok(aa);
         }
     }
 }

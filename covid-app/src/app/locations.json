@@ -1,0 +1,154 @@
+[
+    {
+        "placeId": 1,
+        "placeName": "INDIA",
+        "latitude": 4,
+        "longitude": 5,
+        "istarget": true,
+        "rootId": null
+    },
+    {
+        "placeId": 2,
+        "placeName": "ODISHA",
+        "latitude": 55,
+        "longitude": 77,
+        "istarget": false,
+        "rootId": 1,
+        "root": {
+            "placeId": 1,
+            "placeName": "INDIA",
+            "latitude": 4,
+            "longitude": 5,
+            "istarget": true,
+            "rootId": null
+        }
+    },
+    {
+        "placeId": 4,
+        "placeName": "BHADRAK",
+        "latitude": 5,
+        "longitude": 66,
+        "istarget": false,
+        "rootId": 2,
+        "root": {
+            "placeId": 2,
+            "placeName": "ODISHA",
+            "latitude": 55,
+            "longitude": 77,
+            "istarget": false,
+            "rootId": 1
+        }
+    },
+    {
+        "placeId": 8,
+        "placeName": "BALESWAR",
+        "latitude": 4,
+        "longitude": 33,
+        "istarget": false,
+        "rootId": 2,
+        "root": {
+            "placeId": 2,
+            "placeName": "ODISHA",
+            "latitude": 55,
+            "longitude": 77,
+            "istarget": false,
+            "rootId": 1
+        }
+    },
+    {
+        "placeId": 9,
+        "placeName": "REMUNA",
+        "latitude": 45,
+        "longitude": 23,
+        "istarget": false,
+        "rootId": 8,
+        "root": {
+            "placeId": 8,
+            "placeName": "BALESWAR",
+            "latitude": 4,
+            "longitude": 33,
+            "istarget": false,
+            "rootId": 2
+        }
+    },
+    {
+        "placeId": 10,
+        "placeName": "KALYANPUR",
+        "latitude": 77,
+        "longitude": 54,
+        "istarget": false,
+        "rootId": 9,
+        "root": {
+            "placeId": 9,
+            "placeName": "REMUNA",
+            "latitude": 45,
+            "longitude": 23,
+            "istarget": false,
+            "rootId": 8
+        }
+    },
+    {
+        "placeId": 3,
+        "placeName": "PURI",
+        "latitude": 77,
+        "longitude": 44,
+        "istarget": false,
+        "rootId": 2,
+        "root": {
+            "placeId": 2,
+            "placeName": "ODISHA",
+            "latitude": 55,
+            "longitude": 77,
+            "istarget": false,
+            "rootId": 1
+        }
+    },
+    {
+        "placeId": 5,
+        "placeName": "PUNJAB",
+        "latitude": 64,
+        "longitude": 43,
+        "istarget": false,
+        "rootId": 1,
+        "root": {
+            "placeId": 1,
+            "placeName": "INDIA",
+            "latitude": 4,
+            "longitude": 5,
+            "istarget": true,
+            "rootId": null
+        }
+    },
+    {
+        "placeId": 6,
+        "placeName": "MANSA",
+        "latitude": 55,
+        "longitude": 77,
+        "istarget": false,
+        "rootId": 5,
+        "root": {
+            "placeId": 5,
+            "placeName": "PUNJAB",
+            "latitude": 64,
+            "longitude": 43,
+            "istarget": false,
+            "rootId": 1
+        }
+    },
+    {
+        "placeId": 7,
+        "placeName": "JALANDHAR",
+        "latitude": 33,
+        "longitude": 55,
+        "istarget": false,
+        "rootId": 5,
+        "root": {
+            "placeId": 5,
+            "placeName": "PUNJAB",
+            "latitude": 64,
+            "longitude": 43,
+            "istarget": false,
+            "rootId": 1
+        }
+    }
+]
