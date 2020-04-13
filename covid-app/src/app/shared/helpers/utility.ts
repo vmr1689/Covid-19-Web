@@ -20,14 +20,15 @@ export function destroyChild(row) {
     row.child.hide();
 }
 
-export function createChild(row, tableColumns, tableData, childTable = false, tableLength = 10) {
-    const table = $('<table class=" table table-bordered table-hover display" width="100%"/>');
+export function createChild(row, tableColumns, tableData, lastupdatedtime, childTable = false, tableLength = 10) {
+    const table = $('<table class=" table table-bordered table-hover display"/>');
     row.child(table).show();
-    const aa = tableData[0].lastupdatedtime;
     return table.DataTable({
         dom: '<"toolbar">frtip',
         fnInitComplete: () => {
-            $('div.toolbar').html('<span style="float:left">' + aa + '</span>');
+            if (lastupdatedtime) {
+                $('div.toolbar').html('<span style="float:left">' + lastupdatedtime + '</span>');
+            }
         },
         pageLength: tableLength,
         data: tableData,

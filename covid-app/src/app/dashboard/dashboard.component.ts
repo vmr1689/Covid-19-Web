@@ -7,11 +7,6 @@ import am4geodata_indiaLow from '@amcharts/amcharts4-geodata/indiaLow';
 import * as moment from 'moment';
 
 import { Countries, Continents } from '../../environments/environment';
-import statewise from '../statewise.json';
-import dataTableList from '../datatable.json';
-import sitesList from '../sites.json';
-import usersList from '../users.json';
-
 import { renderTable, createChild, destroyChild } from '../shared/helpers';
 import { DashboardService } from '../shared/services';
 import {
@@ -20,7 +15,8 @@ import {
   SampleStateDistrictWiseData,
   SampleUpdatesData,
   SampleWebData,
-  CasesTimeSeries
+  CasesTimeSeries,
+  StateWise
 } from '../shared/models';
 
 declare var $;
@@ -42,33 +38,20 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   public dailySpreadList: CasesTimeSeries[] = [];
 
   public mapchart: am4maps.MapChart;
-  public stateList: {
-    state: string,
-    confirmed: string,
-    recovered: string,
-    deaths: string,
-    active: string,
-    last_updated_time: string,
-    state_code: string,
-    delta_confirmed: string,
-    delta_recovered: string,
-    delta_death: string
-  }[] = statewise;
 
   constructor(
     private zone: NgZone,
     private dashboardService: DashboardService) { }
 
   ngOnInit(): void {
+    this.getStateDistrictData();
     this.getBannerData();
     this.getUpdatesData();
     this.getDetails();
-    this.getStateDistrictData();
   }
 
   public getStateDistrictData() {
     this.dashboardService.getStateDistrictData().subscribe((response: SampleStateDistrictWiseData) => {
-      debugger;
       if (response) {
         this.sampleStateDistrictData = response;
         console.log(this.sampleStateDistrictData);
@@ -528,11 +511,36 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  public getData(parentData: StateWise, childData: any) {
+    const arr = [];
+    if (parentData.state) {
+      const objChild = childData[parentData.state];
+      if (objChild) {
+        const districtData = objChild.districtData;
+        for (const key in districtData) {
+          if (districtData.hasOwnProperty(key)) {
+            const ss = {
+              district: key,
+              confirmed: districtData[key].confirmed,
+              deltaConfirmed: districtData[key].delta.confirmed,
+              lastupdatedtime: districtData[key].lastupdatedtime
+            }
+            arr.push(ss);
+          }
+        }
+        console.log(arr);
+      }
+    }
+    return arr;
+  }
+
   public addClickHandler(tableRef, columns, data, isChildTable) {
     const self = this;
+
     tableRef.on('click', 'td.details-control', function () {
       const tr = $(this).closest('tr');
       const row = tableRef.row(tr);
+      const rowData = tableRef.row($(this).closest('tr')).data();
 
       if (row.child.isShown()) {
         destroyChild(row);
@@ -541,7 +549,8 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
         $(this).css({ 'text-align': 'center', cursor: 'pointer' });
       }
       else {
-        const childTableRef = createChild(row, columns, data, isChildTable);
+        const childData = self.getData(rowData, data);
+        const childTableRef = createChild(row, columns, childData, rowData.lastupdatedtime, isChildTable);
         tr.addClass('shown');
         $(this).html('<i class = "glyphicon glyphicon-minus-sign" style="text-align: center;cursor: pointer"> </i>');
         $(this).css({ 'text-align': 'center', cursor: 'pointer' });
@@ -644,8 +653,33 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     const tableRef = renderTable(this, tableId, tableColumns, statewiseData, childTable);
 
     if (childTable) {
-      const districtWiseData = {...this.sampleStateDistrictData};
-      this.addClickHandler(tableRef, [...tableColumns], statewiseData, true);
+      const districtTableColumns = [
+        {
+          title: 'District',
+          data: 'district',
+          width: '25px !important',
+        },
+        {
+          title: 'Confirmed',
+          data: 'confirmed',
+          width: '25px !important',
+          render: (data, type, full, meta) => {
+            let html = '<div style="text-align: right;">';
+            if (full.deltaConfirmed && full.deltaConfirmed > 0) {
+              html += '<span style="color: red;">';
+              html += '<i class="fa fa-arrow-circle-up">' + full.deltaConfirmed + '</i>';
+              html += ' </span><span>' + ' ' + full.confirmed + '</span>';
+              html += '</span>';
+            } else {
+              html += '<span>' + full.confirmed + '</span>';
+            }
+            html += '</div>';
+            return html;
+          }
+        }
+      ];
+      const districtWiseData = { ...this.sampleStateDistrictData };
+      this.addClickHandler(tableRef, [...districtTableColumns], districtWiseData, false);
     }
   }
 }
