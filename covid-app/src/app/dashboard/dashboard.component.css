@@ -13,5 +13,8 @@ td.child-table {
     background-color: #bfdbff;
 }
 
+.toolbar {
+    float: left !important;
+}
 
 

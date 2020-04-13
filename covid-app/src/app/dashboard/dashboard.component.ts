@@ -12,7 +12,7 @@ import dataTableList from '../datatable.json';
 import sitesList from '../sites.json';
 import usersList from '../users.json';
 
-
+import { renderTable, createChild, destroyChild } from '../shared/helpers';
 import { DashboardService } from '../shared/services';
 import {
   Updates,
@@ -36,6 +36,8 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   public infoIndex = 0;
   public info: string;
 
+  public sampleData: SampleData;
+  public sampleStateDistrictData: SampleStateDistrictWiseData;
   public updatesList: Updates[] = [];
   public dailySpreadList: CasesTimeSeries[] = [];
 
@@ -61,10 +63,25 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getBannerData();
     this.getUpdatesData();
     this.getDetails();
+    this.getStateDistrictData();
+  }
+
+  public getStateDistrictData() {
+    this.dashboardService.getStateDistrictData().subscribe((response: SampleStateDistrictWiseData) => {
+      debugger;
+      if (response) {
+        this.sampleStateDistrictData = response;
+        console.log(this.sampleStateDistrictData);
+      }
+    });
   }
 
   public getDetails() {
     this.dashboardService.getDetails().subscribe((response: SampleData) => {
+      if (response) {
+        this.sampleData = response;
+        this.renderMainData('statewise', true);
+      }
       if (response && response.casestimeseries.length > 0) {
         this.dailySpreadList = response.casestimeseries.slice(-14);
         console.log(this.dailySpreadList);
@@ -129,7 +146,6 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.jdatatable();
     $('#dataTable').DataTable({
       'paging': true,
       'lengthChange': false,
@@ -481,7 +497,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     deceasedCategoryAxis.renderer.labels.template.rotation = -90;
     deceasedCategoryAxis.renderer.labels.template.horizontalCenter = 'left';
     deceasedCategoryAxis.renderer.labels.template.location = 0.5;
-    deceasedCategoryAxis.renderer.labels.template.adapter.add('dx', function(dx, target) {
+    deceasedCategoryAxis.renderer.labels.template.adapter.add('dx', function (dx, target) {
       return -target.maxRight / 2;
     });
     const deceasedvalueAxis = deceasedChart.yAxes.push(new am4charts.ValueAxis());
@@ -512,77 +528,125 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  destroyChild = (row) => {
-    const table = $('table', row.child());
-    table.detach();
-    table.DataTable().destroy();
-    row.child.hide();
-  }
-
-  createChild = (row) => {
-    const table = $('<table class=" table table-bordered table-hover display" width="100%"/>');
-    row.child(table).show();
-
-    table.DataTable({
-      dom: 'Bfrtip',
-      pageLength: 5,
-      data: usersList.data,
-      columns: [
-        { title: 'First name', data: 'users.first_name' },
-        { title: 'Last name', data: 'users.last_name' },
-        { title: 'Phone #', data: 'users.phone' },
-        { title: 'Location', data: 'sites.name' }
-      ],
-      select: true,
-    });
-  }
-
-  jdatatable = () => {
+  public addClickHandler(tableRef, columns, data, isChildTable) {
     const self = this;
-    const siteTable = $('#example12').DataTable({
-      data: sitesList.data,
-      columns: [
-        {
-          className: 'details-control',
-          createdCell: (td, cellData, rowData, row, col) => {
-            $(td).css({ 'text-align': 'center', cursor: 'pointer' });
-          },
-          data: null,
-          defaultContent: '<i class = "glyphicon glyphicon-plus-sign" style="text-align: center;cursor: pointer"> </i>',
-          width: '10%',
-        },
-        { data: 'name' },
-        {
-          data: 'users', render: (data) => {
-            return data.length;
-          }
-        }
-      ],
-      select: {
-        style: 'os',
-        selector: 'td:not(:first-child)'
-      },
-    });
-
-    // Add event listener for opening and closing details
-    $('#example12 tbody').on('click', 'td.details-control', function() {
+    tableRef.on('click', 'td.details-control', function () {
       const tr = $(this).closest('tr');
-      const row = siteTable.row(tr);
+      const row = tableRef.row(tr);
+
       if (row.child.isShown()) {
-        // This row is already open - close it
-        self.destroyChild(row);
+        destroyChild(row);
         tr.removeClass('shown');
         $(this).html('<i class = "glyphicon glyphicon-plus-sign" style="text-align: center;cursor: pointer"> </i>');
         $(this).css({ 'text-align': 'center', cursor: 'pointer' });
       }
       else {
-        // Open this row
-        self.createChild(row);
+        const childTableRef = createChild(row, columns, data, isChildTable);
         tr.addClass('shown');
         $(this).html('<i class = "glyphicon glyphicon-minus-sign" style="text-align: center;cursor: pointer"> </i>');
         $(this).css({ 'text-align': 'center', cursor: 'pointer' });
+
+        if (isChildTable) {
+          self.addClickHandler(childTableRef, columns, data, true);
+        }
       }
     });
+  }
+
+  public renderMainData(tableId, childTable) {
+    let tableColumns = [
+      {
+        title: '',
+        className: 'details-control',
+        createdCell: (td, cellData, rowData, row, col) => {
+          if (rowData.state !== 'Total') {
+            $(td).css({ 'text-align': 'center', cursor: 'pointer' });
+            return '<i class = "glyphicon glyphicon-plus-sign"> </i>';
+          }
+        },
+        data: null,
+        render: (data, type, full, meta) => {
+          if (full.state !== 'Total') {
+            return '<i class = "glyphicon glyphicon-plus-sign" style="text-align: center;cursor: pointer"> </i>';
+          } else {
+            return '';
+          }
+        }
+      },
+      { title: 'Place', data: 'state' },
+      { title: 'Active', data: 'active' },
+      {
+        title: 'Confirmed',
+        data: 'confirmed',
+        render: (data, type, full, meta) => {
+          let html = '<div style="text-align: right;">';
+          if (full.deltaconfirmed && full.deltaconfirmed > 0) {
+            html += '<span style="color: red;">';
+            html += '<i class="fa fa-arrow-circle-up">' + full.deltaconfirmed + '</i>';
+            html += ' </span><span>' + ' ' + full.confirmed + '</span>';
+            html += '</span>';
+          } else {
+            html += '<span>' + full.confirmed + '</span>';
+          }
+          html += '</div>';
+          return html;
+        }
+      },
+      {
+        title: 'Deceased',
+        data: 'deaths',
+        render: (data, type, full, meta) => {
+          let html = '<div style="text-align: right;">';
+          if (full.deltadeaths && full.deltadeaths > 0) {
+            html += '<span>';
+            html += '<i class="fa fa-arrow-circle-up">' + full.deltadeaths + '</i>';
+            html += ' </span><span>' + ' ' + full.deaths + '</span>';
+            html += '</span>';
+          } else {
+            html += '<span>' + full.deaths + '</span>';
+          }
+          html += '</div>';
+          return html;
+        }
+      },
+      {
+        title: 'Recovered',
+        data: 'recovered',
+        render: (data, type, full, meta) => {
+          let html = '<div style="text-align: right;">';
+          if (full.deltarecovered && full.deltarecovered > 0) {
+            html += '<span style="color: green;">';
+            html += '<i class="fa fa-arrow-circle-up">' + full.deltarecovered + '</i>';
+            html += ' </span><span>' + ' ' + full.recovered + '</span>';
+            html += '</span>';
+          } else {
+            html += '<span>' + full.recovered + '</span>';
+          }
+          html += '</div>';
+          return html;
+        }
+      }
+    ];
+
+    if (!childTable) {
+      tableColumns = [
+        { title: 'Place', data: 'state' },
+        { title: 'Active', data: 'active' },
+        { title: 'Confirmed', data: 'confirmed' },
+        { title: 'Deceased', data: 'deaths' },
+        { title: 'Recovered', data: 'recovered' }
+      ];
+    }
+    else {
+
+    }
+    const statewiseData = this.sampleData.statewise;
+    const tableRef = renderTable(this, tableId, tableColumns, statewiseData, childTable);
+
+    if (childTable) {
+      const districtWiseData = {...this.sampleStateDistrictData};
+      this.addClickHandler(tableRef, [...tableColumns], statewiseData, true);
+    }
   }
 }
 
