@@ -11,6 +11,7 @@ import SampleLocationsJson from '../../locations.json';
 import SamplePatientsJson from '../../patients.json';
 import SampleUsersJson from '../../users.json';
 import SampleBannerJson1 from '../../banner.json';
+import SampleUpdatedDtoJson from '../../updatedto.json';
 
 import {
     SampleData,
@@ -20,7 +21,8 @@ import {
     Location,
     Patient,
     Banner,
-    Updates
+    Updates,
+    Updatedto
 } from '../models';
 
 // array in local storage for registered users
@@ -307,8 +309,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
 
         function getAllUpdates() {
-            const mainData = SampleBannerJson1;
-            const castObject = mainData as Updates[];
+            const mainData = SampleUpdatedDtoJson;
+            const castObject = mainData as Updatedto[];
             return ok(castObject);
         }
 
@@ -328,8 +330,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function getUpdates() {
-            const mainData = SamplePatientsJson;
-            const castObject = mainData as Banner[];
+            const mainData = SampleUpdatedDtoJson;
+            const castObject = mainData as Updatedto[];
             const aa = castObject[2];
             return ok(aa);
         }

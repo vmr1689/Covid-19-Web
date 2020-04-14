@@ -18,6 +18,7 @@ export class AddLocationComponent implements OnInit {
   public longitude: AbstractControl;
   public isTarget: AbstractControl;
   public rootId: AbstractControl;
+  public currentdate: AbstractControl;
   public submitted: boolean;
   public showRoot: boolean;
   public locations: Location[] = [];
@@ -40,7 +41,8 @@ export class AddLocationComponent implements OnInit {
       latitude: ['', [Validators.required]],
       longitude: ['', Validators.required],
       rootId: ['', Validators.nullValidator],
-      isTarget: [false]
+      isTarget: [false],
+      currentdate: [new Date()]
     });
 
     this.placeName = this.form.controls.placeName;
@@ -48,6 +50,7 @@ export class AddLocationComponent implements OnInit {
     this.longitude = this.form.controls.longitude;
     this.isTarget = this.form.controls.isTarget;
     this.rootId = this.form.controls.rootId;
+    this.currentdate = this.form.controls.rootId;
 
     this.isTarget.valueChanges
       .subscribe(value => {

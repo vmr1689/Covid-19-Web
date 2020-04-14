@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment';
-import { Updates, Banner } from '../models';
+import { Updates, Banner, Updatedto } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class UpdatesService {
@@ -29,22 +29,22 @@ export class UpdatesService {
     }
 
     getAllUpdates = () => {
-        return this.http.get<Updates[]>(`${environment.apiUrl}/updates/getAllUpdates`);
+        return this.http.get<Updatedto[]>(`${environment.apiUrl}/updates/getAllUpdates`);
     }
 
     getUpdatesById = (bannerId: number) => {
         return this.http.get<Updates>(`${environment.apiUrl}/updates/getUpdatesById/` + bannerId);
     }
 
-    createUpdates = (model: Updates) => {
+    createUpdates = (model: Updatedto) => {
         return this.http.post(`${environment.apiUrl}/updates/createUpdates`, { model });
     }
 
-    editUpdates = (model: Updates) => {
+    editUpdates = (model: Updatedto) => {
         return this.http.put(`${environment.apiUrl}/updates/EditUpdates`, { model });
     }
 
-    DeleteUpdates = (updateId: number) => {
+    DeleteUpdates = (updateId: string) => {
         return this.http.delete(`${environment.apiUrl}/updates/DeleteUpdates/` + updateId);
     }
 }

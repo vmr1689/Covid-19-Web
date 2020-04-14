@@ -1,0 +1,244 @@
+<link rel="stylesheet" href="https://unpkg.com/ngx-bootstrap/datepicker/bs-datepicker.css">
+<section class="content-header">
+    <h1>
+        Updates
+    </h1>
+</section>
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Updates</h3>
+                </div>
+                <form class="form-horizontal">
+                    <div class="box-body">
+                        <div class="col-md-12">
+                            <div class="form-group form-inline">
+                                <label class=" checkbox-inline" style="padding-right: 20px;">Search: </label> <input
+                                    class="form-control" type="text" />
+                                <button class="btn btn-info btn-flat pull-right" (click)="openCreateUpdates()">
+                                    <b>
+                                        <span class="fa fa-user-plus"></span>
+                                    </b> Add Updates
+                                </button>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+
+                                <table id="dataTable" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th sortable="placeName" (sort)="onSort($event)">#</th>
+                                            <th scope="col" sortable="root" (sort)="onSort($event)">Date</th>
+                                            <th scope="col" sortable="latitude" (sort)="onSort($event)">Update</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let data of updates; let i = index">
+                                            <td>{{i+1}}</td>
+                                            <td>{{data.date}}</td>
+                                            <td>{{data.update}}</td>
+                                            <td>
+
+                                                <button style="margin-right:5px" title="Edit Updates"
+                                                    (click)="openEditUpdates(data)"
+                                                    class="btn btn-small btn-flat btn-warning">
+                                                    <i class="btn-icon-only fa fa-pencil"> </i>
+                                                </button>
+
+                                                <button style="margin-right:5px" title="Delete Updates"
+                                                    (click)="openDeleteUpdates(data)"
+                                                    class="btn btn-small btn-flat btn-danger">
+                                                    <i class="btn-icon-only fa fa-trash"> </i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="box-footer">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" data-backdrop="static" id="addUpdates">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Add Updates</h4>
+            </div>
+            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && addUpdates(f)" #f="ngForm" novalidate>
+                <div class="modal-body">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12">
+                                <div class="form-group form-inline">
+                                    <div class="col-md-1 col-sm-1" style="padding: 20px;">
+                                        <label for="placeName" class="control-label">Date:</label>
+                                    </div>
+    
+                                    <div class="col-md-4 col-sm-4" style="padding: 20px;">
+                                        <div class="input-group">
+    
+    
+                                            <input class="form-control" [ngModelOptions]="{standalone: true}"
+                                                #datepickerFull="bsDatepicker" bsDatepicker [(ngModel)]="currentDate"
+                                                [bsConfig]="{ dateInputFormat: 'MM/DD/YYYY' }" id="bsDatepickerEdit">
+    
+                                            <div class="input-group-addon" (click)='calTrig()'>
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+    
+    
+    
+                                            <div *ngIf="f.submitted && !update.valid" class="text-danger">Update is required
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-md-1 col-sm-1">
+    
+                                        <timepicker id="currentDate" name="currentDate"
+                                            [ngModelOptions]="{standalone: true}" #mytime="ngModel"
+                                            [(ngModel)]="currentDate"></timepicker>
+    
+                                    </div>
+    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12">
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <textarea class="form-control" id="update" [(ngModel)]="model.update"
+                                            #update="ngModel" name="update" rows="3" placeholder="Enter ..."
+                                            required></textarea>
+    
+                                        <div *ngIf="f.submitted && !update.valid" class="text-danger">Update is required
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
+                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" data-backdrop="static" id="editUpdates">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Edit Updates</h4>
+            </div>
+            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && editUpdates(f)" #f="ngForm" novalidate>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group form-inline">
+                                <div class="col-md-1 col-sm-1" style="padding: 20px;">
+                                    <label for="placeName" class="control-label">Date:</label>
+                                </div>
+
+                                <div class="col-md-4 col-sm-4" style="padding: 20px;">
+                                    <div class="input-group">
+
+
+                                        <input class="form-control" [ngModelOptions]="{standalone: true}"
+                                            #datepickerFull="bsDatepicker" bsDatepicker [(ngModel)]="currentDate"
+                                            [bsConfig]="{ dateInputFormat: 'MM/DD/YYYY' }" id="bsDatepickerEdit">
+
+                                        <div class="input-group-addon" (click)='calTrig()'>
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+
+
+
+                                        <div *ngIf="f.submitted && !update.valid" class="text-danger">Update is required
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-1 col-sm-1">
+
+                                    <timepicker  id="currentDate" name="currentDate"
+                                        [ngModelOptions]="{standalone: true}" #mytime="ngModel"
+                                        [(ngModel)]="currentDate"></timepicker>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <textarea class="form-control" id="update" [(ngModel)]="model.update"
+                                        #update="ngModel" name="update" rows="3" placeholder="Enter ..."
+                                        required></textarea>
+
+                                    <div *ngIf="f.submitted && !update.valid" class="text-danger">Update is required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
+                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" data-backdrop="static" id="deleteUpdates">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Delete Updates</h4>
+            </div>
+            <div class="modal-body">
+                <p style="font-weight: bold;">
+                    Do you want to delete - {{model.update}} ?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">No</button>
+                <button (click)="deleteUpdates(model)" class="btn btn-info btn-flat">Yes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

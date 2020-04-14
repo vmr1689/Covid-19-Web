@@ -2,6 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule , FormsModule} from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // used to create fake backend
@@ -25,6 +28,7 @@ import { AddPatientComponent } from './add-patient/add-patient.component';
 import { LocationPatientsComponent } from './location-patients/location-patients.component';
 import { UserComponent } from './user/user.component';
 import { BannerComponent } from './banner/banner.component';
+import { UpdatesComponent } from './updates/updates.component';
 
 @NgModule({
   declarations: [
@@ -41,13 +45,17 @@ import { BannerComponent } from './banner/banner.component';
     AddPatientComponent,
     LocationPatientsComponent,
     UserComponent,
-    BannerComponent
+    BannerComponent,
+    UpdatesComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    BrowserAnimationsModule,
+    BsDatepickerModule.forRoot(),
+    TimepickerModule.forRoot(),
     HttpClientModule,
     AppRoutingModule,
     DirectivesModule

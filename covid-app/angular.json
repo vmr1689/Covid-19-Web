@@ -38,6 +38,7 @@
               "node_modules/admin-lte/bower_components/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/admin-lte/bower_components/datatables.net/js/jquery.dataTables.min.js",
               "node_modules/admin-lte/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js",
+              "node_modules/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js",
               "node_modules/admin-lte/bower_components/fastclick/lib/fastclick.js",
               "node_modules/admin-lte/dist/js/adminlte.min.js",
               "node_modules/admin-lte/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js",

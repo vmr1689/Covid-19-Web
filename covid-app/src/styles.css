@@ -1,1 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~ngx-bootstrap/datepicker/bs-datepicker.css';
+
+.bs-timepicker-field {
+    width: 55px !important;
+    padding: .375rem .55rem;
+}
