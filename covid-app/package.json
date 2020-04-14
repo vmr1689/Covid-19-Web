@@ -28,6 +28,7 @@
     "highcharts": "^8.0.4",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
+    "ngx-bootstrap": "^5.6.1",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

@@ -20,6 +20,8 @@ import { LoginComponent } from './login/login.component';
 import { LocationComponent } from './location/location.component';
 import { AddLocationComponent } from './add-location/add-location.component';
 import { EditLocationComponent } from './edit-location/edit-location.component';
+import { PatientsComponent } from './patients/patients.component';
+import { AddPatientComponent } from './add-patient/add-patient.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { EditLocationComponent } from './edit-location/edit-location.component';
     LoginComponent,
     LocationComponent,
     AddLocationComponent,
-    EditLocationComponent
+    EditLocationComponent,
+    PatientsComponent,
+    AddPatientComponent
   ],
   imports: [
     BrowserModule,

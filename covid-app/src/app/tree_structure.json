@@ -5,12 +5,11 @@
     "longitude": 5,
     "covidInfo": {
         "confirmed": 138,
-        "conFirmedToday":2,
+        "conFirmedToday": 2,
         "active": 112,
         "recovered": 17,
         "deceased": 10,
-        "severity":"medium"
-
+        "severity": "medium"
     },
     "subordinates": [
         {
@@ -20,11 +19,11 @@
             "longitude": 77,
             "covidInfo": {
                 "confirmed": 56,
-                 "conFirmedToday":2,
+                "conFirmedToday": 2,
                 "active": 46,
                 "recovered": 6,
                 "deceased": 4,
-                "severity":"medium"
+                "severity": "medium"
             },
             "subordinates": [
                 {
@@ -34,13 +33,11 @@
                     "longitude": 66,
                     "covidInfo": {
                         "confirmed": 16,
-                         "conFirmedToday":2,
+                        "conFirmedToday": 2,
                         "active": 10,
                         "recovered": 4,
                         "deceased": 2,
-
-                "severity":"medium"
-
+                        "severity": "medium"
                     },
                     "subordinates": []
                 },
@@ -51,13 +48,11 @@
                     "longitude": 33,
                     "covidInfo": {
                         "confirmed": 5,
-                         "conFirmedToday":2,
+                        "conFirmedToday": 2,
                         "active": 3,
                         "recovered": 1,
                         "deceased": 1,
-
-                "severity":"medium"
-
+                        "severity": "medium"
                     },
                     "subordinates": [
                         {
@@ -67,13 +62,11 @@
                             "longitude": 23,
                             "covidInfo": {
                                 "confirmed": 5,
-                                 "conFirmedToday":2,
+                                "conFirmedToday": 2,
                                 "active": 3,
                                 "recovered": 1,
                                 "deceased": 1,
-
-                "severity":"medium"
-
+                                "severity": "medium"
                             },
                             "subordinates": [
                                 {
@@ -83,13 +76,11 @@
                                     "longitude": 54,
                                     "covidInfo": {
                                         "confirmed": 5,
-                                         "conFirmedToday":2,
+                                        "conFirmedToday": 2,
                                         "active": 3,
                                         "recovered": 1,
                                         "deceased": 1,
-
-                "severity":"medium"
-
+                                        "severity": "medium"
                                     },
                                     "subordinates": []
                                 }
@@ -104,13 +95,11 @@
                     "longitude": 44,
                     "covidInfo": {
                         "confirmed": 35,
-                         "conFirmedToday":2,
+                        "conFirmedToday": 2,
                         "active": 33,
                         "recovered": 1,
                         "deceased": 1,
-
-                "severity":"medium"
-
+                        "severity": "medium"
                     },
                     "subordinates": []
                 }
@@ -123,13 +112,11 @@
             "longitude": 43,
             "covidInfo": {
                 "confirmed": 82,
-                 "conFirmedToday":2,
+                "conFirmedToday": 2,
                 "active": 66,
                 "recovered": 11,
                 "deceased": 6,
-
-                "severity":"medium"
-
+                "severity": "medium"
             },
             "subordinates": [
                 {
@@ -139,13 +126,11 @@
                     "longitude": 77,
                     "covidInfo": {
                         "confirmed": 2,
-                         "conFirmedToday":2,
+                        "conFirmedToday": 2,
                         "active": 1,
                         "recovered": 1,
                         "deceased": 1,
-
-                "severity":"medium"
-
+                        "severity": "medium"
                     },
                     "subordinates": []
                 },
@@ -156,13 +141,11 @@
                     "longitude": 55,
                     "covidInfo": {
                         "confirmed": 80,
-                         "conFirmedToday":2,
+                        "conFirmedToday": 2,
                         "active": 65,
                         "recovered": 10,
                         "deceased": 5,
-
-                "severity":"medium"
-
+                        "severity": "medium"
                     },
                     "subordinates": []
                 }

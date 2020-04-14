@@ -8,12 +8,15 @@ import StateDistrictWiseDataJson from '../../sample_state-district-wise.json';
 import SampleBannerJson from '../../sample_web_data.json';
 import SampleUpdatesJson from '../../sample_updates.json';
 import SampleLocationsJson from '../../locations.json';
+import SamplePatientsJson from '../../patients.json';
+
 import {
     SampleData,
     SampleStateDistrictWiseData,
     SampleUpdatesData,
     SampleWebData,
-    Location
+    Location,
+    Patient
 } from '../models';
 
 // array in local storage for registered users
@@ -57,6 +60,14 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return createLocation();
                 case url.endsWith('location/editLocation') && method === 'PUT':
                     return editLocation();
+                case url.endsWith('patient/getAllPatients') && method === 'GET':
+                    return getAllPatients();
+                case url.match(/\/getPatientById\/\d+$/) && method === 'GET':
+                    return getPatient();
+                case url.endsWith('patient/createPatient') && method === 'POST':
+                    return createPatient();
+                case url.endsWith('patient/editPatient') && method === 'PUT':
+                    return editPatient();
                 default:
                     // pass through any requests not handled above
                     return next.handle(request);
@@ -177,6 +188,29 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         function getLocation() {
             const mainData = SampleLocationsJson;
             const castObject = mainData as Location[];
+            const aa = castObject[2];
+            return ok(aa);
+        }
+
+        function getAllPatients() {
+            const mainData = SamplePatientsJson;
+            const castObject = mainData as Patient[];
+            return ok(castObject);
+        }
+
+        function createPatient() {
+            const user = body;
+            return ok(true);
+        }
+
+        function editPatient() {
+            const user = body;
+            return ok(true);
+        }
+
+        function getPatient() {
+            const mainData = SamplePatientsJson;
+            const castObject = mainData as Patient[];
             const aa = castObject[2];
             return ok(aa);
         }
