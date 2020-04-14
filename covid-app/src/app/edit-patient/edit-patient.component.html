@@ -1,0 +1,319 @@
+<section class="content-header">
+    <h1>
+        Edit Patient
+    </h1>
+</section>
+<section class="content container-fluid">
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Edit Patient</h3>
+                </div>
+
+                <form class="form-horizontal" [formGroup]="form" (ngSubmit)="onSubmit($event, form.value)">
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab_1" data-toggle="tab">General Information</a></li>
+                            <li><a href="#tab_2" data-toggle="tab">Location Information</a></li>
+                            <li><a href="#tab_3" data-toggle="tab">Device Information</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab_1">
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <input name="patientId" maxlength="50" formControlName="patientId"
+                                            id="patientId" type="hidden" class="form-control" />
+
+                                        <label for="firstName" class="col-sm-3 control-label">First Name</label>
+
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" formControlName="firstName"
+                                                id="firstName" name="firstName" placeholder="First Name">
+
+                                            <small
+                                                *ngIf="(submitted || firstName.dirty || firstName.touched) && firstName.hasError('required')"
+                                                class="text-danger">Place is required</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="lastName" class="col-sm-3 control-label">Last Name</label>
+
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" formControlName="lastName"
+                                                id="lastName" name="lastName" placeholder="Last Name">
+
+                                            <small
+                                                *ngIf="(submitted || lastName.dirty || lastName.touched) && lastName.hasError('required')"
+                                                class="text-danger">Last Name is required</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="age" class="col-sm-3 control-label">Age</label>
+
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" formControlName="age" id="age"
+                                                name="age" placeholder="Age">
+
+                                            <small
+                                                *ngIf="(submitted || age.dirty || age.touched) && age.hasError('required')"
+                                                class="text-danger">Last Name is required</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="phone" class="col-sm-3 control-label">Phone Number</label>
+
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" formControlName="phone" id="phone"
+                                                name="phone" placeholder="Phone Number">
+
+                                            <small
+                                                *ngIf="(submitted || phone.dirty || phone.touched) && phone.hasError('required')"
+                                                class="text-danger">Phone is required</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="email" class="col-sm-3 control-label">Email</label>
+
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" formControlName="email" id="email"
+                                                name="email" placeholder="Email">
+
+                                            <small
+                                                *ngIf="(submitted || email.dirty || email.touched) && email.hasError('required')"
+                                                class="text-danger">Email is required</small>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="address1" class="col-sm-3 control-label">Address 1</label>
+
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" formControlName="address1"
+                                                id="address1" name="address1" placeholder="Address 1">
+
+                                            <small
+                                                *ngIf="(submitted || address1.dirty || address1.touched) && address1.hasError('required')"
+                                                class="text-danger">Address 1 is required</small>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group ">
+                                        <label for="address2" class="col-sm-3 control-label">Address 1</label>
+
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" formControlName="address2"
+                                                id="address2" name="address2" placeholder="Address 2">
+
+                                            <small
+                                                *ngIf="(submitted || address2.dirty || address2.touched) && address2.hasError('required')"
+                                                class="text-danger">Address 2 is required</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="address3" class="col-sm-3 control-label">Address 3</label>
+
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" formControlName="address3"
+                                                id="address3" name="address3" placeholder="Address 2">
+
+                                            <small
+                                                *ngIf="(submitted || address3.dirty || address3.touched) && address3.hasError('required')"
+                                                class="text-danger">Address 3 is required</small>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label for="address4" class="col-sm-3 control-label">Address 4</label>
+
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" formControlName="address4"
+                                                id="address4" name="address4" placeholder="Address 4">
+
+                                            <small
+                                                *ngIf="(submitted || address4.dirty || address4.touched) && address4.hasError('required')"
+                                                class="text-danger">Address 4 is required</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="address5" class="col-sm-3 control-label">Address 5</label>
+
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" formControlName="address5"
+                                                id="address4" name="address5" placeholder="Address 5">
+
+                                            <small
+                                                *ngIf="(submitted || address5.dirty || address5.touched) && address5.hasError('required')"
+                                                class="text-danger">Address 5 is required</small>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label for="zipcode" class="col-sm-3 control-label">ZipCode</label>
+
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" formControlName="zipcode"
+                                                id="zipcode" name="zipcode" placeholder="Zipcode">
+
+                                            <small
+                                                *ngIf="(submitted || zipcode.dirty || zipcode.touched) && zipcode.hasError('required')"
+                                                class="text-danger">Zipcode is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row text-right">
+                                    <div class="col-md-12">
+                                        <button type="button" (click)="previousTab()"
+                                            class="pad_ex btn btn-default btn-flat prev-step"
+                                            style="margin-right:5px">Previous</button>
+                                        <button type="button" (click)="nextTab()"
+                                            class="pad_ex btn btn-info btn-flat next-step">Next</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="tab_2">
+                                <div class="row">
+                                    <div class="col-md-12" style="padding-bottom: 10px">
+                                        <button type="button" (click)="CreateLocationPopup()"
+                                            class="btn btn-info btn-flat pull-right" data-toggle="modal">
+                                            <b>
+                                                <span class="fa fa-user-plus"></span>
+                                            </b> Add Location
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+
+                                    <table id="dataTable" class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th sortable="placeName" (sort)="onLocationSort($event)">Location</th>
+                                                <th scope="col" sortable="root" (sort)="onLocationSort($event)">Latitude</th>
+                                                <th scope="col" sortable="latitude" (sort)="onLocationSort($event)">Longitude</th>
+                                                <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">Place</th>
+                                                <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">Severity</th>
+                                                <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">Date</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let data of locations">
+                                                <td>{{data.locationId}}</td>
+                                                <td>{{data.latitude}}</td>
+                                                <td>{{data.longitude}}</td>
+                                                <td>{{data.place}}</td>
+                                                <td>{{data.severity}}</td>
+                                                <td>{{data.date}}</td>
+                                                <td>
+                                                    <button style="margin-right:5px" title="Edit Location"
+                                                        (click)="openEditLocationPopup(data)"
+                                                        class="btn btn-small btn-flat btn-warning">
+                                                        <i class="btn-icon-only fa fa-pencil"> </i>
+                                                    </button>
+    
+                                                    <button style="margin-right:5px" title="Delete Location"
+                                                        (click)="openDeleteLocationPopup(data)"
+                                                        class="btn btn-small btn-flat btn-danger">
+                                                        <i class="btn-icon-only fa fa-trash"> </i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                               
+                                <div class="row text-right">
+                                    <div class="col-md-12">
+                                        <button type="button" (click)="previousTab()"
+                                            class="pad_ex btn btn-default btn-flat prev-step"
+                                            style="margin-right:5px">Previous</button>
+                                        <button type="button" (click)="nextTab()"
+                                            class="pad_ex btn btn-info btn-flat next-step">Next</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="tab_3">
+                                <div class="row">
+                                    <div class="col-md-12" style="padding-bottom: 10px">
+                                        <button type="button" (click)="CreateDevicePopup()"
+                                            class="btn btn-info btn-flat pull-right" data-toggle="modal">
+                                            <b>
+                                                <span class="fa fa-user-plus"></span>
+                                            </b> Add Device
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+
+                                    <table id="dataTable" class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th sortable="deviceId" (sort)="onDeviceSort($event)">Device</th>
+                                                <th scope="col" sortable="deviceName" (sort)="onDeviceSort($event)">Device Name</th>
+                                                <th scope="col" sortable="deviceAddress" (sort)="onDeviceSort($event)">Address</th>
+                                                <th scope="col" sortable="date" (sort)="onDeviceSort($event)">Date</th>
+                                                <th scope="col" sortable="status" (sort)="onDeviceSort($event)">Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let data of devices">
+                                                <td>{{data.deviceId}}</td>
+                                                <td>{{data.deviceName}}</td>
+                                                <td>{{data.deviceAddress}}</td>
+                                                <td>{{data.date}}</td>
+                                                <td>{{data.status}}</td>
+                                                <td>
+                                                    <button style="margin-right:5px" title="Edit Location"
+                                                        (click)="openEditDevicePopup(data)"
+                                                        class="btn btn-small btn-flat btn-warning">
+                                                        <i class="btn-icon-only fa fa-pencil"> </i>
+                                                    </button>
+    
+                                                    <button style="margin-right:5px" title="Delete Location"
+                                                        (click)="openDeleteDevicePopup(data)"
+                                                        class="btn btn-small btn-flat btn-danger">
+                                                        <i class="btn-icon-only fa fa-trash"> </i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <div class="row text-right">
+                                    <div class="col-md-12">
+                                        <button type="button" (click)="previousTab()"
+                                            class="pad_ex btn btn-default btn-flat prev-step"
+                                            style="margin-right:5px">Previous</button>
+                                        <button type="submit" id="btnSubmit"
+                                            class="pad_ex btn btn-info btn-flat next-step">Save and Exit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

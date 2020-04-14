@@ -11,16 +11,17 @@ import { LocationPatientsComponent } from './location-patients/location-patients
 import { UserComponent } from './user/user.component';
 import { BannerComponent } from './banner/banner.component';
 import { UpdatesComponent } from './updates/updates.component';
+import { EditPatientComponent } from './edit-patient/edit-patient.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'location', component: LocationComponent },
-  { path: 'location', component: LocationComponent },
   // { path: 'addlocation', component: AddLocationComponent },
   // { path: 'editlocation/:placeId', component: EditLocationComponent },
   { path: 'patients', component: PatientsComponent },
   { path: 'addpatient', component: AddPatientComponent },
+  { path: 'editpatient/:patientId', component: EditPatientComponent },
   { path: 'location/:locationId/patients', component: LocationPatientsComponent },
   { path: 'users', component: UserComponent },
   { path: 'banner', component: BannerComponent },

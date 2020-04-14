@@ -27,14 +27,8 @@ export class AddPatientComponent implements OnInit {
   public address4: AbstractControl;
   public address5: AbstractControl;
   public zipcode: AbstractControl;
-  public latitude: AbstractControl;
-  public longitude: AbstractControl;
-  public deviceName: AbstractControl;
-  public deviceAddress: AbstractControl;
-  public placeId: AbstractControl;
-  public severity: AbstractControl;
   public submitted: boolean;
-
+  
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -83,14 +77,7 @@ export class AddPatientComponent implements OnInit {
     this.address5 = this.form.controls.address5;
 
     this.zipcode = this.form.controls.zipcode;
-    this.latitude = this.form.controls.latitude;
-    this.longitude = this.form.controls.longitude;
-    this.placeId = this.form.controls.placeId;
-    this.severity = this.form.controls.severity;
-
-
-    this.deviceName = this.form.controls.deviceName;
-    this.deviceAddress = this.form.controls.deviceAddress;
+  
   }
 
   public onSubmit(event: Event, form: any): void {
