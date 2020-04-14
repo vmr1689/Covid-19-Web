@@ -7,16 +7,18 @@ import { AddLocationComponent } from './add-location/add-location.component';
 import { EditLocationComponent } from './edit-location/edit-location.component';
 import { PatientsComponent } from './patients/patients.component';
 import { AddPatientComponent } from './add-patient/add-patient.component';
+import { LocationPatientsComponent } from './location-patients/location-patients.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'location', component: LocationComponent },
   { path: 'location', component: LocationComponent },
-  { path: 'addlocation', component: AddLocationComponent },
-  { path: 'editlocation/:placeId', component: EditLocationComponent },
+  // { path: 'addlocation', component: AddLocationComponent },
+  // { path: 'editlocation/:placeId', component: EditLocationComponent },
   { path: 'patients', component: PatientsComponent },
   { path: 'addpatient', component: AddPatientComponent },
+  { path: 'location/:locationId/patients', component: LocationPatientsComponent },
 ];
 
 @NgModule({

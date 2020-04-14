@@ -33,7 +33,6 @@ export class EditLocationComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
-      debugger;
       this.placeId = Number.parseInt(params.get('placeId'));
       this.getLocationById();
       this.getAllLocations();
@@ -88,7 +87,6 @@ export class EditLocationComponent implements OnInit {
         } else {
           this.showRoot = false;
         }
-        
       }
     });
   }

@@ -15,7 +15,7 @@
                         <div class="col-md-12">
                             <div class="form-group form-inline">
                                 <label class=" checkbox-inline" style="padding-right: 20px;">Search: </label> <input
-                                    class="form-control" type="text"/>
+                                    class="form-control" type="text" />
                                 <!-- <div class="checkbox-inline">
                                     <label class="checkbox-inline"><input type="checkbox" id="deletedrecord"
                                             class="text-center" name="deletedrecord" (click)="ShowDeletedRecords()" />
@@ -39,8 +39,14 @@
                                             <th scope="col" sortable="root" (sort)="onSort($event)">Root</th>
                                             <th scope="col" sortable="latitude" (sort)="onSort($event)">Latitude</th>
                                             <th scope="col" sortable="longitude" (sort)="onSort($event)">Longitude</th>
+                                            <th scope="col" sortable="longitude" (sort)="onSort($event)">Total</th>
+                                            <th scope="col" sortable="longitude" (sort)="onSort($event)">Confirmed</th>
+                                            <th scope="col" sortable="longitude" (sort)="onSort($event)">Active</th>
+                                            <th scope="col" sortable="longitude" (sort)="onSort($event)">Recovered</th>
+                                            <th scope="col" sortable="longitude" (sort)="onSort($event)">Deceased</th>
                                             <th scope="col" sortable="istarget" (sort)="onSort($event)">Is Target</th>
-                                            <th >Actions</th>
+
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -50,14 +56,28 @@
                                             </td>
                                             <td>{{data.latitude}}</td>
                                             <td>{{data.longitude}}</td>
+                                            <td>100</td>
+                                            <td>10</td>
+                                            <td>20</td>
+                                            <td>30</td>
+                                            <td>40</td>
                                             <td>{{data.istarget ? 'Yes' : 'No'}}</td>
                                             <td>
-                                                <button style="margin-right:5px" title="Edit Location" (click)="editLocation(data.placeId)"
+
+                                                <button style="margin-right:5px" title="Patients"
+                                                    (click)="openAssignedPatients(data)"
+                                                    class="btn btn-small btn-flat btn-default">
+                                                    <i class="btn-icon-only fa fa-eye"> </i>
+                                                </button>
+
+                                                <button style="margin-right:5px" title="Edit Location"
+                                                    (click)="openEditLocation(data)"
                                                     class="btn btn-small btn-flat btn-warning">
                                                     <i class="btn-icon-only fa fa-pencil"> </i>
                                                 </button>
 
                                                 <button style="margin-right:5px" title="Delete Location"
+                                                    (click)="openDeleteLocation(data)"
                                                     class="btn btn-small btn-flat btn-danger">
                                                     <i class="btn-icon-only fa fa-trash"> </i>
                                                 </button>
@@ -76,3 +96,235 @@
         </div>
     </div>
 </section>
+
+
+<div class="modal fade" data-backdrop="static" id="addLocation">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Add Location</h4>
+            </div>
+            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && addLocation(f)" #f="ngForm" novalidate>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-6 col-xs-12">
+                            <div class="form-group ">
+                                <div class="col-sm-2">
+                                    <label for="placeName" class="control-label">Place:</label>
+                                </div>
+    
+                                <div class="col-sm-10">
+
+                                    <input name="placeId" id="placeId" [(ngModel)]="model.placeId"  #placeId="ngModel" type="hidden" class="form-control" />
+
+                                    <input id="placeName" type="text" autocomplete="off" class="form-control" name="placeName" 
+                                    [(ngModel)]="model.placeName" #placeName="ngModel" placeholder="Place" required>
+                                   
+                                    <div *ngIf="f.submitted && !placeName.valid" class="text-danger">Place is required
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label for="latitude" class="control-label">Latitude:</label>
+                                </div>
+    
+                                <div class="col-sm-10">
+                                    <input id="latitude" type="text" autocomplete="off" class="form-control" name="latitude" 
+                                    [(ngModel)]="model.latitude" #latitude="ngModel" placeholder="Place" required>
+                                   
+                                    <div *ngIf="f.submitted && !latitude.valid" class="text-danger">Latitude is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label for="longitude" class="control-label">Longitude:</label>
+                                </div>
+    
+                                <div class="col-sm-10">
+                                    <input id="longitude" type="text" autocomplete="off" class="form-control" name="longitude" 
+                                    [(ngModel)]="model.longitude" #longitude="ngModel" placeholder="Place" required>
+                                   
+                                    <div *ngIf="f.submitted && !longitude.valid" class="text-danger">Longitude is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="istarget"  [(ngModel)]="model.istarget" #istarget="ngModel" type="checkbox" id="istarget"
+                                                name="istarget"> Target Location
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" *ngIf="model.istarget">
+                                <label for="longitude" class="col-sm-2 control-label">Root Location</label>
+
+                                <div class="col-sm-10">
+                                    <select name="rootId" #rootId="ngModel" [(ngModel)]="model.rootId" id="rootId" class="form-control"
+                                    [required]="model.istarget ? true : null">
+                                        <option *ngFor="let location of locations; let i = index" value={{location.placeId}}>
+                                            {{location.placeName}}
+                                        </option>
+                                    </select>
+
+                                    <div *ngIf="f.submitted && !rootId.valid" class="text-danger">Root Location is required
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
+                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" data-backdrop="static" id="editLocation">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Edit Location</h4>
+            </div>
+            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && editLocation(f)" #f="ngForm" novalidate>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-6 col-xs-12">
+                            <div class="form-group ">
+                                <div class="col-sm-2">
+                                    <label for="placeName" class="control-label">Place:</label>
+                                </div>
+    
+                                <div class="col-sm-10">
+
+                                    <input name="placeId" id="placeId" [(ngModel)]="model.placeId"  #placeId="ngModel" type="hidden" class="form-control" />
+
+                                    <input id="placeName" type="text" autocomplete="off" class="form-control" name="placeName" 
+                                    [(ngModel)]="model.placeName" #placeName="ngModel" placeholder="Place" required>
+                                   
+                                    <div *ngIf="f.submitted && !placeName.valid" class="text-danger">Place is required
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label for="latitude" class="control-label">Latitude:</label>
+                                </div>
+    
+                                <div class="col-sm-10">
+                                    <input id="latitude" type="text" autocomplete="off" class="form-control" name="latitude" 
+                                    [(ngModel)]="model.latitude" #latitude="ngModel" placeholder="Place" required>
+                                   
+                                    <div *ngIf="f.submitted && !latitude.valid" class="text-danger">Latitude is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label for="longitude" class="control-label">Longitude:</label>
+                                </div>
+    
+                                <div class="col-sm-10">
+                                    <input id="longitude" type="text" autocomplete="off" class="form-control" name="longitude" 
+                                    [(ngModel)]="model.longitude" #longitude="ngModel" placeholder="Place" required>
+                                   
+                                    <div *ngIf="f.submitted && !longitude.valid" class="text-danger">Longitude is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="istarget"  [(ngModel)]="model.istarget" #istarget="ngModel" type="checkbox" id="istarget"
+                                                name="istarget"> Target Location
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" *ngIf="model.istarget">
+                                <label for="longitude" class="col-sm-2 control-label">Root Location</label>
+
+                                <div class="col-sm-10">
+                                    <select name="rootId" #rootId="ngModel" [(ngModel)]="model.rootId" id="rootId" class="form-control"
+                                    [required]="model.istarget ? true : null">
+                                        <option *ngFor="let location of locations; let i = index" value={{location.placeId}}>
+                                            {{location.placeName}}
+                                        </option>
+                                    </select>
+
+                                    <div *ngIf="f.submitted && !rootId.valid" class="text-danger">Root Location is required
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
+                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" data-backdrop="static" id="deleteLocation">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Delete Location</h4>
+            </div>
+            <div class="modal-body">
+                <p style="font-weight: bold;">
+                    Do you want to delete {{model.placeName}} ?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">No</button>
+                <button (click)="deleteLocation(model)" class="btn btn-info btn-flat">Yes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

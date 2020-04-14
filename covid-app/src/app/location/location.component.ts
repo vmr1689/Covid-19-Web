@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, AbstractControl, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sortable.directive';
@@ -16,6 +17,8 @@ declare var $;
   styleUrls: ['./location.component.css']
 })
 export class LocationComponent implements OnInit {
+
+  public model: Location = {} as Location;
 
   public locations: Location[] = [];
   publiclocationTable: ngBootstrapTable;
@@ -37,7 +40,7 @@ export class LocationComponent implements OnInit {
     });
   }
 
-  onSort({column, direction}: SortEvent) {
+  onSort({ column, direction }: SortEvent) {
 
     // resetting other headers
     this.headers.forEach(header => {
@@ -58,12 +61,36 @@ export class LocationComponent implements OnInit {
     }
   }
 
+  openAssignedPatients(data: Location) {
+    this.model = { ...data };
+    this.router.navigate(['/location/' + this.model.placeId + '/patients']);
+  }
+  
   openCreateLocation() {
-    this.router.navigate(['/addlocation']);
+    this.model = {} as Location;
+    $('#addLocation').modal('toggle');
   }
 
-  editLocation(placeId) {
-    this.router.navigate(['/editlocation/' + placeId]);
+  openEditLocation(data: Location) {
+    this.model = { ...data };
+    $('#editLocation').modal('toggle');
+  }
+
+  openDeleteLocation(data: Location) {
+    this.model = { ...data };
+    $('#deleteLocation').modal('toggle');
+  }
+
+  addLocation(form: NgForm) {
+
+  }
+
+  editLocation(form: NgForm) {
+
+  }
+
+  deleteLocation(data: Location) {
+
   }
 
   ShowDeletedRecords() {
