@@ -4,5 +4,9 @@ export class User {
     password: string;
     firstName: string;
     lastName: string;
-    token: string;
+    token?: string;
+    phoneNumber?: string;
+    isEmailConfirmed?: string;
+    role?: string;
+    status: boolean;
 }

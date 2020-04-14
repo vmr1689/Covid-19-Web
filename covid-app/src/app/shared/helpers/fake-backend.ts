@@ -9,6 +9,7 @@ import SampleBannerJson from '../../sample_web_data.json';
 import SampleUpdatesJson from '../../sample_updates.json';
 import SampleLocationsJson from '../../locations.json';
 import SamplePatientsJson from '../../patients.json';
+import SampleUsersJson from '../../users.json';
 
 import {
     SampleData,
@@ -16,11 +17,12 @@ import {
     SampleUpdatesData,
     SampleWebData,
     Location,
-    Patient
+    Patient,
 } from '../models';
 
 // array in local storage for registered users
-let users = JSON.parse(localStorage.getItem('users')) || [];
+let users = SampleUsersJson;
+//let users = JSON.parse(localStorage.getItem('users')) || [];
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -44,6 +46,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return getUsers();
                 case url.match(/\/users\/\d+$/) && method === 'DELETE':
                     return deleteUser();
+                case url.match(/\/users\/\d+$/) && method === 'GET':
+                    return getUser();
+                case url.match(/\/users\/\d+$/) && method === 'PUT':
+                    return updateUser();
                 case url.endsWith('/dashboard/getDetails') && method === 'GET':
                     return dashboardData();
                 case url.endsWith('dashboard/getStateDistrictData') && method === 'GET':
@@ -113,6 +119,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function deleteUser() {
+            debugger;
             if (!isLoggedIn()) {
                 return unauthorized();
             }
@@ -120,6 +127,30 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             users = users.filter(x => x.id !== idFromUrl());
             localStorage.setItem('users', JSON.stringify(users));
             return ok();
+        }
+
+        function updateUser() {
+            debugger;
+            const user = body;
+
+            users = {
+                ...users,
+                user
+            };
+
+            return ok();
+        }
+
+        function getUser() {
+            if (!isLoggedIn()) {
+                return unauthorized();
+            }
+
+            users = users.filter(x => x.id === idFromUrl());
+            if (users.length > 0) {
+                return ok(users[0]);
+            }
+            return ok(null);
         }
 
         // helper functions
@@ -137,7 +168,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function isLoggedIn() {
-            return headers.get('Authorization') === 'Bearer fake-jwt-token';
+            //return headers.get('Authorization') === 'Bearer fake-jwt-token';
+            return true;
         }
 
         function idFromUrl() {

@@ -1,105 +1,110 @@
-{
-    "data": [
-      {
-        "DT_RowId": "row_1",
-        "users": {
-          "first_name": "Quynn",
-          "last_name": "Contreras",
-          "phone": "1-971-977-4681",
-          "site": "1"
-        },
-        "sites": {
-          "name": "Edinburgh"
-        }
-      },
-      {
-        "DT_RowId": "row_7",
-        "users": {
-          "first_name": "Xantha",
-          "last_name": "George",
-          "phone": "1-106-884-4754",
-          "site": "1"
-        },
-        "sites": {
-          "name": "Edinburgh"
-        }
-      },
-      {
-        "DT_RowId": "row_13",
-        "users": {
-          "first_name": "Lael",
-          "last_name": "Kim",
-          "phone": "1-626-697-2194",
-          "site": "1"
-        },
-        "sites": {
-          "name": "Edinburgh"
-        }
-      },
-      {
-        "DT_RowId": "row_19",
-        "users": {
-          "first_name": "Mona",
-          "last_name": "Terry",
-          "phone": "1-443-179-7343",
-          "site": "1"
-        },
-        "sites": {
-          "name": "Edinburgh"
-        }
-      },
-      {
-        "DT_RowId": "row_25",
-        "users": {
-          "first_name": "Ishmael",
-          "last_name": "Crosby",
-          "phone": "1-307-243-2684",
-          "site": "1"
-        },
-        "sites": {
-          "name": "Edinburgh"
-        }
-      },
-      {
-        "DT_RowId": "row_31",
-        "users": {
-          "first_name": "Quinn",
-          "last_name": "Mccall",
-          "phone": "1-808-916-4497",
-          "site": "1"
-        },
-        "sites": {
-          "name": "Edinburgh"
-        }
-      }
-    ],
-    "options": {
-      "users.site": [
-        {
-          "label": "Edinburgh",
-          "value": "1"
-        },
-        {
-          "label": "London",
-          "value": "2"
-        },
-        {
-          "label": "Los Angeles",
-          "value": "6"
-        },
-        {
-          "label": "New York",
-          "value": "4"
-        },
-        {
-          "label": "Paris",
-          "value": "3"
-        },
-        {
-          "label": "Singapore",
-          "value": "5"
-        }
-      ]
-    },
-    "files": []
+[
+  {
+    "id": "1",
+    "firstName": "Super",
+    "lastName": "Admin One",
+    "username": "superadmin1@test.com",
+    "phoneNumber": "9874563210",
+    "isEmailConfirmed": true,
+    "role": "SuperAdmin",
+    "status": true,
+    "password": "Password1,",
+    "token": ""
+  },
+  {
+    "id": "2",
+    "firstName": "Super",
+    "lastName": "Admin Two",
+    "username": "superadmin2@test.com",
+    "phoneNumber": "9874563210",
+    "isEmailConfirmed": true,
+    "role": "SuperAdmin",
+    "status": true,
+    "password": "Password2,",
+    "token": ""
+  },
+  {
+    "id": "3",
+    "firstName": "Super",
+    "lastName": "Admin Two",
+    "username": "superadmin3@test.com",
+    "phoneNumber": "9874563210",
+    "isEmailConfirmed": true,
+    "role": "SuperAdmin",
+    "status": false,
+    "password": "Password3,",
+    "token": ""
+  },
+  {
+    "id": "4",
+    "firstName": "Level One",
+    "lastName": "User One",
+    "username": "level1user1@test.com",
+    "phoneNumber": "9874563210",
+    "isEmailConfirmed": true,
+    "role": "Level1",
+    "status": true,
+    "password": "Password1,",
+    "token": ""
+  },
+  {
+    "id": "5",
+    "firstName": "Level One",
+    "lastName": "User Two",
+    "username": "level1user2@test.com",
+    "phoneNumber": "514786311",
+    "isEmailConfirmed": true,
+    "role": "Level1",
+    "status": false,
+    "password": "Password1,",
+    "token": ""
+  },
+  {
+    "id": "6",
+    "firstName": "Level One",
+    "lastName": "User Three",
+    "username": "level1user3@test.com",
+    "phoneNumber": "9874563210",
+    "isEmailConfirmed": true,
+    "role": "Level1",
+    "status": true,
+    "password": "Password1,",
+    "token": ""
+  },
+  {
+    "id": "7",
+    "firstName": "Level Two",
+    "lastName": "User One",
+    "username": "level2user1@test.com",
+    "phoneNumber": "9874563210",
+    "isEmailConfirmed": true,
+    "role": "Level1",
+    "status": true,
+    "password": "Password1,",
+    "token": ""
+  },
+  {
+    "id": "8",
+    "firstName": "Level Two",
+    "lastName": "User Two",
+    "email": "level2user2@test.com",
+    "phoneNumber": "9874563210",
+    "isEmailConfirmed": true,
+    "role": "Level1",
+    "status": true,
+    "password": "Password1,",
+    "token": ""
+  },
+  {
+    "id": "9",
+    "firstName": "Level Two",
+    "lastName": "User Three",
+    "username": "level2user3@test.com",
+    "phoneNumber": "9874563210",
+    "isEmailConfirmed": true,
+    "role": "Level1",
+    "status": true,
+    "password": "Password1,",
+    "token": ""
   }
+]

@@ -23,6 +23,7 @@ import { EditLocationComponent } from './edit-location/edit-location.component';
 import { PatientsComponent } from './patients/patients.component';
 import { AddPatientComponent } from './add-patient/add-patient.component';
 import { LocationPatientsComponent } from './location-patients/location-patients.component';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { LocationPatientsComponent } from './location-patients/location-patients
     EditLocationComponent,
     PatientsComponent,
     AddPatientComponent,
-    LocationPatientsComponent
+    LocationPatientsComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,

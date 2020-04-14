@@ -21,7 +21,7 @@ export class LocationComponent implements OnInit {
   public model: Location = {} as Location;
 
   public locations: Location[] = [];
-  publiclocationTable: ngBootstrapTable;
+  public locationTable: ngBootstrapTable;
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   constructor(
     private router: Router,
@@ -65,7 +65,7 @@ export class LocationComponent implements OnInit {
     this.model = { ...data };
     this.router.navigate(['/location/' + this.model.placeId + '/patients']);
   }
-  
+
   openCreateLocation() {
     this.model = {} as Location;
     $('#addLocation').modal('toggle');
