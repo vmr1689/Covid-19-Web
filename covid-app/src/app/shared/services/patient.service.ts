@@ -23,4 +23,8 @@ export class PatientService {
     editPatient = (model: Patient) => {
         return this.http.put(`${environment.apiUrl}/patient/editPatient`, { model });
     }
+
+    deletePatient = (patientId: number) => {
+        return this.http.delete(`${environment.apiUrl}/patient/deletePatient/` + patientId);
+    }
 }

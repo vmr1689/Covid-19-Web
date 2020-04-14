@@ -90,7 +90,6 @@ export class LocationPatientsComponent implements OnInit {
   }
 
   assignLocation(form: NgForm) {
-    debugger;
   }
 
 }

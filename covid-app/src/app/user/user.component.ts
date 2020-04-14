@@ -43,7 +43,6 @@ export class UserComponent implements OnInit {
   getAllUsers() {
     this.userService.getAll().subscribe((response: User[]) => {
       this.users = [];
-      debugger;
       if (response && response.length > 0) {
         this.users = response;
       }

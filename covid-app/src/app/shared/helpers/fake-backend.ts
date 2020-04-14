@@ -10,6 +10,7 @@ import SampleUpdatesJson from '../../sample_updates.json';
 import SampleLocationsJson from '../../locations.json';
 import SamplePatientsJson from '../../patients.json';
 import SampleUsersJson from '../../users.json';
+import SampleBannerJson1 from '../../banner.json';
 
 import {
     SampleData,
@@ -18,6 +19,8 @@ import {
     SampleWebData,
     Location,
     Patient,
+    Banner,
+    Updates
 } from '../models';
 
 // array in local storage for registered users
@@ -74,6 +77,30 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return createPatient();
                 case url.endsWith('patient/editPatient') && method === 'PUT':
                     return editPatient();
+                case url.match(/\/deletePatient\/\d+$/) && method === 'DELETE':
+                    return deletePatient();
+
+                case url.endsWith('updates/getAllBanners') && method === 'GET':
+                    return getAllBanners();
+                case url.match(/\/getBannerById\/\d+$/) && method === 'GET':
+                    return getBanner();
+                case url.endsWith('updates/createBanner') && method === 'POST':
+                    return createBanner();
+                case url.endsWith('updates/EditBanner') && method === 'PUT':
+                    return editBanner();
+                case url.match(/\/DeleteBanner\/\d+$/) && method === 'DELETE':
+                    return deleteBanner();
+
+                case url.endsWith('updates/getAllUpdates') && method === 'GET':
+                    return getAllUpdates();
+                case url.match(/\/getUpdatesById\/\d+$/) && method === 'GET':
+                    return getPatient();
+                case url.endsWith('updates/createUpdates') && method === 'POST':
+                    return createUpdates();
+                case url.endsWith('updates/EditUpdates') && method === 'PUT':
+                    return editUpdates();
+                case url.match(/\/DeleteUpdates\/\d+$/) && method === 'DELETE':
+                    return deleteUpdates();
                 default:
                     // pass through any requests not handled above
                     return next.handle(request);
@@ -119,7 +146,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function deleteUser() {
-            debugger;
             if (!isLoggedIn()) {
                 return unauthorized();
             }
@@ -130,7 +156,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function updateUser() {
-            debugger;
             const user = body;
 
             users = {
@@ -240,9 +265,71 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             return ok(true);
         }
 
+        function deletePatient() {
+            const user = body;
+            return ok(true);
+        }
+
         function getPatient() {
             const mainData = SamplePatientsJson;
             const castObject = mainData as Patient[];
+            const aa = castObject[2];
+            return ok(aa);
+        }
+
+        function getAllBanners() {
+            const mainData = SampleBannerJson1;
+            const castObject = mainData as Banner[];
+            return ok(castObject);
+        }
+
+        function createBanner() {
+            const user = body;
+            return ok(true);
+        }
+
+        function editBanner() {
+            const user = body;
+            return ok(true);
+        }
+
+        function deleteBanner() {
+            const user = body;
+            return ok(true);
+        }
+
+        function getBanner() {
+            const mainData = SamplePatientsJson;
+            const castObject = mainData as Banner[];
+            const aa = castObject[2];
+            return ok(aa);
+        }
+
+
+        function getAllUpdates() {
+            const mainData = SampleBannerJson1;
+            const castObject = mainData as Updates[];
+            return ok(castObject);
+        }
+
+        function createUpdates() {
+            const user = body;
+            return ok(true);
+        }
+
+        function editUpdates() {
+            const user = body;
+            return ok(true);
+        }
+
+        function deleteUpdates() {
+            const user = body;
+            return ok(true);
+        }
+
+        function getUpdates() {
+            const mainData = SamplePatientsJson;
+            const castObject = mainData as Banner[];
             const aa = castObject[2];
             return ok(aa);
         }

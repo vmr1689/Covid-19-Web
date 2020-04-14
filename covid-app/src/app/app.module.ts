@@ -24,6 +24,7 @@ import { PatientsComponent } from './patients/patients.component';
 import { AddPatientComponent } from './add-patient/add-patient.component';
 import { LocationPatientsComponent } from './location-patients/location-patients.component';
 import { UserComponent } from './user/user.component';
+import { BannerComponent } from './banner/banner.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { UserComponent } from './user/user.component';
     PatientsComponent,
     AddPatientComponent,
     LocationPatientsComponent,
-    UserComponent
+    UserComponent,
+    BannerComponent
   ],
   imports: [
     BrowserModule,

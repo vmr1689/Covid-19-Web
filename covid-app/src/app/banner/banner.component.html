@@ -1,0 +1,167 @@
+<section class="content-header">
+    <h1>
+        Banner
+    </h1>
+</section>
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Banner</h3>
+                </div>
+                <form class="form-horizontal">
+                    <div class="box-body">
+                        <div class="col-md-12">
+                            <div class="form-group form-inline">
+                                <label class=" checkbox-inline" style="padding-right: 20px;">Search: </label> <input
+                                    class="form-control" type="text" />
+                                <button class="btn btn-info btn-flat pull-right" (click)="openCreateBanner()">
+                                    <b>
+                                        <span class="fa fa-user-plus"></span>
+                                    </b> Add Banner
+                                </button>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+
+                                <table id="dataTable" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th sortable="placeName" (sort)="onSort($event)">#</th>
+                                            <th scope="col" sortable="root" (sort)="onSort($event)">Date</th>
+                                            <th scope="col" sortable="latitude" (sort)="onSort($event)">Content</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let data of banners; let i = index">
+                                            <td>{{i+1}}</td>
+                                            <td>{{data.date}}</td>
+                                            <td>{{data.content}}</td>
+                                            <td>
+
+                                                <button style="margin-right:5px" title="Edit Banner"
+                                                    (click)="openEditBanner(data)"
+                                                    class="btn btn-small btn-flat btn-warning">
+                                                    <i class="btn-icon-only fa fa-pencil"> </i>
+                                                </button>
+
+                                                <button style="margin-right:5px" title="Delete Banner"
+                                                    (click)="openDeleteBanner(data)"
+                                                    class="btn btn-small btn-flat btn-danger">
+                                                    <i class="btn-icon-only fa fa-trash"> </i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="box-footer">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" data-backdrop="static" id="addBanner">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Add Banner</h4>
+            </div>
+            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && addBanner(f)" #f="ngForm" novalidate>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <textarea class="form-control" id="content" [(ngModel)]="model.content"
+                                        #content="ngModel" name="content" rows="3" placeholder="Enter ..."
+                                        required></textarea>
+
+                                    <div *ngIf="f.submitted && !content.valid" class="text-danger">Place is required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
+                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" data-backdrop="static" id="editBanner">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Edit Banner</h4>
+            </div>
+            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && editBanner(f)" #f="ngForm" novalidate>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <textarea class="form-control" id="content" [(ngModel)]="model.content"
+                                        #content="ngModel" name="content" rows="3" placeholder="Enter ..."
+                                        required></textarea>
+
+                                    <div *ngIf="f.submitted && !content.valid" class="text-danger">Place is required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
+                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" data-backdrop="static" id="deleteBanner">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Delete Banner</h4>
+            </div>
+            <div class="modal-body">
+                <p style="font-weight: bold;">
+                    Do you want to delete - {{model.content}} ?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">No</button>
+                <button (click)="deleteBanner(model)" class="btn btn-info btn-flat">Yes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

@@ -141,7 +141,6 @@ export class PatientsComponent implements OnInit {
   }
 
   public onSubmit(event: Event, form: any): void {
-    debugger;
     event.stopPropagation();
     this.submitted = true;
 
