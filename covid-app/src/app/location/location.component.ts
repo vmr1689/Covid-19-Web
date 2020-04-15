@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, QueryList, ViewChildren, AfterContentInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -16,7 +16,7 @@ declare var $;
   templateUrl: './location.component.html',
   styleUrls: ['./location.component.css']
 })
-export class LocationComponent implements OnInit {
+export class LocationComponent implements OnInit, AfterContentInit {
 
   public model: Location = {} as Location;
 
@@ -31,6 +31,9 @@ export class LocationComponent implements OnInit {
     this.getAllLocations();
   }
 
+  ngAfterContentInit() {
+
+  }
   getAllLocations() {
     this.locationService.getAllLocations().subscribe((response: Location[]) => {
       this.locations = [];

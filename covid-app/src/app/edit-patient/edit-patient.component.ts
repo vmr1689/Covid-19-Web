@@ -142,17 +142,17 @@ export class EditPatientComponent implements OnInit {
     this.router.navigate(['/patients']);
   }
 
-  CreateLocationPopup() {
+  CreateLocationPopup($event) {
     this.locationModel =  { placeId: '', severity: '', date: ''};
     $('#addLocation').modal('toggle');
   }
 
-  openEditLocationPopup(locationRow: any) {
+  openEditLocationPopup($event, locationRow: any) {
     this.locationModel =  { placeId: '', severity: '', date: ''};
     $('#editLocation').modal('toggle');
   }
 
-  openDeleteLocationPopup(locationRow: any) {
+  openDeleteLocationPopup($event, locationRow: any) {
     this.locationModel =  { placeId: '', severity: '', date: ''};
     $('#deleteLocation').modal('toggle');
   }
@@ -192,7 +192,7 @@ export class EditPatientComponent implements OnInit {
     $('#editDevice').modal('toggle');
   }
 
-  openDeleteDevicePopup(deviceRow: any) {
+  openDeleteDevicePopup(event, deviceRow: any) {
     this.deviceModel = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: ''};
     $('#deleteDevice').modal('toggle');
   }

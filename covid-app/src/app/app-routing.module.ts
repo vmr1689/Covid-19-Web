@@ -12,6 +12,7 @@ import { UserComponent } from './user/user.component';
 import { BannerComponent } from './banner/banner.component';
 import { UpdatesComponent } from './updates/updates.component';
 import { EditPatientComponent } from './edit-patient/edit-patient.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'users', component: UserComponent },
   { path: 'banner', component: BannerComponent },
   { path: 'updates', component: UpdatesComponent },
+  { path: 'login', component: LoginComponent },
 ];
 
 @NgModule({

@@ -551,7 +551,7 @@
     
                                 <div class="col-sm-8">
                                     <input id="status" type="text" autocomplete="off" class="form-control" name="status" 
-                                    [(ngModel)]="deviceModel.status" #date="ngModel" placeholder="Status" required>
+                                    [(ngModel)]="deviceModel.status" #status="ngModel" placeholder="Status" required>
                                    
                                     <div *ngIf="f.submitted && !status.valid" class="text-danger">Status is required
                                     </div>
