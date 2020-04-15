@@ -30,6 +30,13 @@ export class AuthenticationService {
             }));
     }
 
+    forgotPassword(email) {
+        return this.http.post<any>(`${environment.apiUrl}/users/forgotpassword`, { email })
+            .pipe(map(user => {
+                return user;
+            }));
+    }
+
     logout() {
         // remove user from local storage and set current user to null
         localStorage.removeItem('currentUser');

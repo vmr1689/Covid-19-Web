@@ -13,6 +13,7 @@ import { BannerComponent } from './banner/banner.component';
 import { UpdatesComponent } from './updates/updates.component';
 import { EditPatientComponent } from './edit-patient/edit-patient.component';
 import { LoginComponent } from './login/login.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'banner', component: BannerComponent },
   { path: 'updates', component: UpdatesComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'forgotpassword', component: ForgotPasswordComponent },
 ];
 
 @NgModule({

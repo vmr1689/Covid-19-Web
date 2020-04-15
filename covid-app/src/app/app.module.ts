@@ -31,6 +31,7 @@ import { UserComponent } from './user/user.component';
 import { BannerComponent } from './banner/banner.component';
 import { UpdatesComponent } from './updates/updates.component';
 import { EditPatientComponent } from './edit-patient/edit-patient.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { EditPatientComponent } from './edit-patient/edit-patient.component';
     UserComponent,
     BannerComponent,
     UpdatesComponent,
-    EditPatientComponent
+    EditPatientComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,
