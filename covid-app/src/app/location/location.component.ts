@@ -19,6 +19,7 @@ declare var $;
 export class LocationComponent implements OnInit, AfterContentInit {
 
   public model: Location = {} as Location;
+  public patientModel: any = {};
 
   public locations: Location[] = [];
   public locationTable: ngBootstrapTable;
@@ -64,40 +65,79 @@ export class LocationComponent implements OnInit, AfterContentInit {
     }
   }
 
-  openAssignedPatients(data: Location) {
+  openAddPatient(event, data) {
+    event.preventDefault();
+    this.patientModel = {};
+    this.patientModel.placeId = data.placeId;
+    this.patientModel.placeName = data.placeName;
+    $('#addPatient').modal('toggle');
+  }
+
+  openQuarantinePerson(event, data) {
+    event.preventDefault();
+    this.patientModel = {};
+    this.patientModel.placeId = data.placeId;
+    this.patientModel.placeName = data.placeName;
+    $('#addQuarantinePerson').modal('toggle');
+  }
+
+  openAssignedPatients(event, data: Location) {
+    event.preventDefault();
     this.model = { ...data };
     this.router.navigate(['/location/' + this.model.placeId + '/patients']);
   }
 
-  openCreateLocation() {
+  openCreateLocation(event) {
+    event.preventDefault();
     this.model = {} as Location;
     $('#addLocation').modal('toggle');
   }
 
-  openEditLocation(data: Location) {
+  openEditLocation(event, data: Location) {
+    event.preventDefault();
     this.model = { ...data };
     $('#editLocation').modal('toggle');
   }
 
-  openDeleteLocation(data: Location) {
+  openDeleteLocation(event, data: Location) {
+    event.preventDefault();
     this.model = { ...data };
     $('#deleteLocation').modal('toggle');
   }
 
-  addLocation(form: NgForm) {
+  
+  addLocation(event, form: NgForm) {
 
   }
 
-  editLocation(form: NgForm) {
+  editLocation(event, form: NgForm) {
 
   }
 
-  deleteLocation(data: Location) {
+  deleteLocation(event, data: Location) {
 
   }
 
   ShowDeletedRecords() {
 
+  }
+
+  addPatient(event, form: NgForm) {
+    $('#addPatient').modal('hide');
+  }
+
+  closeAddPatient(event) {
+    event.preventDefault();
+    $('#addPatient').modal('toggle');
+  }
+
+  addQuarantinePerson(event, form: NgForm) {
+    $('#addQuarantinePerson').modal('hide');
+  }
+
+  closeAddQuarantinePerson(event) {
+    event.preventDefault();
+    $('#addQuarantinePerson').modal('toggle');
   }
 }
 
