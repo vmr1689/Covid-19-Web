@@ -133,11 +133,11 @@ export class QuarantinePatientComponent implements OnInit {
   }
 
   openCreateQuarantinePatient() {
-    this.router.navigate(['/addquarantinepatient']);
+    this.router.navigate(['/addquarantineperson']);
   }
 
   editQuarantinePatient(patient: Patient) {
-    this.router.navigate(['/editquarantinepatient/' + patient.id]);
+    this.router.navigate(['/editquarantineperson/' + patient.id]);
   }
 
   public onSubmit(event: Event, form: any): void {

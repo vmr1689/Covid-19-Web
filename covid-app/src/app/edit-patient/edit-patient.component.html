@@ -209,6 +209,7 @@
                                                 <th scope="col" sortable="latitude" (sort)="onLocationSort($event)">Longitude</th>
                                                 <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">Place</th>
                                                 <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">Severity</th>
+                                                <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">Status</th>
                                                 <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">Date</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -220,6 +221,7 @@
                                                 <td>{{data.longitude}}</td>
                                                 <td>{{data.place}}</td>
                                                 <td>{{data.severity}}</td>
+                                                <td>{{data.status}}</td>
                                                 <td>{{data.date}}</td>
                                                 <td>
                                                     <button style="margin-right:5px" title="Edit Location"
@@ -269,7 +271,8 @@
                                             <tr>
                                                 <th sortable="deviceId" (sort)="onDeviceSort($event)">Device Id</th>
                                                 <th scope="col" sortable="deviceName" (sort)="onDeviceSort($event)">Device Name</th>
-                                                <th scope="col" sortable="PhoneNumber" (sort)="onDeviceSort($event)">Address</th>
+                                                <th scope="col" sortable="PhoneNumber" (sort)="onDeviceSort($event)">Phone Number</th>
+                                                <th scope="col" sortable="PhoneNumber" (sort)="onDeviceSort($event)">Location</th>
                                                 <th scope="col" sortable="date" (sort)="onDeviceSort($event)">Date</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -279,6 +282,7 @@
                                                 <td>{{data.deviceId}}</td>
                                                 <td>{{data.deviceName}}</td>
                                                 <td>{{data.PhoneNumber}}</td>
+                                                <td>{{data.place}}</td>
                                                 <td>{{data.date}}</td>
                                                 <td>
                                                     <button style="margin-right:5px" title="Edit Location"

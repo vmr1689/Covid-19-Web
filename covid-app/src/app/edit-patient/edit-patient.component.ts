@@ -43,15 +43,15 @@ export class EditPatientComponent implements OnInit {
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
   locations: any[] = [
-    { locationId: '1', latitude: '78.45512', longitude: '108.45512', place: 'Orissa', severity: 'high', date: '11/04/2020 18:20:24' },
-    { locationId: '2', latitude: '80.45512', longitude: '100.45512', place: 'Kerala', severity: 'medium', date: '11/03/2020 18:20:24' },
-    { locationId: '3', latitude: '80.45512', longitude: '100.45512', place: 'Delhi', severity: 'medium', date: '11/04/2020 18:20:24' }
+    { locationId: '1', latitude: '78.45512', longitude: '108.45512', place: 'Orissa', status: 'Active', severity: 'high', date: '11/04/2020 18:20:24' },
+    { locationId: '2', latitude: '80.45512', longitude: '100.45512', place: 'Kerala', status: 'Recovered', severity: 'medium', date: '11/03/2020 18:20:24' },
+    { locationId: '3', latitude: '80.45512', longitude: '100.45512', place: 'Delhi', status: 'Deceased', severity: 'medium', date: '11/04/2020 18:20:24' }
   ];
 
   devices: any[] = [
-    { deviceId: '1', deviceName: 'Device 1', PhoneNumber: '159751565', date: '11/04/2020 18:20:24' },
-    { deviceId: '2', deviceName: 'Device 2', PhoneNumber: '147955555', date: '11/03/2020 18:20:24' },
-    { deviceId: '3', deviceName: 'Device 3', PhoneNumber: '147955555', date: '11/04/2020 18:20:24' }
+    { deviceId: '1', deviceName: 'Device 1', PhoneNumber: '159751565', date: '11/04/2020 18:20:24', place: 'Orissa' },
+    { deviceId: '2', deviceName: 'Device 2', PhoneNumber: '147955555', date: '11/03/2020 18:20:24', place: 'Kerala' },
+    { deviceId: '3', deviceName: 'Device 3', PhoneNumber: '147955555', date: '11/04/2020 18:20:24', place: 'Delhi' }
   ];
 
   // devices: any[] = [

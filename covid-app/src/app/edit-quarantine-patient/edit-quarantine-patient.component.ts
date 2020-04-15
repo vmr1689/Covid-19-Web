@@ -151,7 +151,7 @@ export class EditQuarantinePatientComponent implements OnInit {
     }
   }
   navigateToLocation() {
-    this.router.navigate(['/quarantinepatients']);
+    this.router.navigate(['/quarantinepersons']);
   }
 
   CreateReferencePopup($event) {

@@ -108,7 +108,7 @@ export class AddQuarantinePatientComponent implements OnInit {
     }
   }
   navigateToLocation() {
-    this.router.navigate(['/quarantinepatients']);
+    this.router.navigate(['/quarantinepersons']);
   }
 
 }

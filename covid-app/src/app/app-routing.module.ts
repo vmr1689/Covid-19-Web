@@ -33,9 +33,9 @@ const routes: Routes = [
   { path: 'updates', component: UpdatesComponent },
   { path: 'login', component: LoginComponent },
   { path: 'forgotpassword', component: ForgotPasswordComponent },
-  { path: 'quarantinepatients', component: QuarantinePatientComponent },
-  { path: 'addquarantinepatient', component: AddQuarantinePatientComponent },
-  { path: 'editquarantinepatient/:patientId', component: EditQuarantinePatientComponent },
+  { path: 'quarantinepersons', component: QuarantinePatientComponent },
+  { path: 'addquarantineperson', component: AddQuarantinePatientComponent },
+  { path: 'editquarantineperson/:patientId', component: EditQuarantinePatientComponent },
 ];
 
 @NgModule({
