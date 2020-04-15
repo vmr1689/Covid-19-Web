@@ -137,7 +137,7 @@ export class PatientsComponent implements OnInit {
   }
 
   editPatient(patient: Patient) {
-    this.router.navigate(['/addpatient/' + patient.placeId]);
+    this.router.navigate(['/editpatient/' + patient.id]);
   }
 
   public onSubmit(event: Event, form: any): void {

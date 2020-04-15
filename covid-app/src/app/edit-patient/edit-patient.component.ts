@@ -1,5 +1,5 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sortable.directive';
@@ -36,6 +36,9 @@ export class EditPatientComponent implements OnInit {
   public placeId: AbstractControl;
   public severity: AbstractControl;
   public submitted: boolean;
+
+  public locationModel: any = { placeId: '', severity: '', date: ''};
+  public deviceModel: any = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: ''};
 
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
@@ -140,15 +143,18 @@ export class EditPatientComponent implements OnInit {
   }
 
   CreateLocationPopup() {
-
+    this.locationModel =  { placeId: '', severity: '', date: ''};
+    $('#addLocation').modal('toggle');
   }
 
   openEditLocationPopup(locationRow: any) {
-
+    this.locationModel =  { placeId: '', severity: '', date: ''};
+    $('#editLocation').modal('toggle');
   }
 
   openDeleteLocationPopup(locationRow: any) {
-
+    this.locationModel =  { placeId: '', severity: '', date: ''};
+    $('#deleteLocation').modal('toggle');
   }
 
   onLocationSort({ column, direction }: SortEvent) {
@@ -172,18 +178,23 @@ export class EditPatientComponent implements OnInit {
     }
   }
 
-  
 
-  CreateDevicePopup() {
 
+  CreateDevicePopup(event) {
+    event.preventDefault();
+    this.deviceModel = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: ''};
+    $('#addDevice').modal('toggle');
   }
 
-  openEditDevicePopup(deviceRow: any) {
-
+  openEditDevicePopup(event, deviceRow: any) {
+    event.preventDefault();
+    this.deviceModel = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: ''};
+    $('#editDevice').modal('toggle');
   }
 
   openDeleteDevicePopup(deviceRow: any) {
-
+    this.deviceModel = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: ''};
+    $('#deleteDevice').modal('toggle');
   }
 
   onDeviceSort({ column, direction }: SortEvent) {
@@ -206,4 +217,30 @@ export class EditPatientComponent implements OnInit {
       });
     }
   }
+
+  addLocation(form: NgForm) {
+
+  }
+
+  editLocation(form: NgForm) {
+
+  }
+
+  deleteLocation(data: Location) {
+
+  }
+
+  addDevice(form: NgForm) {
+
+  }
+
+  editDevice(form: NgForm) {
+
+  }
+
+  deleteDevice(data: any) {
+
+  }
+
+
 }

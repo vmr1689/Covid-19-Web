@@ -191,7 +191,7 @@
                             <div class="tab-pane" id="tab_2">
                                 <div class="row">
                                     <div class="col-md-12" style="padding-bottom: 10px">
-                                        <button type="button" (click)="CreateLocationPopup()"
+                                        <button type="button" (click)="CreateLocationPopup($event)"
                                             class="btn btn-info btn-flat pull-right" data-toggle="modal">
                                             <b>
                                                 <span class="fa fa-user-plus"></span>
@@ -223,13 +223,13 @@
                                                 <td>{{data.date}}</td>
                                                 <td>
                                                     <button style="margin-right:5px" title="Edit Location"
-                                                        (click)="openEditLocationPopup(data)"
+                                                        (click)="openEditLocationPopup($event, data)"
                                                         class="btn btn-small btn-flat btn-warning">
                                                         <i class="btn-icon-only fa fa-pencil"> </i>
                                                     </button>
     
                                                     <button style="margin-right:5px" title="Delete Location"
-                                                        (click)="openDeleteLocationPopup(data)"
+                                                        (click)="openDeleteLocationPopup($event, data)"
                                                         class="btn btn-small btn-flat btn-danger">
                                                         <i class="btn-icon-only fa fa-trash"> </i>
                                                     </button>
@@ -254,7 +254,7 @@
                             <div class="tab-pane" id="tab_3">
                                 <div class="row">
                                     <div class="col-md-12" style="padding-bottom: 10px">
-                                        <button type="button" (click)="CreateDevicePopup()"
+                                        <button type="button" (click)="CreateDevicePopup($event)"
                                             class="btn btn-info btn-flat pull-right" data-toggle="modal">
                                             <b>
                                                 <span class="fa fa-user-plus"></span>
@@ -284,13 +284,13 @@
                                                 <td>{{data.status}}</td>
                                                 <td>
                                                     <button style="margin-right:5px" title="Edit Location"
-                                                        (click)="openEditDevicePopup(data)"
+                                                        (click)="openEditDevicePopup($event, data)"
                                                         class="btn btn-small btn-flat btn-warning">
                                                         <i class="btn-icon-only fa fa-pencil"> </i>
                                                     </button>
     
                                                     <button style="margin-right:5px" title="Delete Location"
-                                                        (click)="openDeleteDevicePopup(data)"
+                                                        (click)="openDeleteDevicePopup($event, data)"
                                                         class="btn btn-small btn-flat btn-danger">
                                                         <i class="btn-icon-only fa fa-trash"> </i>
                                                     </button>
@@ -317,3 +317,364 @@
         </div>
     </div>
 </section>
+
+<div class="modal fade" data-backdrop="static" id="addLocation">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Add Location</h4>
+            </div>
+            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && addLocation(f)" #f="ngForm" novalidate>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-6 col-xs-12">
+                            <div class="form-group ">
+                                <div class="col-sm-2">
+                                    <label for="placeName" class="control-label">Location:</label>
+                                </div>
+    
+                                <div class="col-sm-10">
+
+                                    <input name="placeId" id="placeId" [(ngModel)]="locationModel.placeId"  #placeId="ngModel" type="hidden" class="form-control" />
+
+                                    <input id="placeName" type="text" autocomplete="off" class="form-control" name="placeName" 
+                                    [(ngModel)]="locationModel.placeName" #placeName="ngModel" placeholder="Location" required>
+                                   
+                                    <div *ngIf="f.submitted && !placeName.valid" class="text-danger">Location is required
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label for="severity" class="control-label">Severity:</label>
+                                </div>
+    
+                                <div class="col-sm-10">
+                                    <input id="severity" type="text" autocomplete="off" class="form-control" name="severity" 
+                                    [(ngModel)]="locationModel.severity" #severity="ngModel" placeholder="Severity" required>
+                                   
+                                    <div *ngIf="f.submitted && !severity.valid" class="text-danger">Severity is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label for="date" class="control-label">Date:</label>
+                                </div>
+    
+                                <div class="col-sm-10">
+                                    <input id="date" type="text" autocomplete="off" class="form-control" name="date" 
+                                    [(ngModel)]="locationModel.date" #date="ngModel" placeholder="Date" required>
+                                   
+                                    <div *ngIf="f.submitted && !date.valid" class="text-danger">Date is required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
+                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" data-backdrop="static" id="editLocation">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Edit Location</h4>
+            </div>
+            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && editLocation(f)" #f="ngForm" novalidate>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-6 col-xs-12">
+                            <div class="form-group ">
+                                <div class="col-sm-2">
+                                    <label for="placeName" class="control-label">Location:</label>
+                                </div>
+    
+                                <div class="col-sm-10">
+
+                                    <input name="placeId" id="placeId" [(ngModel)]="locationModel.placeId"  #placeId="ngModel" type="hidden" class="form-control" />
+
+                                    <input id="placeName" type="text" autocomplete="off" class="form-control" name="placeName" 
+                                    [(ngModel)]="locationModel.placeName" #placeName="ngModel" placeholder="Location" required>
+                                   
+                                    <div *ngIf="f.submitted && !placeName.valid" class="text-danger">Location is required
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label for="severity" class="control-label">Severity:</label>
+                                </div>
+    
+                                <div class="col-sm-10">
+                                    <input id="severity" type="text" autocomplete="off" class="form-control" name="severity" 
+                                    [(ngModel)]="locationModel.severity" #severity="ngModel" placeholder="Severity" required>
+                                   
+                                    <div *ngIf="f.submitted && !severity.valid" class="text-danger">Severity is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label for="date" class="control-label">Date:</label>
+                                </div>
+    
+                                <div class="col-sm-10">
+                                    <input id="date" type="text" autocomplete="off" class="form-control" name="date" 
+                                    [(ngModel)]="locationModel.date" #date="ngModel" placeholder="Date" required>
+                                   
+                                    <div *ngIf="f.submitted && !date.valid" class="text-danger">Date is required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
+                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" data-backdrop="static" id="deleteLocation">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Delete Location</h4>
+            </div>
+            <div class="modal-body">
+                <p style="font-weight: bold;">
+                    Do you want to delete {{locationModel.placeName}} ?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">No</button>
+                <button (click)="deleteLocation(locationModel)" class="btn btn-info btn-flat">Yes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" data-backdrop="static" id="addDevice">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Add Device</h4>
+            </div>
+            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && addDevice(f)" #f="ngForm" novalidate>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-6 col-xs-12">
+                            <div class="form-group ">
+                                <div class="col-sm-4">
+                                    <label for="deviceName" class="control-label">Device:</label>
+                                </div>
+    
+                                <div class="col-sm-8">
+
+                                    <input name="deviceId" id="deviceId" [(ngModel)]="deviceModel.deviceId"  #deviceId="ngModel" type="hidden" class="form-control" />
+
+                                    <input id="deviceName" type="text" autocomplete="off" class="form-control" name="deviceName" 
+                                    [(ngModel)]="deviceModel.deviceName" #deviceName="ngModel" placeholder="Device Name" required>
+                                   
+                                    <div *ngIf="f.submitted && !deviceName.valid" class="text-danger">Device Name is required
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <label for="deviceAddress" class="control-label">Device Address:</label>
+                                </div>
+    
+                                <div class="col-sm-8">
+                                    <input id="deviceAddress" type="text" autocomplete="off" class="form-control" name="deviceAddress" 
+                                    [(ngModel)]="deviceModel.deviceAddress" #deviceAddress="ngModel" placeholder="Device Address" required>
+                                   
+                                    <div *ngIf="f.submitted && !deviceAddress.valid" class="text-danger">Device Address is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <label for="date" class="control-label">Date:</label>
+                                </div>
+    
+                                <div class="col-sm-8">
+                                    <input id="date" type="text" autocomplete="off" class="form-control" name="date" 
+                                    [(ngModel)]="deviceModel.date" #date="ngModel" placeholder="Date" required>
+                                   
+                                    <div *ngIf="f.submitted && !date.valid" class="text-danger">Date is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <label for="status" class="control-label">Status:</label>
+                                </div>
+    
+                                <div class="col-sm-8">
+                                    <input id="status" type="text" autocomplete="off" class="form-control" name="status" 
+                                    [(ngModel)]="deviceModel.status" #date="ngModel" placeholder="Status" required>
+                                   
+                                    <div *ngIf="f.submitted && !status.valid" class="text-danger">Status is required
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
+                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" data-backdrop="static" id="editDevice">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Add Device</h4>
+            </div>
+            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && addDevice(f)" #f="ngForm" novalidate>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-6 col-xs-12">
+                            <div class="form-group ">
+                                <div class="col-sm-4">
+                                    <label for="deviceName" class="control-label">Device:</label>
+                                </div>
+    
+                                <div class="col-sm-8">
+
+                                    <input name="deviceId" id="deviceId" [(ngModel)]="deviceModel.deviceId"  #deviceId="ngModel" type="hidden" class="form-control" />
+
+                                    <input id="deviceName" type="text" autocomplete="off" class="form-control" name="deviceName" 
+                                    [(ngModel)]="deviceModel.deviceName" #deviceName="ngModel" placeholder="Device Name" required>
+                                   
+                                    <div *ngIf="f.submitted && !deviceName.valid" class="text-danger">Device Name is required
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <label for="deviceAddress" class="control-label">Device Address:</label>
+                                </div>
+    
+                                <div class="col-sm-8">
+                                    <input id="deviceAddress" type="text" autocomplete="off" class="form-control" name="deviceAddress" 
+                                    [(ngModel)]="deviceModel.deviceAddress" #deviceAddress="ngModel" placeholder="Device Address" required>
+                                   
+                                    <div *ngIf="f.submitted && !deviceAddress.valid" class="text-danger">Device Address is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <label for="date" class="control-label">Date:</label>
+                                </div>
+    
+                                <div class="col-sm-8">
+                                    <input id="date" type="text" autocomplete="off" class="form-control" name="date" 
+                                    [(ngModel)]="deviceModel.date" #date="ngModel" placeholder="Date" required>
+                                   
+                                    <div *ngIf="f.submitted && !date.valid" class="text-danger">Date is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <label for="status" class="control-label">Status:</label>
+                                </div>
+    
+                                <div class="col-sm-8">
+                                    <input id="status" type="text" autocomplete="off" class="form-control" name="status" 
+                                    [(ngModel)]="deviceModel.status" #date="ngModel" placeholder="Status" required>
+                                   
+                                    <div *ngIf="f.submitted && !status.valid" class="text-danger">Status is required
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
+                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" data-backdrop="static" id="deleteDevice">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Delete Device</h4>
+            </div>
+            <div class="modal-body">
+                <p style="font-weight: bold;">
+                    Do you want to delete {{deviceModel.placeName}} ?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">No</button>
+                <button (click)="deleteDevice(deviceModel)" class="btn btn-info btn-flat">Yes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
