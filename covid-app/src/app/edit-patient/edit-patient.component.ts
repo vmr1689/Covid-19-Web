@@ -36,6 +36,10 @@ export class EditPatientComponent implements OnInit {
   public placeId: AbstractControl;
   public severity: AbstractControl;
   public submitted: boolean;
+  public confirmed: AbstractControl;
+  public active: AbstractControl;
+  public recovered: AbstractControl;
+  public deceased: AbstractControl;
 
   public locationModel: any = { placeId: '', severity: '', date: ''};
   public deviceModel: any = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: ''};
@@ -92,7 +96,10 @@ export class EditPatientComponent implements OnInit {
       deviceAddress: ['', [Validators.required]],
       placeId: ['', [Validators.required]],
       severity: ['', [Validators.required]],
-
+      confirmed: [true],
+      active: [true],
+      recovered: [false],
+      deceased: [false]
     });
     this.patientId = this.form.controls.patientId;
     this.firstName = this.form.controls.firstName;
@@ -116,6 +123,11 @@ export class EditPatientComponent implements OnInit {
 
     this.deviceName = this.form.controls.deviceName;
     this.deviceAddress = this.form.controls.deviceAddress;
+
+    this.confirmed = this.form.controls.confirmed;
+    this.active = this.form.controls.active;
+    this.recovered = this.form.controls.recovered;
+    this.recovered = this.form.controls.deceased;
   }
   public onSubmit(event: Event, form: any): void {
     event.stopPropagation();

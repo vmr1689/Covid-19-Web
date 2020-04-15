@@ -19,6 +19,7 @@
                             <li class="active"><a href="#tab_1" data-toggle="tab">General Information</a></li>
                             <li><a href="#tab_2" data-toggle="tab">Location Information</a></li>
                             <li><a href="#tab_3" data-toggle="tab">Device Information</a></li>
+                            <li><a href="#tab_4" data-toggle="tab">Status Information</a></li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="tab_1">
@@ -189,7 +190,7 @@
                             </div>
 
                             <div class="tab-pane" id="tab_2">
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col-md-12" style="padding-bottom: 10px">
                                         <button type="button" (click)="CreateLocationPopup($event)"
                                             class="btn btn-info btn-flat pull-right" data-toggle="modal">
@@ -198,19 +199,25 @@
                                             </b> Add Location
                                         </button>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="table-responsive">
 
                                     <table id="dataTable" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
                                                 <th sortable="placeName" (sort)="onLocationSort($event)">Location</th>
-                                                <th scope="col" sortable="root" (sort)="onLocationSort($event)">Latitude</th>
-                                                <th scope="col" sortable="latitude" (sort)="onLocationSort($event)">Longitude</th>
-                                                <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">Place</th>
-                                                <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">Severity</th>
-                                                <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">Status</th>
-                                                <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">Date</th>
+                                                <th scope="col" sortable="root" (sort)="onLocationSort($event)">Latitude
+                                                </th>
+                                                <th scope="col" sortable="latitude" (sort)="onLocationSort($event)">
+                                                    Longitude</th>
+                                                <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">
+                                                    Place</th>
+                                                <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">
+                                                    Severity</th>
+                                                <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">
+                                                    Status</th>
+                                                <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">
+                                                    Date</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -229,7 +236,7 @@
                                                         class="btn btn-small btn-flat btn-warning">
                                                         <i class="btn-icon-only fa fa-pencil"> </i>
                                                     </button>
-    
+
                                                     <button style="margin-right:5px" title="Delete Location"
                                                         (click)="openDeleteLocationPopup($event, data)"
                                                         class="btn btn-small btn-flat btn-danger">
@@ -241,7 +248,7 @@
                                     </table>
 
                                 </div>
-                               
+
                                 <div class="row text-right">
                                     <div class="col-md-12">
                                         <button type="button" (click)="previousTab()"
@@ -270,9 +277,12 @@
                                         <thead>
                                             <tr>
                                                 <th sortable="deviceId" (sort)="onDeviceSort($event)">Device Id</th>
-                                                <th scope="col" sortable="deviceName" (sort)="onDeviceSort($event)">Device Name</th>
-                                                <th scope="col" sortable="PhoneNumber" (sort)="onDeviceSort($event)">Phone Number</th>
-                                                <th scope="col" sortable="PhoneNumber" (sort)="onDeviceSort($event)">Location</th>
+                                                <th scope="col" sortable="deviceName" (sort)="onDeviceSort($event)">
+                                                    Device Name</th>
+                                                <th scope="col" sortable="PhoneNumber" (sort)="onDeviceSort($event)">
+                                                    Phone Number</th>
+                                                <th scope="col" sortable="PhoneNumber" (sort)="onDeviceSort($event)">
+                                                    Location</th>
                                                 <th scope="col" sortable="date" (sort)="onDeviceSort($event)">Date</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -290,7 +300,7 @@
                                                         class="btn btn-small btn-flat btn-warning">
                                                         <i class="btn-icon-only fa fa-pencil"> </i>
                                                     </button>
-    
+
                                                     <button style="margin-right:5px" title="Delete Location"
                                                         (click)="openDeleteDevicePopup($event, data)"
                                                         class="btn btn-small btn-flat btn-danger">
@@ -301,17 +311,110 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                
+
                                 <div class="row text-right">
                                     <div class="col-md-12">
                                         <button type="button" (click)="previousTab()"
                                             class="pad_ex btn btn-default btn-flat prev-step"
                                             style="margin-right:5px">Previous</button>
-                                        <button type="submit" id="btnSubmit"
-                                            class="pad_ex btn btn-info btn-flat next-step">Save and Exit</button>
+
+                                        <button type="button" (click)="nextTab()"
+                                            class="pad_ex btn btn-info btn-flat next-step">Next</button>
+
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="tab-pane" id="tab_4">
+                                <div class="row">
+                                    <div class="col-md-3">
+
+                                        <div class="col-sm-4 text-right">
+                                            <label for="longitude" class="control-label "
+                                                style="color: #444;">Confirmed</label>
+                                        </div>
+
+                                        <div class="col-sm-8">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input formControlName="confirmed" id="confirmed"
+                                                        name="confirmed" type="checkbox" disabled="true">
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-3">
+
+                                        <div class="col-sm-4 text-right">
+                                            <label for="longitude" class="control-label "
+                                                style="color: #444;">Active</label>
+                                        </div>
+
+                                        <div class="col-sm-8">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input formControlName="active" id="active"
+                                                        name="active" type="checkbox">
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-3">
+
+                                        <div class="col-sm-4 text-right">
+                                            <label for="longitude" class="control-label "
+                                                style="color: #444;">Recovered</label>
+                                        </div>
+
+                                        <div class="col-sm-8">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input id="recovered" formControlName="recovered"
+                                                        name="recovered" type="checkbox">
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-3">
+
+                                        <div class="col-sm-4 text-right">
+                                            <label for="longitude" class="control-label "
+                                                style="color: #444;">Deceased</label>
+                                        </div>
+
+                                        <div class="col-sm-8">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input id="deceased" formControlName="deceased" 
+                                                        name="deceased" type="checkbox">
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <br>
+
+
+                                <div class="row text-right">
+                                    <div class="col-md-12">
+                                        <button type="button" (click)="previousTab()"
+                                            class="pad_ex btn btn-default btn-flat prev-step"
+                                            style="margin-right:5px">Previous</button>
+
+                                        <button type="submit" id="btnSubmit"
+                                            class="pad_ex btn btn-info btn-flat next-step">Save and Exit</button>
+
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </form>
@@ -338,28 +441,32 @@
                                 <div class="col-sm-2">
                                     <label for="placeName" class="control-label">Location:</label>
                                 </div>
-    
+
                                 <div class="col-sm-10">
 
-                                    <input name="placeId" id="placeId" [(ngModel)]="locationModel.placeId"  #placeId="ngModel" type="hidden" class="form-control" />
+                                    <input name="placeId" id="placeId" [(ngModel)]="locationModel.placeId"
+                                        #placeId="ngModel" type="hidden" class="form-control" />
 
-                                    <input id="placeName" type="text" autocomplete="off" class="form-control" name="placeName" 
-                                    [(ngModel)]="locationModel.placeName" #placeName="ngModel" placeholder="Location" required>
-                                   
-                                    <div *ngIf="f.submitted && !placeName.valid" class="text-danger">Location is required
+                                    <input id="placeName" type="text" autocomplete="off" class="form-control"
+                                        name="placeName" [(ngModel)]="locationModel.placeName" #placeName="ngModel"
+                                        placeholder="Location" required>
+
+                                    <div *ngIf="f.submitted && !placeName.valid" class="text-danger">Location is
+                                        required
                                     </div>
                                 </div>
                             </div>
-    
+
                             <div class="form-group">
                                 <div class="col-sm-2">
                                     <label for="severity" class="control-label">Severity:</label>
                                 </div>
-    
+
                                 <div class="col-sm-10">
-                                    <input id="severity" type="text" autocomplete="off" class="form-control" name="severity" 
-                                    [(ngModel)]="locationModel.severity" #severity="ngModel" placeholder="Severity" required>
-                                   
+                                    <input id="severity" type="text" autocomplete="off" class="form-control"
+                                        name="severity" [(ngModel)]="locationModel.severity" #severity="ngModel"
+                                        placeholder="Severity" required>
+
                                     <div *ngIf="f.submitted && !severity.valid" class="text-danger">Severity is required
                                     </div>
                                 </div>
@@ -369,11 +476,11 @@
                                 <div class="col-sm-2">
                                     <label for="date" class="control-label">Date:</label>
                                 </div>
-    
+
                                 <div class="col-sm-10">
-                                    <input id="date" type="text" autocomplete="off" class="form-control" name="date" 
-                                    [(ngModel)]="locationModel.date" #date="ngModel" placeholder="Date" required>
-                                   
+                                    <input id="date" type="text" autocomplete="off" class="form-control" name="date"
+                                        [(ngModel)]="locationModel.date" #date="ngModel" placeholder="Date" required>
+
                                     <div *ngIf="f.submitted && !date.valid" class="text-danger">Date is required
                                     </div>
                                 </div>
@@ -408,28 +515,32 @@
                                 <div class="col-sm-2">
                                     <label for="placeName" class="control-label">Location:</label>
                                 </div>
-    
+
                                 <div class="col-sm-10">
 
-                                    <input name="placeId" id="placeId" [(ngModel)]="locationModel.placeId"  #placeId="ngModel" type="hidden" class="form-control" />
+                                    <input name="placeId" id="placeId" [(ngModel)]="locationModel.placeId"
+                                        #placeId="ngModel" type="hidden" class="form-control" />
 
-                                    <input id="placeName" type="text" autocomplete="off" class="form-control" name="placeName" 
-                                    [(ngModel)]="locationModel.placeName" #placeName="ngModel" placeholder="Location" required>
-                                   
-                                    <div *ngIf="f.submitted && !placeName.valid" class="text-danger">Location is required
+                                    <input id="placeName" type="text" autocomplete="off" class="form-control"
+                                        name="placeName" [(ngModel)]="locationModel.placeName" #placeName="ngModel"
+                                        placeholder="Location" required>
+
+                                    <div *ngIf="f.submitted && !placeName.valid" class="text-danger">Location is
+                                        required
                                     </div>
                                 </div>
                             </div>
-    
+
                             <div class="form-group">
                                 <div class="col-sm-2">
                                     <label for="severity" class="control-label">Severity:</label>
                                 </div>
-    
+
                                 <div class="col-sm-10">
-                                    <input id="severity" type="text" autocomplete="off" class="form-control" name="severity" 
-                                    [(ngModel)]="locationModel.severity" #severity="ngModel" placeholder="Severity" required>
-                                   
+                                    <input id="severity" type="text" autocomplete="off" class="form-control"
+                                        name="severity" [(ngModel)]="locationModel.severity" #severity="ngModel"
+                                        placeholder="Severity" required>
+
                                     <div *ngIf="f.submitted && !severity.valid" class="text-danger">Severity is required
                                     </div>
                                 </div>
@@ -439,19 +550,19 @@
                                 <div class="col-sm-2">
                                     <label for="date" class="control-label">Date:</label>
                                 </div>
-    
+
                                 <div class="col-sm-10">
-                                    <input id="date" type="text" autocomplete="off" class="form-control" name="date" 
-                                    [(ngModel)]="locationModel.date" #date="ngModel" placeholder="Date" required>
-                                   
+                                    <input id="date" type="text" autocomplete="off" class="form-control" name="date"
+                                        [(ngModel)]="locationModel.date" #date="ngModel" placeholder="Date" required>
+
                                     <div *ngIf="f.submitted && !date.valid" class="text-danger">Date is required
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
 
-                        
+
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -505,29 +616,34 @@
                                 <div class="col-sm-4">
                                     <label for="deviceName" class="control-label">Device:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
 
-                                    <input name="deviceId" id="deviceId" [(ngModel)]="deviceModel.deviceId"  #deviceId="ngModel" type="hidden" class="form-control" />
+                                    <input name="deviceId" id="deviceId" [(ngModel)]="deviceModel.deviceId"
+                                        #deviceId="ngModel" type="hidden" class="form-control" />
 
-                                    <input id="deviceName" type="text" autocomplete="off" class="form-control" name="deviceName" 
-                                    [(ngModel)]="deviceModel.deviceName" #deviceName="ngModel" placeholder="Device Name" required>
-                                   
-                                    <div *ngIf="f.submitted && !deviceName.valid" class="text-danger">Device Name is required
+                                    <input id="deviceName" type="text" autocomplete="off" class="form-control"
+                                        name="deviceName" [(ngModel)]="deviceModel.deviceName" #deviceName="ngModel"
+                                        placeholder="Device Name" required>
+
+                                    <div *ngIf="f.submitted && !deviceName.valid" class="text-danger">Device Name is
+                                        required
                                     </div>
                                 </div>
                             </div>
-    
+
                             <div class="form-group">
                                 <div class="col-sm-4">
                                     <label for="deviceAddress" class="control-label">Device Address:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
-                                    <input id="deviceAddress" type="text" autocomplete="off" class="form-control" name="deviceAddress" 
-                                    [(ngModel)]="deviceModel.deviceAddress" #deviceAddress="ngModel" placeholder="Device Address" required>
-                                   
-                                    <div *ngIf="f.submitted && !deviceAddress.valid" class="text-danger">Device Address is required
+                                    <input id="deviceAddress" type="text" autocomplete="off" class="form-control"
+                                        name="deviceAddress" [(ngModel)]="deviceModel.deviceAddress"
+                                        #deviceAddress="ngModel" placeholder="Device Address" required>
+
+                                    <div *ngIf="f.submitted && !deviceAddress.valid" class="text-danger">Device Address
+                                        is required
                                     </div>
                                 </div>
                             </div>
@@ -536,11 +652,11 @@
                                 <div class="col-sm-4">
                                     <label for="date" class="control-label">Date:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
-                                    <input id="date" type="text" autocomplete="off" class="form-control" name="date" 
-                                    [(ngModel)]="deviceModel.date" #date="ngModel" placeholder="Date" required>
-                                   
+                                    <input id="date" type="text" autocomplete="off" class="form-control" name="date"
+                                        [(ngModel)]="deviceModel.date" #date="ngModel" placeholder="Date" required>
+
                                     <div *ngIf="f.submitted && !date.valid" class="text-danger">Date is required
                                     </div>
                                 </div>
@@ -550,16 +666,17 @@
                                 <div class="col-sm-4">
                                     <label for="status" class="control-label">Status:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
-                                    <input id="status" type="text" autocomplete="off" class="form-control" name="status" 
-                                    [(ngModel)]="deviceModel.status" #status="ngModel" placeholder="Status" required>
-                                   
+                                    <input id="status" type="text" autocomplete="off" class="form-control" name="status"
+                                        [(ngModel)]="deviceModel.status" #status="ngModel" placeholder="Status"
+                                        required>
+
                                     <div *ngIf="f.submitted && !status.valid" class="text-danger">Status is required
                                     </div>
                                 </div>
                             </div>
-                           
+
                         </div>
                     </div>
                 </div>
@@ -590,29 +707,34 @@
                                 <div class="col-sm-4">
                                     <label for="deviceName" class="control-label">Device:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
 
-                                    <input name="deviceId" id="deviceId" [(ngModel)]="deviceModel.deviceId"  #deviceId="ngModel" type="hidden" class="form-control" />
+                                    <input name="deviceId" id="deviceId" [(ngModel)]="deviceModel.deviceId"
+                                        #deviceId="ngModel" type="hidden" class="form-control" />
 
-                                    <input id="deviceName" type="text" autocomplete="off" class="form-control" name="deviceName" 
-                                    [(ngModel)]="deviceModel.deviceName" #deviceName="ngModel" placeholder="Device Name" required>
-                                   
-                                    <div *ngIf="f.submitted && !deviceName.valid" class="text-danger">Device Name is required
+                                    <input id="deviceName" type="text" autocomplete="off" class="form-control"
+                                        name="deviceName" [(ngModel)]="deviceModel.deviceName" #deviceName="ngModel"
+                                        placeholder="Device Name" required>
+
+                                    <div *ngIf="f.submitted && !deviceName.valid" class="text-danger">Device Name is
+                                        required
                                     </div>
                                 </div>
                             </div>
-    
+
                             <div class="form-group">
                                 <div class="col-sm-4">
                                     <label for="deviceAddress" class="control-label">Device Address:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
-                                    <input id="deviceAddress" type="text" autocomplete="off" class="form-control" name="deviceAddress" 
-                                    [(ngModel)]="deviceModel.deviceAddress" #deviceAddress="ngModel" placeholder="Device Address" required>
-                                   
-                                    <div *ngIf="f.submitted && !deviceAddress.valid" class="text-danger">Device Address is required
+                                    <input id="deviceAddress" type="text" autocomplete="off" class="form-control"
+                                        name="deviceAddress" [(ngModel)]="deviceModel.deviceAddress"
+                                        #deviceAddress="ngModel" placeholder="Device Address" required>
+
+                                    <div *ngIf="f.submitted && !deviceAddress.valid" class="text-danger">Device Address
+                                        is required
                                     </div>
                                 </div>
                             </div>
@@ -621,11 +743,11 @@
                                 <div class="col-sm-4">
                                     <label for="date" class="control-label">Date:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
-                                    <input id="date" type="text" autocomplete="off" class="form-control" name="date" 
-                                    [(ngModel)]="deviceModel.date" #date="ngModel" placeholder="Date" required>
-                                   
+                                    <input id="date" type="text" autocomplete="off" class="form-control" name="date"
+                                        [(ngModel)]="deviceModel.date" #date="ngModel" placeholder="Date" required>
+
                                     <div *ngIf="f.submitted && !date.valid" class="text-danger">Date is required
                                     </div>
                                 </div>
@@ -635,16 +757,16 @@
                                 <div class="col-sm-4">
                                     <label for="status" class="control-label">Status:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
-                                    <input id="status" type="text" autocomplete="off" class="form-control" name="status" 
-                                    [(ngModel)]="deviceModel.status" #date="ngModel" placeholder="Status" required>
-                                   
+                                    <input id="status" type="text" autocomplete="off" class="form-control" name="status"
+                                        [(ngModel)]="deviceModel.status" #date="ngModel" placeholder="Status" required>
+
                                     <div *ngIf="f.submitted && !status.valid" class="text-danger">Status is required
                                     </div>
                                 </div>
                             </div>
-                           
+
                         </div>
                     </div>
                 </div>
