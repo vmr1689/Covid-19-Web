@@ -7,14 +7,15 @@ import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sor
 import { Patient } from '../shared/models';
 import { PatientService } from '../shared/services';
 
+
 declare var $;
 
 @Component({
-  selector: 'app-edit-patient',
-  templateUrl: './edit-patient.component.html',
-  styleUrls: ['./edit-patient.component.css']
+  selector: 'app-edit-quarantine-patient',
+  templateUrl: './edit-quarantine-patient.component.html',
+  styleUrls: ['./edit-quarantine-patient.component.css']
 })
-export class EditPatientComponent implements OnInit {
+export class EditQuarantinePatientComponent implements OnInit {
 
   public form: FormGroup;
   public patientId: AbstractControl;
@@ -37,28 +38,33 @@ export class EditPatientComponent implements OnInit {
   public severity: AbstractControl;
   public submitted: boolean;
 
-  public locationModel: any = { placeId: '', severity: '', date: ''};
-  public deviceModel: any = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: ''};
+  public referenceModel: any = {
+    referenceId: '',
+    patient: '',
+    type: '',
+    placeName: '',
+    severity: '',
+    date: ''
+  };
 
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
   locations: any[] = [
-    { locationId: '1', latitude: '78.45512', longitude: '108.45512', place: 'Orissa', severity: 'high', date: '11/04/2020 18:20:24' },
-    { locationId: '2', latitude: '80.45512', longitude: '100.45512', place: 'Kerala', severity: 'medium', date: '11/03/2020 18:20:24' },
-    { locationId: '3', latitude: '80.45512', longitude: '100.45512', place: 'Delhi', severity: 'medium', date: '11/04/2020 18:20:24' }
+    { placeId: '1', placeName: 'Pune'},
+    { placeId: '2', placeName: 'New Delhi'},
+    { placeId: '3', placeName: 'Puri'},
   ];
 
-  devices: any[] = [
-    { deviceId: '1', deviceName: 'Device 1', PhoneNumber: '159751565', date: '11/04/2020 18:20:24' },
-    { deviceId: '2', deviceName: 'Device 2', PhoneNumber: '147955555', date: '11/03/2020 18:20:24' },
-    { deviceId: '3', deviceName: 'Device 3', PhoneNumber: '147955555', date: '11/04/2020 18:20:24' }
+  Persons: any[] = [
+    { id: '1', name: 'Test Patient 1'},
+    { id: '2', name: 'Test Patient 2'}
   ];
 
-  // devices: any[] = [
-  //   { deviceId: '1', deviceName: 'Device 1', deviceAddress: 'West Bengal', status: 'In-Active', date: '11/04/2020 18:20:24' },
-  //   { deviceId: '2', deviceName: 'Device 2', deviceAddress: 'Tamil Nadu', status: 'In-Active', date: '11/03/2020 18:20:24' },
-  //   { deviceId: '3', deviceName: 'Device 3', deviceAddress: 'Karnataka', status: 'Active', date: '11/04/2020 18:20:24' }
-  // ];
+  references: any[] = [
+    { referenceId: '1', patient: 'Test Patient 1', status: 'Active', placeName: 'Pune', severity: 'high', date: '11/04/2020 18:20:24' },
+    { referenceId: '2', patient: 'Test Patient 2', status: 'Confirmed', placeName: 'New Delhi', severity: 'Medium', date: '11/01/2020 18:20:24' },
+    { referenceId: '3', patient: 'Test Patient 3', status: 'Deceased', placeName: 'Puri', severity: 'High', date: '11/15/2020 18:20:24' },
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -145,25 +151,28 @@ export class EditPatientComponent implements OnInit {
     }
   }
   navigateToLocation() {
-    this.router.navigate(['/patients']);
+    this.router.navigate(['/quarantinepatients']);
   }
 
-  CreateLocationPopup($event) {
-    this.locationModel =  { placeId: '', severity: '', date: ''};
-    $('#addLocation').modal('toggle');
+  CreateReferencePopup($event) {
+    $event.preventDefault();
+    this.referenceModel = { placeId: '', severity: '', date: '' };
+    $('#addReference').modal('toggle');
   }
 
-  openEditLocationPopup($event, locationRow: any) {
-    this.locationModel =  { placeId: '', severity: '', date: ''};
-    $('#editLocation').modal('toggle');
+  openEditReferencePopup($event, locationRow: any) {
+    $event.preventDefault();
+    this.referenceModel = { placeId: '', severity: '', date: '' };
+    $('#editReference').modal('toggle');
   }
 
-  openDeleteLocationPopup($event, locationRow: any) {
-    this.locationModel =  { placeId: '', severity: '', date: ''};
-    $('#deleteLocation').modal('toggle');
+  openDeleteReferencePopup($event, locationRow: any) {
+    $event.preventDefault();
+    this.referenceModel = { placeId: '', severity: '', date: '' };
+    $('#deleteReference').modal('toggle');
   }
 
-  onLocationSort({ column, direction }: SortEvent) {
+  onReferenceSort({ column, direction }: SortEvent) {
 
     // resetting other headers
     this.headers.forEach(header => {
@@ -173,80 +182,26 @@ export class EditPatientComponent implements OnInit {
     });
 
     // sorting countries
-    const locations = [...this.locations];
+    const references = [...this.references];
     if (direction === '' || column === '') {
-      this.locations = locations;
+      this.references = references;
     } else {
-      this.locations = [...locations].sort((a, b) => {
+      this.references = [...references].sort((a, b) => {
         const res = compare(`${a[column]}`, `${b[column]}`);
         return direction === 'asc' ? res : -res;
       });
     }
   }
 
-
-
-  CreateDevicePopup(event) {
-    event.preventDefault();
-    this.deviceModel = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: ''};
-    $('#addDevice').modal('toggle');
-  }
-
-  openEditDevicePopup(event, deviceRow: any) {
-    event.preventDefault();
-    this.deviceModel = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: ''};
-    $('#editDevice').modal('toggle');
-  }
-
-  openDeleteDevicePopup(event, deviceRow: any) {
-    this.deviceModel = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: ''};
-    $('#deleteDevice').modal('toggle');
-  }
-
-  onDeviceSort({ column, direction }: SortEvent) {
-
-    // resetting other headers
-    this.headers.forEach(header => {
-      if (header.sortable !== column) {
-        header.direction = '';
-      }
-    });
-
-    // sorting countries
-    const devices = [...this.devices];
-    if (direction === '' || column === '') {
-      this.devices = devices;
-    } else {
-      this.devices = [...devices].sort((a, b) => {
-        const res = compare(`${a[column]}`, `${b[column]}`);
-        return direction === 'asc' ? res : -res;
-      });
-    }
-  }
-
-  addLocation(form: NgForm) {
+  addReference(form: NgForm) {
 
   }
 
-  editLocation(form: NgForm) {
+  editReference(form: NgForm) {
 
   }
 
-  deleteLocation(data: Location) {
+  deleteReference(data: Location) {
 
   }
-
-  addDevice(form: NgForm) {
-
-  }
-
-  editDevice(form: NgForm) {
-
-  }
-
-  deleteDevice(data: any) {
-
-  }
-
-
 }

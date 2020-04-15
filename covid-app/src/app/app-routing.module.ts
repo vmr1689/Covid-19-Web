@@ -14,6 +14,9 @@ import { UpdatesComponent } from './updates/updates.component';
 import { EditPatientComponent } from './edit-patient/edit-patient.component';
 import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { QuarantinePatientComponent } from './quarantine-patient/quarantine-patient.component';
+import { AddQuarantinePatientComponent } from './add-quarantine-patient/add-quarantine-patient.component';
+import { EditQuarantinePatientComponent } from './edit-quarantine-patient/edit-quarantine-patient.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -30,6 +33,9 @@ const routes: Routes = [
   { path: 'updates', component: UpdatesComponent },
   { path: 'login', component: LoginComponent },
   { path: 'forgotpassword', component: ForgotPasswordComponent },
+  { path: 'quarantinepatients', component: QuarantinePatientComponent },
+  { path: 'addquarantinepatient', component: AddQuarantinePatientComponent },
+  { path: 'editquarantinepatient/:patientId', component: EditQuarantinePatientComponent },
 ];
 
 @NgModule({

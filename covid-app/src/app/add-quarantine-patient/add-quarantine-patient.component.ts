@@ -8,11 +8,11 @@ import { PatientService } from '../shared/services';
 declare var $;
 
 @Component({
-  selector: 'app-add-patient',
-  templateUrl: './add-patient.component.html',
-  styleUrls: ['./add-patient.component.css']
+  selector: 'app-add-quarantine-patient',
+  templateUrl: './add-quarantine-patient.component.html',
+  styleUrls: ['./add-quarantine-patient.component.css']
 })
-export class AddPatientComponent implements OnInit {
+export class AddQuarantinePatientComponent implements OnInit {
 
   public form: FormGroup;
   public patientId: AbstractControl;
@@ -28,7 +28,7 @@ export class AddPatientComponent implements OnInit {
   public address5: AbstractControl;
   public zipcode: AbstractControl;
   public submitted: boolean;
-  
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -108,6 +108,7 @@ export class AddPatientComponent implements OnInit {
     }
   }
   navigateToLocation() {
-    this.router.navigate(['/patients']);
+    this.router.navigate(['/quarantinepatients']);
   }
+
 }

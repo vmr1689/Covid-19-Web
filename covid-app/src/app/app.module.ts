@@ -32,6 +32,9 @@ import { BannerComponent } from './banner/banner.component';
 import { UpdatesComponent } from './updates/updates.component';
 import { EditPatientComponent } from './edit-patient/edit-patient.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { QuarantinePatientComponent } from './quarantine-patient/quarantine-patient.component';
+import { AddQuarantinePatientComponent } from './add-quarantine-patient/add-quarantine-patient.component';
+import { EditQuarantinePatientComponent } from './edit-quarantine-patient/edit-quarantine-patient.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,10 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     BannerComponent,
     UpdatesComponent,
     EditPatientComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    QuarantinePatientComponent,
+    AddQuarantinePatientComponent,
+    EditQuarantinePatientComponent
   ],
   imports: [
     BrowserModule,

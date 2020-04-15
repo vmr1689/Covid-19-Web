@@ -1,0 +1,71 @@
+<section class="content-header">
+    <h1>
+        Quarantine Patients
+    </h1>
+</section>
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Quarantine Patients</h3>
+                </div>
+                <form class="form-horizontal">
+                    <div class="box-body">
+                        <div class="col-md-12">
+                            <div class="form-group form-inline">
+                                <label class=" checkbox-inline" style="padding-right: 20px;">Search: </label> <input
+                                    class="form-control" type="text" />
+                                <button class="btn btn-info btn-flat pull-right" (click)="openCreateQuarantinePatient()">
+                                    <b>
+                                        <span class="fa fa-user-plus"></span>
+                                    </b> Add Patient
+                                </button>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+
+                                <table id="dataTable" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th sortable="firstName" (sort)="onSort($event)">First Name</th>
+                                            <th sortable="lastName" (sort)="onSort($event)">Last Name</th>
+                                            <th scope="col" sortable="phone" (sort)="onSort($event)">Phone Number</th>
+                                            <th scope="col" sortable="email" (sort)="onSort($event)">Email</th>
+                                            <th scope="col" sortable="placeName" (sort)="onSort($event)">Place</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let data of patients">
+                                            <td>{{data.firstName}}</td>
+                                            <td>{{data.lastName}} </td>
+                                            <td>{{data.phone}}</td>
+                                            <td>{{data.email}}</td>
+                                            <td>{{data.place.placeName}}</td>
+                                            <td>
+                                                <button style="margin-right:5px" title="Edit Location"
+                                                    (click)="editQuarantinePatient(data)"
+                                                    class="btn btn-small btn-flat btn-warning">
+                                                    <i class="btn-icon-only fa fa-pencil"> </i>
+                                                </button>
+                                                <button style="margin-right:5px" title="Delete Location"
+                                                    class="btn btn-small btn-flat btn-danger">
+                                                    <i class="btn-icon-only fa fa-trash"> </i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
