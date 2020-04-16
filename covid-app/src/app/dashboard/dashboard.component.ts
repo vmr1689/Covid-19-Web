@@ -8,7 +8,7 @@ import * as moment from 'moment';
 
 import { Countries, Continents } from '../../environments/environment';
 import { renderTable, createChild, destroyChild } from '../shared/helpers';
-import { DashboardService } from '../shared/services';
+import { DashboardService, SpinnerService } from '../shared/services';
 import {
   Updates,
   SampleData,
@@ -41,6 +41,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     private zone: NgZone,
+    private spinnerService: SpinnerService,
     private dashboardService: DashboardService) { }
 
   ngOnInit(): void {

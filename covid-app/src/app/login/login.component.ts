@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { AuthenticationService } from '../shared/services';
+import { AuthenticationService, SpinnerService } from '../shared/services';
 import { User } from '../shared/models';
 
 declare var $;
@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   public submitted = false;
 
   constructor(
+    private spinnerService: SpinnerService,
     private authenticationService: AuthenticationService,
     private fb: FormBuilder,
     private router: Router,
@@ -55,13 +56,15 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
     event.stopPropagation();
     this.submitted = true;
     if (this.loginForm.valid) {
-
+      this.spinnerService.show();
       this.authenticationService.login(form.email, form.password).subscribe((result: any) => {
         this.router.navigate(['/']);
       }, error => {
         if (error) {
           this.message = error;
         }
+      }).add(() => {
+        this.spinnerService.hide();
       });
     }
   }

@@ -36,6 +36,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { QuarantinePatientComponent } from './quarantine-patient/quarantine-patient.component';
 import { AddQuarantinePatientComponent } from './add-quarantine-patient/add-quarantine-patient.component';
 import { EditQuarantinePatientComponent } from './edit-quarantine-patient/edit-quarantine-patient.component';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { EditQuarantinePatientComponent } from './edit-quarantine-patient/edit-q
     QuarantinePatientComponent,
     AddQuarantinePatientComponent,
     EditQuarantinePatientComponent,
-    HasRoleDirective
+    HasRoleDirective,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
