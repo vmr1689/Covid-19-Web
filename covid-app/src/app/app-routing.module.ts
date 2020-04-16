@@ -18,26 +18,111 @@ import { QuarantinePatientComponent } from './quarantine-patient/quarantine-pati
 import { AddQuarantinePatientComponent } from './add-quarantine-patient/add-quarantine-patient.component';
 import { EditQuarantinePatientComponent } from './edit-quarantine-patient/edit-quarantine-patient.component';
 
+import { AuthGuard, RoleGuard } from './shared/helpers';
+
+const levelOneRole = {
+  data: {
+    roles: ['Level1'],
+    redirectUrl: ['/users']
+  },
+  canActivate: [AuthGuard, RoleGuard]
+};
+
+const superAdminRole = {
+  data: {
+    roles: ['SuperAdmin'],
+    redirectUrl: ['/']
+  },
+  canActivate: [AuthGuard, RoleGuard]
+};
+
 const routes: Routes = [
-  //{ path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: '', component: DashboardComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'location', component: LocationComponent },
   // { path: 'addlocation', component: AddLocationComponent },
   // { path: 'editlocation/:placeId', component: EditLocationComponent },
-  { path: 'patients', component: PatientsComponent },
-  { path: 'addpatient', component: AddPatientComponent },
-  { path: 'editpatient/:patientId', component: EditPatientComponent },
-  { path: 'location/:locationId/patients', component: LocationPatientsComponent },
-  { path: 'users', component: UserComponent },
-  { path: 'banner', component: BannerComponent },
-  { path: 'updates', component: UpdatesComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'forgotpassword', component: ForgotPasswordComponent },
-  { path: 'quarantinepersons', component: QuarantinePatientComponent },
-  { path: 'addquarantineperson', component: AddQuarantinePatientComponent },
-  { path: 'editquarantineperson/:patientId', component: EditQuarantinePatientComponent },
+  {
+    path: '',
+    component: DashboardComponent
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'forgotpassword',
+    component: ForgotPasswordComponent
+  },
+  {
+    path: 'location',
+    component: LocationComponent,
+    data: levelOneRole.data,
+    canActivate: levelOneRole.canActivate,
+  },
+  {
+    path: 'patients',
+    component: PatientsComponent,
+    data: levelOneRole.data,
+    canActivate: levelOneRole.canActivate,
+  },
+  {
+    path: 'addpatient',
+    component: AddPatientComponent,
+    data: levelOneRole.data,
+    canActivate: levelOneRole.canActivate,
+  },
+  {
+    path: 'editpatient/:patientId',
+    component: EditPatientComponent,
+    data: levelOneRole.data,
+    canActivate: levelOneRole.canActivate,
+  },
+  {
+    path: 'location/:locationId/patients',
+    component: LocationPatientsComponent,
+    data: levelOneRole.data,
+    canActivate: levelOneRole.canActivate,
+  },
+  {
+    path: 'banner',
+    component: BannerComponent,
+    data: levelOneRole.data,
+    canActivate: levelOneRole.canActivate,
+  },
+  {
+    path: 'updates',
+    component: UpdatesComponent,
+    data: levelOneRole.data,
+    canActivate: levelOneRole.canActivate,
+  },
+  {
+    path: 'quarantinepersons',
+    component: QuarantinePatientComponent,
+    data: levelOneRole.data,
+    canActivate: levelOneRole.canActivate,
+  },
+  {
+    path: 'addquarantineperson',
+    component: AddQuarantinePatientComponent,
+    data: levelOneRole.data,
+    canActivate: levelOneRole.canActivate,
+  },
+  {
+    path: 'editquarantineperson/:patientId',
+    component: EditQuarantinePatientComponent,
+    data: levelOneRole.data,
+    canActivate: levelOneRole.canActivate,
+  },
+  {
+    path: 'users',
+    component: UserComponent,
+    data: superAdminRole.data,
+    canActivate: superAdminRole.canActivate,
+  },
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

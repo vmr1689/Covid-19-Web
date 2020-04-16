@@ -83,14 +83,12 @@ export class UpdatesComponent implements OnInit, AfterViewInit {
   }
 
   addUpdates(form: NgForm) {
-    debugger;
     this.updatesService.createUpdates(this.model).subscribe((response: any) => {
       $('#addBanner').modal('toggle');
     });
   }
 
   editUpdates(form: NgForm) {
-    debugger;
     this.updatesService.editUpdates(this.model).subscribe((response: any) => {
       $('#editUpdates').modal('toggle');
     });

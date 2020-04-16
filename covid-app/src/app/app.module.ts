@@ -12,6 +12,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { fakeBackendProvider, AuthGuard, JwtInterceptor, ErrorInterceptor } from './shared/helpers';
 import { UserService, DashboardService } from './shared/services';
 
+import { HasRoleDirective } from './shared/directives/has-role.directive';
 import { DirectivesModule } from './shared/directives/directives.module';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -57,7 +58,8 @@ import { EditQuarantinePatientComponent } from './edit-quarantine-patient/edit-q
     ForgotPasswordComponent,
     QuarantinePatientComponent,
     AddQuarantinePatientComponent,
-    EditQuarantinePatientComponent
+    EditQuarantinePatientComponent,
+    HasRoleDirective
   ],
   imports: [
     BrowserModule,

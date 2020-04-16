@@ -42,4 +42,27 @@ export class AuthenticationService {
         localStorage.removeItem('currentUser');
         this.currentUserSubject.next(null);
     }
+
+    public get currentUserRoles(): Array<string> {
+        const currentUser = this.currentUserSubject.value;
+        const roles = [];
+        if (currentUser && currentUser.role) {
+            roles.push(currentUser.role);
+        }
+        return roles;
+    }
+
+    public roleMatch(allowedRoles): boolean {
+        const isMatch = false;
+        const userRoles: string[] = this.currentUserRoles;
+
+        if (!userRoles) {
+            return false;
+        }
+
+        if (allowedRoles.some(r => userRoles.includes(r))) {
+            return true;
+        }
+        return false;
+    }
 }

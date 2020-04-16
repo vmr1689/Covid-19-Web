@@ -3,7 +3,7 @@
     "id": "1",
     "firstName": "Super",
     "lastName": "Admin One",
-    "username": "superadmin1@test.com",
+    "username": "superadmin@test.com",
     "phoneNumber": "9874563210",
     "isEmailConfirmed": true,
     "role": "SuperAdmin",

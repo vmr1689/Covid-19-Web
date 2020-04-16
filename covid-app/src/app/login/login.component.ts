@@ -54,14 +54,13 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   public onSubmit(event: Event, form: any): void {
     event.stopPropagation();
     this.submitted = true;
-
     if (this.loginForm.valid) {
 
       this.authenticationService.login(form.email, form.password).subscribe((result: any) => {
         this.router.navigate(['/']);
       }, error => {
-        if (error.message) {
-          this.message = error.message;
+        if (error) {
+          this.message = error;
         }
       });
     }
