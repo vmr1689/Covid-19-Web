@@ -40,7 +40,7 @@ export class PatientsComponent implements OnInit {
   public placeId: AbstractControl;
   public severity: AbstractControl;
   public submitted: boolean;
-
+  
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   @ViewChild('formDirective') private formDirective: NgForm;
 

@@ -1,5 +1,8 @@
 <section class="content-header">
-    <h1>
+    <h1 *ngIf="isReadOnly">
+        View Patient
+    </h1>
+    <h1 *ngIf="!isReadOnly">
         Edit Patient
     </h1>
 </section>
@@ -10,7 +13,8 @@
 
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Edit Patient</h3>
+                    <h3 class="box-title" *ngIf="!isReadOnly">Edit Patient</h3>
+                    <h3 class="box-title" *ngIf="isReadOnly">View Patient</h3>
                 </div>
 
                 <form class="form-horizontal" [formGroup]="form" (ngSubmit)="onSubmit($event, form.value)">
@@ -18,7 +22,7 @@
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#tab_1" data-toggle="tab">General Information</a></li>
                             <li><a href="#tab_2" data-toggle="tab">Location Information</a></li>
-                            <li><a href="#tab_3" data-toggle="tab">Device Information</a></li>
+                            <li><a href="#tab_3" data-toggle="tab">Bluetooth Device Information</a></li>
                             <li><a href="#tab_4" data-toggle="tab">Status Information</a></li>
                         </ul>
                         <div class="tab-content">
@@ -33,11 +37,11 @@
 
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" formControlName="firstName"
-                                                id="firstName" name="firstName" placeholder="First Name">
+                                                id="firstName" name="firstName" placeholder="First Name" [readonly]="isReadOnly">
 
                                             <small
                                                 *ngIf="(submitted || firstName.dirty || firstName.touched) && firstName.hasError('required')"
-                                                class="text-danger">Place is required</small>
+                                                class="text-danger">First Name is required</small>
                                         </div>
                                     </div>
 
@@ -46,7 +50,7 @@
 
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" formControlName="lastName"
-                                                id="lastName" name="lastName" placeholder="Last Name">
+                                                id="lastName" name="lastName" placeholder="Last Name" [readonly]="isReadOnly">
 
                                             <small
                                                 *ngIf="(submitted || lastName.dirty || lastName.touched) && lastName.hasError('required')"
@@ -59,7 +63,7 @@
 
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" formControlName="age" id="age"
-                                                name="age" placeholder="Age">
+                                                name="age" placeholder="Age" [readonly]="isReadOnly">
 
                                             <small
                                                 *ngIf="(submitted || age.dirty || age.touched) && age.hasError('required')"
@@ -72,7 +76,7 @@
 
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" formControlName="phone" id="phone"
-                                                name="phone" placeholder="Phone Number">
+                                                name="phone" placeholder="Phone Number" [readonly]="isReadOnly">
 
                                             <small
                                                 *ngIf="(submitted || phone.dirty || phone.touched) && phone.hasError('required')"
@@ -80,12 +84,19 @@
                                         </div>
                                     </div>
 
+                                    
+
+
+                                </div>
+
+                                <div class="col-md-6">
+
                                     <div class="form-group">
                                         <label for="email" class="col-sm-3 control-label">Email</label>
 
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" formControlName="email" id="email"
-                                                name="email" placeholder="Email">
+                                                name="email" placeholder="Email" [readonly]="isReadOnly">
 
                                             <small
                                                 *ngIf="(submitted || email.dirty || email.touched) && email.hasError('required')"
@@ -93,25 +104,21 @@
                                         </div>
                                     </div>
 
-
-                                </div>
-
-                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="address1" class="col-sm-3 control-label">Address 1</label>
+                                        <label for="address1" class="col-sm-3 control-label">Address </label>
 
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" formControlName="address1"
-                                                id="address1" name="address1" placeholder="Address 1">
+                                                id="address1" name="address1" placeholder="Address" [readonly]="isReadOnly">
 
                                             <small
                                                 *ngIf="(submitted || address1.dirty || address1.touched) && address1.hasError('required')"
-                                                class="text-danger">Address 1 is required</small>
+                                                class="text-danger">Address is required</small>
                                         </div>
                                     </div>
 
 
-                                    <div class="form-group ">
+                                    <!-- <div class="form-group ">
                                         <label for="address2" class="col-sm-3 control-label">Address 1</label>
 
                                         <div class="col-sm-9">
@@ -162,7 +169,7 @@
                                                 *ngIf="(submitted || address5.dirty || address5.touched) && address5.hasError('required')"
                                                 class="text-danger">Address 5 is required</small>
                                         </div>
-                                    </div>
+                                    </div> -->
 
 
                                     <div class="form-group">
@@ -170,7 +177,7 @@
 
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" formControlName="zipcode"
-                                                id="zipcode" name="zipcode" placeholder="Zipcode">
+                                                id="zipcode" name="zipcode" placeholder="Zipcode" [readonly]="isReadOnly">
 
                                             <small
                                                 *ngIf="(submitted || zipcode.dirty || zipcode.touched) && zipcode.hasError('required')"
@@ -178,8 +185,21 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row text-left">
+                                    <div class="col-md-12">
+
+                                        <button *ngIf="isReadOnly" type="button" (click)="editInfo()"
+                                        class="pad_ex btn btn-info btn-flat next-step">Edit</button>
+
+                                        <button *ngIf="!isReadOnly" type="button" (click)="editInfo()"
+                                        class="pad_ex btn btn-info btn-flat next-step">View</button>
+
+                                    </div>
+                                </div>
+
                                 <div class="row text-right">
                                     <div class="col-md-12">
+
                                         <button type="button" (click)="previousTab()"
                                             class="pad_ex btn btn-default btn-flat prev-step"
                                             style="margin-right:5px">Previous</button>
@@ -212,13 +232,13 @@
                                                     Longitude</th>
                                                 <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">
                                                     Place</th>
-                                                <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">
+                                                <!-- <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">
                                                     Severity</th>
                                                 <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">
-                                                    Status</th>
+                                                    Status</th> -->
                                                 <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">
                                                     Date</th>
-                                                <th>Actions</th>
+                                                <!-- <th>Actions</th> -->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -227,10 +247,10 @@
                                                 <td>{{data.latitude}}</td>
                                                 <td>{{data.longitude}}</td>
                                                 <td>{{data.place}}</td>
-                                                <td>{{data.severity}}</td>
-                                                <td>{{data.status}}</td>
+                                                <!-- <td>{{data.severity}}</td>
+                                                <td>{{data.status}}</td> -->
                                                 <td>{{data.date}}</td>
-                                                <td>
+                                                <!-- <td>
                                                     <button style="margin-right:5px" title="Edit Location"
                                                         (click)="openEditLocationPopup($event, data)"
                                                         class="btn btn-small btn-flat btn-warning">
@@ -242,7 +262,7 @@
                                                         class="btn btn-small btn-flat btn-danger">
                                                         <i class="btn-icon-only fa fa-trash"> </i>
                                                     </button>
-                                                </td>
+                                                </td> -->
                                             </tr>
                                         </tbody>
                                     </table>
@@ -276,25 +296,28 @@
                                     <table id="dataTable" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th sortable="deviceId" (sort)="onDeviceSort($event)">Device Id</th>
+                                                <th sortable="deviceId" (sort)="onDeviceSort($event)">Bluetooth Device Id</th>
                                                 <th scope="col" sortable="deviceName" (sort)="onDeviceSort($event)">
-                                                    Device Name</th>
-                                                <th scope="col" sortable="PhoneNumber" (sort)="onDeviceSort($event)">
+                                                    Bluetooth Device Name</th>
+                                                <!-- <th scope="col" sortable="PhoneNumber" (sort)="onDeviceSort($event)">
                                                     Phone Number</th>
                                                 <th scope="col" sortable="PhoneNumber" (sort)="onDeviceSort($event)">
-                                                    Location</th>
+                                                    Location</th> -->
+                                                <th scope="col" sortable="deviceAddress" (sort)="onDeviceSort($event)">
+                                                    Bluetooth Address</th>
                                                 <th scope="col" sortable="date" (sort)="onDeviceSort($event)">Date</th>
-                                                <th>Actions</th>
+                                                <!-- <th>Actions</th> -->
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let data of devices">
                                                 <td>{{data.deviceId}}</td>
                                                 <td>{{data.deviceName}}</td>
-                                                <td>{{data.PhoneNumber}}</td>
-                                                <td>{{data.place}}</td>
+                                                <!-- <td>{{data.PhoneNumber}}</td>
+                                                <td>{{data.place}}</td> -->
+                                                <td>{{data.deviceAddress}}</td>
                                                 <td>{{data.date}}</td>
-                                                <td>
+                                                <!-- <td>
                                                     <button style="margin-right:5px" title="Edit Location"
                                                         (click)="openEditDevicePopup($event, data)"
                                                         class="btn btn-small btn-flat btn-warning">
@@ -306,7 +329,7 @@
                                                         class="btn btn-small btn-flat btn-danger">
                                                         <i class="btn-icon-only fa fa-trash"> </i>
                                                     </button>
-                                                </td>
+                                                </td> -->
                                             </tr>
                                         </tbody>
                                     </table>
@@ -337,8 +360,8 @@
                                         <div class="col-sm-8">
                                             <div class="checkbox">
                                                 <label>
-                                                    <input formControlName="confirmed" id="confirmed"
-                                                        name="confirmed" type="checkbox" disabled="true">
+                                                    <input formControlName="confirmed" id="confirmed" name="confirmed"
+                                                        type="checkbox" disabled="true">
                                                 </label>
                                             </div>
                                         </div>
@@ -354,8 +377,8 @@
                                         <div class="col-sm-8">
                                             <div class="checkbox">
                                                 <label>
-                                                    <input formControlName="active" id="active"
-                                                        name="active" type="checkbox">
+                                                    <input formControlName="active" id="active" name="active"
+                                                        type="checkbox">
                                                 </label>
                                             </div>
                                         </div>
@@ -372,8 +395,8 @@
                                         <div class="col-sm-8">
                                             <div class="checkbox">
                                                 <label>
-                                                    <input id="recovered" formControlName="recovered"
-                                                        name="recovered" type="checkbox">
+                                                    <input id="recovered" formControlName="recovered" name="recovered"
+                                                        type="checkbox">
                                                 </label>
                                             </div>
                                         </div>
@@ -390,8 +413,8 @@
                                         <div class="col-sm-8">
                                             <div class="checkbox">
                                                 <label>
-                                                    <input id="deceased" formControlName="deceased" 
-                                                        name="deceased" type="checkbox">
+                                                    <input id="deceased" formControlName="deceased" name="deceased"
+                                                        type="checkbox">
                                                 </label>
                                             </div>
                                         </div>
@@ -408,7 +431,7 @@
                                             class="pad_ex btn btn-default btn-flat prev-step"
                                             style="margin-right:5px">Previous</button>
 
-                                        <button type="submit" id="btnSubmit"
+                                        <button  *ngIf="!isReadOnly" type="submit" id="btnSubmit"
                                             class="pad_ex btn btn-info btn-flat next-step">Save and Exit</button>
 
                                     </div>

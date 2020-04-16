@@ -25,10 +25,6 @@ export class EditQuarantinePatientComponent implements OnInit {
   public phone: AbstractControl;
   public email: AbstractControl;
   public address1: AbstractControl;
-  public address2: AbstractControl;
-  public address3: AbstractControl;
-  public address4: AbstractControl;
-  public address5: AbstractControl;
   public zipcode: AbstractControl;
   public latitude: AbstractControl;
   public longitude: AbstractControl;
@@ -37,6 +33,13 @@ export class EditQuarantinePatientComponent implements OnInit {
   public placeId: AbstractControl;
   public severity: AbstractControl;
   public submitted: boolean;
+  public quarantined: AbstractControl;
+  public confirmed: AbstractControl;
+  public active: AbstractControl;
+  public recovered: AbstractControl;
+  public deceased: AbstractControl;
+  public released: AbstractControl;
+  public isReadOnly = true;
 
   public referenceModel: any = {
     referenceId: '',
@@ -77,28 +80,33 @@ export class EditQuarantinePatientComponent implements OnInit {
     this.initLoginForm();
   }
 
+  editInfo() {
+    this.isReadOnly = !this.isReadOnly;
+  }
+  
   public initLoginForm() {
 
     this.form = this.fb.group({
-      patientId: ['', [Validators.required]],
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      age: ['', Validators.required],
-      phone: ['', [Validators.required]],
-      email: ['', [Validators.required]],
-      address1: ['', [Validators.required]],
-      address2: ['', Validators.required],
-      address3: ['', [Validators.required]],
-      address4: ['', [Validators.required]],
-      address5: ['', Validators.required],
-      zipcode: ['', [Validators.required]],
+      patientId: ['41', [Validators.required]],
+      firstName: ['Test 11', [Validators.required]],
+      lastName: ['45', [Validators.required]],
+      age: ['Test 11', Validators.required],
+      phone: ['9874563210', [Validators.required]],
+      email: ['test2@test.com', [Validators.required]],
+      address1: ['84 DB 67, ST Street, West Delhi', [Validators.required]],
+      zipcode: ['613545', [Validators.required]],
       latitude: ['', [Validators.required]],
       longitude: ['', [Validators.required]],
       deviceName: ['', [Validators.required]],
       deviceAddress: ['', [Validators.required]],
       placeId: ['', [Validators.required]],
       severity: ['', [Validators.required]],
-
+      quarantined: [true],
+      confirmed: [false],
+      active: [false],
+      recovered: [false],
+      deceased: [false],
+      released: [false],
     });
     this.patientId = this.form.controls.patientId;
     this.firstName = this.form.controls.firstName;
@@ -108,10 +116,6 @@ export class EditQuarantinePatientComponent implements OnInit {
     this.email = this.form.controls.email;
 
     this.address1 = this.form.controls.address1;
-    this.address2 = this.form.controls.address2;
-    this.address3 = this.form.controls.address3;
-    this.address4 = this.form.controls.address4;
-    this.address5 = this.form.controls.address5;
 
     this.zipcode = this.form.controls.zipcode;
     this.latitude = this.form.controls.latitude;
@@ -119,6 +123,12 @@ export class EditQuarantinePatientComponent implements OnInit {
     this.placeId = this.form.controls.placeId;
     this.severity = this.form.controls.severity;
 
+    this.quarantined = this.form.controls.quarantined;
+    this.confirmed = this.form.controls.confirmed;
+    this.active = this.form.controls.active;
+    this.recovered = this.form.controls.recovered;
+    this.deceased = this.form.controls.deceased;
+    this.released = this.form.controls.released;
 
     this.deviceName = this.form.controls.deviceName;
     this.deviceAddress = this.form.controls.deviceAddress;

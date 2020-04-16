@@ -15,12 +15,12 @@
                         <div class="col-md-12">
                             <div class="form-group form-inline">
                                 <label class=" checkbox-inline" style="padding-right: 20px;">Search: </label> <input
-                                    class="form-control" type="text" />
-                                <button class="btn btn-info btn-flat pull-right" (click)="openCreatePatient()">
+                                    class="form-control" type="text" placeholder="Search..."/>
+                                <!-- <button class="btn btn-info btn-flat pull-right" (click)="openCreatePatient()">
                                     <b>
                                         <span class="fa fa-user-plus"></span>
                                     </b> Add Patient
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                         <div class="clearfix"></div>
@@ -30,17 +30,19 @@
                                 <table id="dataTable" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
+                                            <th sortable="patientId" (sort)="onSort($event)">Patient Id</th>
                                             <th sortable="firstName" (sort)="onSort($event)">First Name</th>
                                             <th sortable="lastName" (sort)="onSort($event)">Last Name</th>
                                             <th scope="col" sortable="phone" (sort)="onSort($event)">Phone Number</th>
                                             <th scope="col" sortable="email" (sort)="onSort($event)">Email</th>
                                             <th scope="col" sortable="placeName" (sort)="onSort($event)">Place</th>
-                                            <th scope="col" sortable="severity" (sort)="onSort($event)">Status</th>
+                                            <th scope="col" sortable="severity" (sort)="onSort($event)">Severity</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let data of patients">
+                                        <tr *ngFor="let data of patients; index as i ">
+                                            <td>COVID-PAT-{{i + 1}}</td>
                                             <td>{{data.firstName}}</td>
                                             <td>{{data.lastName}} </td>
                                             <td>{{data.phone}}</td>
@@ -48,15 +50,15 @@
                                             <td>{{data.place.placeName}}</td>
                                             <td>{{data.severity}}</td>
                                             <td>
-                                                <button style="margin-right:5px" title="Edit Location"
+                                                <button style="margin-right:5px" title="View Patient"
                                                     (click)="editPatient(data)"
                                                     class="btn btn-small btn-flat btn-warning">
-                                                    <i class="btn-icon-only fa fa-pencil"> </i>
+                                                    <i class="btn-icon-only fa fa-eye"> </i>
                                                 </button>
-                                                <button style="margin-right:5px" title="Delete Location"
+                                                <!-- <button style="margin-right:5px" title="Delete Location"
                                                     class="btn btn-small btn-flat btn-danger">
                                                     <i class="btn-icon-only fa fa-trash"> </i>
-                                                </button>
+                                                </button> -->
                                             </td>
                                         </tr>
                                     </tbody>

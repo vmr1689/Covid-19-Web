@@ -15,7 +15,7 @@
                         <div class="col-md-12">
                             <div class="form-group form-inline">
                                 <label class=" checkbox-inline" style="padding-right: 20px;">Search: </label> <input
-                                    class="form-control" type="text" />
+                                    class="form-control" type="text" placeholder="Search..."/>
 
                                 <button class="btn btn-info btn-flat pull-right" (click)="openLocation()">
                                     <b>
@@ -30,18 +30,20 @@
                                 <table id="dataTable" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
+                                            <th sortable="placeName" (sort)="onSort($event)">Patient Id</th>
                                             <th sortable="placeName" (sort)="onSort($event)">First Name</th>
                                             <th scope="col" sortable="root" (sort)="onSort($event)">Last Name</th>
                                             <th scope="col" sortable="latitude" (sort)="onSort($event)">Phone Number
                                             </th>
                                             <th scope="col" sortable="longitude" (sort)="onSort($event)">Email</th>
                                             <th scope="col" sortable="longitude" (sort)="onSort($event)">Place</th>
-                                            <th scope="col" sortable="longitude" (sort)="onSort($event)">Status</th>
+                                            <th scope="col" sortable="longitude" (sort)="onSort($event)">Severity</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let data of patients">
+                                        <tr *ngFor="let data of patients; index as i ">
+                                            <td>COVID-PAT-{{i + 1}}</td>
                                             <td>{{data.firstName}}</td>
                                             <td>{{data.lastName}} </td>
                                             <td>{{data.phone}}</td>
@@ -78,7 +80,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title">Assign Location</h4>
+                <h4 class="modal-title">Re-Assign Location</h4>
             </div>
             <form name="f" (ngSubmit)="f.form.valid && assignLocation(f)" #f="ngForm" novalidate>
                 <div class="modal-body">
@@ -90,7 +92,7 @@
                                     <i class="fa fa-user"></i>
                                 </div>
                                 <input type="text" autocomplete="off" class="form-control" name="firstName"
-                                    [(ngModel)]="model.firstName" #firstName="ngModel" required />
+                                    [(ngModel)]="model.firstName" #firstName="ngModel" required placeholder="First Name"/>
                             </div>
                             <div *ngIf="f.submitted && !firstName.valid" class="text-danger">First Name is required
                             </div>
@@ -103,7 +105,7 @@
                                     <i class="fa fa-user"></i>
                                 </div>
                                 <input type="text" autocomplete="off" class="form-control" name="lastName"
-                                    [(ngModel)]="model.lastName" #lastName="ngModel" required />
+                                    [(ngModel)]="model.lastName" #lastName="ngModel" required placeholder="Last Name"/>
                             </div>
                             <div *ngIf="f.submitted && !lastName.valid" class="text-danger">Last Name is required</div>
                         </div>
@@ -113,21 +115,21 @@
                             <label>Phone Number</label>
                             <div class="input-group">
                                 <div class="input-group-addon">
-                                    <i class="fa fa-envelope"></i>
+                                    <i class="fa fa-phone"></i>
                                 </div>
                                 <input type="email" autocomplete="off" class="form-control" name="phone"
-                                    [(ngModel)]="model.phone" #phone="ngModel" required />
+                                    [(ngModel)]="model.phone" #phone="ngModel" required placeholder="Phone Number"/>
                             </div>
-                            <div *ngIf="f.submitted && !phone.valid" class="text-danger">Phone is required</div>
+                            <div *ngIf="f.submitted && !phone.valid" class="text-danger">Phone Number is required</div>
                         </div>
                         <div class="form-group col-md-6 col-xs-12">
                             <label>Email</label>
                             <div class="input-group">
                                 <div class="input-group-addon">
-                                    <i class="fa fa-phone"></i>
+                                    <i class="fa fa-envelope"></i>
                                 </div>
                                 <input type="text" autocomplete="off" class="form-control" name="email"
-                                    [(ngModel)]="model.email" #email="ngModel" required />
+                                    [(ngModel)]="model.email" #email="ngModel" required placeholder="Email"/>
                             </div>
                             <div *ngIf="f.submitted && !email.valid" class="text-danger">Email is required</div>
                         </div>
@@ -138,7 +140,7 @@
                             <div>
 
                                 <input type="text" autocomplete="off" class="form-control" name="severity"
-                                    [(ngModel)]="model.severity" #severity="ngModel" required />
+                                    [(ngModel)]="model.severity" #severity="ngModel" required placeholder="Severity"/>
                             </div>
                             <div *ngIf="f.submitted && !severity.valid" class="text-danger">Severity is required</div>
                         </div>

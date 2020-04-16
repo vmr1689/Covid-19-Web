@@ -24,10 +24,6 @@ export class EditPatientComponent implements OnInit {
   public phone: AbstractControl;
   public email: AbstractControl;
   public address1: AbstractControl;
-  public address2: AbstractControl;
-  public address3: AbstractControl;
-  public address4: AbstractControl;
-  public address5: AbstractControl;
   public zipcode: AbstractControl;
   public latitude: AbstractControl;
   public longitude: AbstractControl;
@@ -40,6 +36,7 @@ export class EditPatientComponent implements OnInit {
   public active: AbstractControl;
   public recovered: AbstractControl;
   public deceased: AbstractControl;
+  public isReadOnly = true;
 
   public locationModel: any = { placeId: '', severity: '', date: ''};
   public deviceModel: any = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: ''};
@@ -53,9 +50,9 @@ export class EditPatientComponent implements OnInit {
   ];
 
   devices: any[] = [
-    { deviceId: '1', deviceName: 'Device 1', PhoneNumber: '159751565', date: '11/04/2020 18:20:24', place: 'Orissa' },
-    { deviceId: '2', deviceName: 'Device 2', PhoneNumber: '147955555', date: '11/03/2020 18:20:24', place: 'Kerala' },
-    { deviceId: '3', deviceName: 'Device 3', PhoneNumber: '147955555', date: '11/04/2020 18:20:24', place: 'Delhi' }
+    { deviceId: '1', deviceName: 'Device 1', deviceAddress: 'Orissa', PhoneNumber: '159751565', date: '11/04/2020 18:20:24', place: 'Orissa' },
+    { deviceId: '2', deviceName: 'Device 2', deviceAddress: 'Kerala', PhoneNumber: '147955555', date: '11/03/2020 18:20:24', place: 'Kerala' },
+    { deviceId: '3', deviceName: 'Device 3', deviceAddress: 'Delhi', PhoneNumber: '147955555', date: '11/04/2020 18:20:24', place: 'Delhi' }
   ];
 
   // devices: any[] = [
@@ -78,18 +75,14 @@ export class EditPatientComponent implements OnInit {
   public initLoginForm() {
 
     this.form = this.fb.group({
-      patientId: ['', [Validators.required]],
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      age: ['', Validators.required],
-      phone: ['', [Validators.required]],
-      email: ['', [Validators.required]],
-      address1: ['', [Validators.required]],
-      address2: ['', Validators.required],
-      address3: ['', [Validators.required]],
-      address4: ['', [Validators.required]],
-      address5: ['', Validators.required],
-      zipcode: ['', [Validators.required]],
+      patientId: ['1', [Validators.required]],
+      firstName: ['Test 2', [Validators.required]],
+      lastName: ['Test 2', [Validators.required]],
+      age: ['54', Validators.required],
+      phone: ['9874563210', [Validators.required]],
+      email: ['test2@test.com', [Validators.required]],
+      address1: ['84 DB 67, ST Street', [Validators.required]],
+      zipcode: ['545798', [Validators.required]],
       latitude: ['', [Validators.required]],
       longitude: ['', [Validators.required]],
       deviceName: ['', [Validators.required]],
@@ -99,7 +92,7 @@ export class EditPatientComponent implements OnInit {
       confirmed: [true],
       active: [true],
       recovered: [false],
-      deceased: [false]
+      deceased: [false],
     });
     this.patientId = this.form.controls.patientId;
     this.firstName = this.form.controls.firstName;
@@ -109,10 +102,7 @@ export class EditPatientComponent implements OnInit {
     this.email = this.form.controls.email;
 
     this.address1 = this.form.controls.address1;
-    this.address2 = this.form.controls.address2;
-    this.address3 = this.form.controls.address3;
-    this.address4 = this.form.controls.address4;
-    this.address5 = this.form.controls.address5;
+    
 
     this.zipcode = this.form.controls.zipcode;
     this.latitude = this.form.controls.latitude;
@@ -127,7 +117,8 @@ export class EditPatientComponent implements OnInit {
     this.confirmed = this.form.controls.confirmed;
     this.active = this.form.controls.active;
     this.recovered = this.form.controls.recovered;
-    this.recovered = this.form.controls.deceased;
+    this.deceased = this.form.controls.deceased;
+
   }
   public onSubmit(event: Event, form: any): void {
     event.stopPropagation();
@@ -143,7 +134,9 @@ export class EditPatientComponent implements OnInit {
     }
   }
 
-
+  editInfo() {
+    this.isReadOnly = !this.isReadOnly;
+  }
   nextTab() {
     $('.nav-tabs > .active').next('li').find('a').trigger('click');
   }

@@ -19,7 +19,8 @@ import { AddQuarantinePatientComponent } from './add-quarantine-patient/add-quar
 import { EditQuarantinePatientComponent } from './edit-quarantine-patient/edit-quarantine-patient.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  //{ path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: '', component: DashboardComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'location', component: LocationComponent },
   // { path: 'addlocation', component: AddLocationComponent },

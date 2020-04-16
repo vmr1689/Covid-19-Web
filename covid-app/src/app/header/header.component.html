@@ -1,4 +1,4 @@
-<header class="main-header">
+<!-- <header class="main-header">
 
     <nav class="navbar navbar-static-top" style="margin-left: 0px;">
   
@@ -16,6 +16,68 @@
             </a>
           </li>
         </ul>
+      </div>
+    </nav>
+  </header> -->
+
+
+  <header class="main-header">
+    <nav class="navbar navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="javascript:void(0)" class="navbar-brand"><b>Covid </b>19</a>
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+            <i class="fa fa-bars"></i>
+          </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/login']">Login</a></li>
+            <li class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/']">Home <span class="sr-only">(current)</span></a></li>
+            <li class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/users']">Users</a></li>
+            <li class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/location']">Location</a></li>
+            <li class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/patients']">Patients</a></li>
+            <li class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/quarantinepersons']">Quarantine Persons</a></li>
+            <li class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="dropdown">
+              <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Settings <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/updates']">Updates</a></li>
+                <li class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/banner']">Banner</a></li>
+              </ul>
+            </li>
+          </ul>
+         
+        </div>
+        <div class="navbar-custom-menu">
+          <ul class="nav navbar-nav">
+            <li class="dropdown user user-menu">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <img src="../../assets/images/profile_1.png" class="user-image" alt="User Image">
+                <span class="hidden-xs">SuperAdmin@test.com</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li class="user-header">
+                  <img src="../../assets/images/profile_1.png" class="img-circle" alt="User Image">
+
+                  <p>
+                    Super Admin
+                  </p>
+                </li>
+                <li class="user-footer">
+                  <div class="pull-left">
+                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  </div>
+                  <div class="pull-right">
+                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  </div>
+                </li>
+              </ul>
+            </li>
+            
+          </ul>
+        </div>
       </div>
     </nav>
   </header>

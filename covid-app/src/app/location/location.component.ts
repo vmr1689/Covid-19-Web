@@ -69,6 +69,8 @@ export class LocationComponent implements OnInit, AfterContentInit {
     event.preventDefault();
     this.patientModel = {};
     this.patientModel.placeId = data.placeId;
+    this.patientModel.confirmed = true;
+    this.patientModel.active = true;
     this.patientModel.placeName = data.placeName;
     $('#addPatient').modal('toggle');
   }
@@ -77,6 +79,7 @@ export class LocationComponent implements OnInit, AfterContentInit {
     event.preventDefault();
     this.patientModel = {};
     this.patientModel.placeId = data.placeId;
+    this.patientModel.quarantined = true;
     this.patientModel.placeName = data.placeName;
     $('#addQuarantinePerson').modal('toggle');
   }
