@@ -35,6 +35,8 @@
                                 <table id="dataTable" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
+                                            <th scope="col" sortable="lastName" (sort)="onSort($event)">Hospital Address</th>
+                                            <th scope="col" sortable="lastName" (sort)="onSort($event)">Hospital Id</th>
                                             <th scope="col" sortable="firstName" (sort)="onSort($event)">First Name</th>
                                             <th scope="col" sortable="lastName" (sort)="onSort($event)">Last Name</th>
                                             <th scope="col" sortable="username" (sort)="onSort($event)">Email</th>
@@ -49,13 +51,15 @@
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let data of users">
+                                            <td>{{data.hospitalId}}</td>
+                                            <td>{{data.hospitalAddress}}</td>
                                             <td>{{data.firstName}}</td>
                                             <td>{{data.lastName}}</td>
                                             <td>{{data.username}}</td>
                                             <td>{{data.phoneNumber}}</td>
-                                            <td>{{data.isEmailConfirmed}}</td>
+                                            <td>{{data.isEmailConfirmed ? 'Yes': 'No'}}</td>
                                             <td>{{data.role}}</td>
-                                            <td>{{data.status}}</td>
+                                            <td>{{data.status ? 'Active': 'In-Active'}}</td>
                                             <td>
 
                                                 <button style="margin-right:5px" title="Edit User"
@@ -211,6 +215,33 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <label for="hospitalId" class="control-label">Hospital ID:</label>
+                                </div>
+    
+                                <div class="col-sm-8">
+                                    <input id="hospitalId" type="text" autocomplete="off" class="form-control" name="hospitalId"
+                                        [(ngModel)]="model.hospitalId" #hospitalId="ngModel" placeholder="Hospital ID" required>
+    
+                                    <div *ngIf="f.submitted && !hospitalId.valid" class="text-danger">Hospital ID is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <label for="hospitalAddress" class="control-label">Hospital Address:</label>
+                                </div>
+    
+                                <div class="col-sm-8">
+                                    <input id="hospitalAddress" type="text" autocomplete="off" class="form-control" name="hospitalAddress"
+                                        [(ngModel)]="model.hospitalAddress" #hospitalAddress="ngModel" placeholder="Hospital Address" required>
+    
+                                    <div *ngIf="f.submitted && !hospitalAddress.valid" class="text-danger">Hospital Address is required
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -346,6 +377,32 @@
                                         [(ngModel)]="model.password" #password="ngModel" placeholder="Password" required>
     
                                     <div *ngIf="f.submitted && !password.valid" class="text-danger">Password is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <label for="hospitalId" class="control-label">Hospital ID:</label>
+                                </div>
+    
+                                <div class="col-sm-8">
+                                    <input id="hospitalId" type="text" autocomplete="off" class="form-control" name="hospitalId"
+                                        [(ngModel)]="model.hospitalId" #hospitalId="ngModel" placeholder="Hospital ID" required>
+    
+                                    <div *ngIf="f.submitted && !hospitalId.valid" class="text-danger">Hospital ID is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <label for="hospitalAddress" class="control-label">Hospital Address:</label>
+                                </div>
+    
+                                <div class="col-sm-8">
+                                    <input id="hospitalAddress" type="text" autocomplete="off" class="form-control" name="hospitalAddress"
+                                        [(ngModel)]="model.hospitalAddress" #hospitalAddress="ngModel" placeholder="Hospital Address" required>
+    
+                                    <div *ngIf="f.submitted && !hospitalAddress.valid" class="text-danger">Hospital Address is required
                                     </div>
                                 </div>
                             </div>

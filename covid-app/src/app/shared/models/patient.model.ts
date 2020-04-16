@@ -21,4 +21,6 @@ export interface Patient {
     placeId: string;
     severity: string;
     place: Location;
+    status: string;
+    rowColor?: string;
 }

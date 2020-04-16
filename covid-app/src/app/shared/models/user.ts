@@ -9,4 +9,6 @@ export class User {
     isEmailConfirmed?: string;
     role?: string;
     status: boolean;
+    hospitalId?: string;
+    hospitalAddress?: string;
 }

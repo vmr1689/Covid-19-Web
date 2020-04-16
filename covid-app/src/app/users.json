@@ -9,6 +9,8 @@
     "role": "SuperAdmin",
     "status": true,
     "password": "Password1,",
+    "hospitalAddress": "Kentucky",
+    "hospitalId": "HCM-1",
     "token": ""
   },
   {
@@ -21,6 +23,8 @@
     "role": "SuperAdmin",
     "status": true,
     "password": "Password2,",
+    "hospitalAddress": "Chennai",
+    "hospitalId": "HCM-1",
     "token": ""
   },
   {
@@ -33,6 +37,8 @@
     "role": "SuperAdmin",
     "status": false,
     "password": "Password3,",
+    "hospitalAddress": "Pune",
+    "hospitalId": "HCM-1",
     "token": ""
   },
   {
@@ -45,6 +51,8 @@
     "role": "Level1",
     "status": true,
     "password": "Password1,",
+    "hospitalAddress": "Jaipur",
+    "hospitalId": "HCM-1",
     "token": ""
   },
   {
@@ -57,6 +65,8 @@
     "role": "Level1",
     "status": false,
     "password": "Password1,",
+    "hospitalAddress": "Kolkata",
+    "hospitalId": "HCM-1",
     "token": ""
   },
   {
@@ -69,6 +79,8 @@
     "role": "Level1",
     "status": true,
     "password": "Password1,",
+    "hospitalAddress": "Mumbai",
+    "hospitalId": "HCM-1",
     "token": ""
   },
   {
@@ -81,20 +93,11 @@
     "role": "Level1",
     "status": true,
     "password": "Password1,",
+    "hospitalAddress": "Delhi",
+    "hospitalId": "HCM-3",
     "token": ""
   },
-  {
-    "id": "8",
-    "firstName": "Level Two",
-    "lastName": "User Two",
-    "email": "level2user2@test.com",
-    "phoneNumber": "9874563210",
-    "isEmailConfirmed": true,
-    "role": "Level1",
-    "status": true,
-    "password": "Password1,",
-    "token": ""
-  },
+  
   {
     "id": "9",
     "firstName": "Level Two",
@@ -105,6 +108,8 @@
     "role": "Level1",
     "status": true,
     "password": "Password1,",
+    "hospitalAddress": "Hamsburg",
+    "hospitalId": "HCM-2",
     "token": ""
   }
 ]

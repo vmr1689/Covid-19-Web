@@ -37,11 +37,12 @@
                                             <th scope="col" sortable="email" (sort)="onSort($event)">Email</th>
                                             <th scope="col" sortable="placeName" (sort)="onSort($event)">Place</th>
                                             <th scope="col" sortable="severity" (sort)="onSort($event)">Severity</th>
+                                            <th scope="col" sortable="status" (sort)="onSort($event)">Status</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let data of patients; index as i ">
+                                        <tr [style.color]="data.rowColor" *ngFor="let data of patients; index as i ">
                                             <td>COVID-PAT-{{i + 1}}</td>
                                             <td>{{data.firstName}}</td>
                                             <td>{{data.lastName}} </td>
@@ -49,6 +50,7 @@
                                             <td>{{data.email}}</td>
                                             <td>{{data.place.placeName}}</td>
                                             <td>{{data.severity}}</td>
+                                            <td>{{data.status}}</td>
                                             <td>
                                                 <button style="margin-right:5px" title="View Patient"
                                                     (click)="editPatient(data)"

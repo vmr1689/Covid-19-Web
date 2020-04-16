@@ -60,7 +60,20 @@ export class PatientsComponent implements OnInit {
       this.patients = [];
       if (response && response.length > 0) {
         this.patients = response;
+
+        this.patients.forEach(element => {
+          if (element.status === 'active') {
+            element.rowColor = '#f39c12 ';
+          } else if (element.status === 'recovered') {
+            element.rowColor = '#00a65a';
+          } else if (element.status === 'confirmed') {
+            element.rowColor = '#dd4b39';
+          } else if (element.status === 'deceased') {
+            element.rowColor = '#0073b7';
+          } 
+        });
       }
+      
     });
   }
 
