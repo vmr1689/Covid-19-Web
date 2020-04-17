@@ -150,5 +150,37 @@
             "istarget": false,
             "rootId": 1
         }
+    },
+    {
+        "placeId": 7,
+        "placeName": "JALANDHAR",
+        "latitude": 33,
+        "longitude": 55,
+        "istarget": false,
+        "rootId": 5,
+        "root": {
+            "placeId": 5,
+            "placeName": "PUNJAB",
+            "latitude": 64,
+            "longitude": 43,
+            "istarget": false,
+            "rootId": 1
+        }
+    },
+    {
+        "placeId": 7,
+        "placeName": "JALANDHAR",
+        "latitude": 33,
+        "longitude": 55,
+        "istarget": false,
+        "rootId": 5,
+        "root": {
+            "placeId": 5,
+            "placeName": "PUNJAB",
+            "latitude": 64,
+            "longitude": 43,
+            "istarget": false,
+            "rootId": 1
+        }
     }
 ]

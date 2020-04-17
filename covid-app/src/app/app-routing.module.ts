@@ -22,7 +22,7 @@ import { AuthGuard, RoleGuard } from './shared/helpers';
 
 const levelOneRole = {
   data: {
-    roles: ['Level1'],
+    roles: ['Admin'],
     redirectUrl: ['/users']
   },
   canActivate: [AuthGuard, RoleGuard]
@@ -120,7 +120,7 @@ const routes: Routes = [
     component: UserComponent,
     data: superAdminRole.data,
     canActivate: superAdminRole.canActivate,
-  },
+  }
 ];
 
 

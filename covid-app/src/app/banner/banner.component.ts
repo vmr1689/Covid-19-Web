@@ -1,10 +1,11 @@
-import { Component, OnInit, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, QueryList, ViewChildren, OnDestroy, AfterViewChecked } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sortable.directive';
 
-import { UpdatesService } from '../shared/services';
+import { UpdatesService, SpinnerService } from '../shared/services';
 import { Banner, ngBootstrapTable } from '../shared/models';
 
 declare var $;
@@ -14,14 +15,22 @@ declare var $;
   templateUrl: './banner.component.html',
   styleUrls: ['./banner.component.css']
 })
-export class BannerComponent implements OnInit {
+export class BannerComponent implements OnInit, AfterViewChecked, OnDestroy {
+  public dtOptions: DataTables.Settings = {
+    autoWidth: false,
+    jQueryUI: true,
+    dom: '<"pull-left"f><"pull-right"l>tip',
+  };
+  public dtTrigger = new Subject();
 
   public model: Banner = {} as Banner;
 
   public banners: Banner[] = [];
   public bannerTable: ngBootstrapTable;
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
+
   constructor(
+    private spinnerService: SpinnerService,
     private router: Router,
     private updatesService: UpdatesService) { }
 
@@ -29,12 +38,25 @@ export class BannerComponent implements OnInit {
     this.getAllBanners();
   }
 
+  ngAfterViewChecked() {
+    $('.dataTables_filter input, .dataTables_length select').addClass('form-control');
+  }
+
+  ngOnDestroy(): void {
+    if (this.dtTrigger) {
+      this.dtTrigger.unsubscribe();
+    }
+  }
   getAllBanners() {
+    this.spinnerService.show();
     this.updatesService.getAllBanners().subscribe((response: Banner[]) => {
       this.banners = [];
       if (response && response.length > 0) {
         this.banners = response;
+        this.dtTrigger.next();
       }
+    }).add(() => {
+      this.spinnerService.hide();
     });
   }
 
@@ -76,20 +98,29 @@ export class BannerComponent implements OnInit {
   }
 
   addBanner(form: NgForm) {
+    this.spinnerService.show();
     this.updatesService.createBanner(this.model).subscribe((response: any) => {
       $('#addBanner').modal('toggle');
+    }).add(() => {
+      this.spinnerService.hide();
     });
   }
 
   editBanner(form: NgForm) {
+    this.spinnerService.show();
     this.updatesService.editBanner(this.model).subscribe((response: any) => {
       $('#editBanner').modal('toggle');
+    }).add(() => {
+      this.spinnerService.hide();
     });
   }
 
   deleteBanner(data: Banner) {
+    this.spinnerService.show();
     this.updatesService.deleteBanner(data.id).subscribe((response: any) => {
       $('#deleteBanner').modal('toggle');
+    }).add(() => {
+      this.spinnerService.hide();
     });
   }
 

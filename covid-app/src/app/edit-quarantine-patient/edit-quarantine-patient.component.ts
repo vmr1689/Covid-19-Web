@@ -1,11 +1,13 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren, OnDestroy, AfterViewChecked } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
 
 import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sortable.directive';
 
 import { Patient } from '../shared/models';
 import { PatientService } from '../shared/services';
+
 
 
 declare var $;
@@ -15,7 +17,13 @@ declare var $;
   templateUrl: './edit-quarantine-patient.component.html',
   styleUrls: ['./edit-quarantine-patient.component.css']
 })
-export class EditQuarantinePatientComponent implements OnInit {
+export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked, OnDestroy {
+  public dtOptions: DataTables.Settings = {
+    autoWidth: false,
+    jQueryUI: true,
+    dom: '<"pull-left"f><"pull-right"l>tip',
+  };
+  public dtTrigger = new Subject();
 
   public form: FormGroup;
   public patientId: AbstractControl;
@@ -53,14 +61,14 @@ export class EditQuarantinePatientComponent implements OnInit {
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
   locations: any[] = [
-    { placeId: '1', placeName: 'Pune'},
-    { placeId: '2', placeName: 'New Delhi'},
-    { placeId: '3', placeName: 'Puri'},
+    { placeId: '1', placeName: 'Pune' },
+    { placeId: '2', placeName: 'New Delhi' },
+    { placeId: '3', placeName: 'Puri' },
   ];
 
   Persons: any[] = [
-    { id: '1', name: 'Test Patient 1'},
-    { id: '2', name: 'Test Patient 2'}
+    { id: '1', name: 'Test Patient 1' },
+    { id: '2', name: 'Test Patient 2' }
   ];
 
   references: any[] = [
@@ -80,10 +88,20 @@ export class EditQuarantinePatientComponent implements OnInit {
     this.initLoginForm();
   }
 
+  ngAfterViewChecked() {
+    $('.dataTables_filter input, .dataTables_length select').addClass('form-control');
+  }
+
+  ngOnDestroy(): void {
+    if (this.dtTrigger) {
+      this.dtTrigger.unsubscribe();
+    }
+  }
+
   editInfo() {
     this.isReadOnly = !this.isReadOnly;
   }
-  
+
   public initLoginForm() {
 
     this.form = this.fb.group({
@@ -140,7 +158,7 @@ export class EditQuarantinePatientComponent implements OnInit {
     if (this.form.valid) {
       this.patientService.createPatient(null).subscribe((response: any) => {
         if (response) {
-          this.navigateToLocation();
+          this.BackToList();
         }
       });
 
@@ -160,7 +178,7 @@ export class EditQuarantinePatientComponent implements OnInit {
       $('.nav-tabs li:eq(0) a').trigger('click');
     }
   }
-  navigateToLocation() {
+  BackToList() {
     this.router.navigate(['/quarantinepersons']);
   }
 

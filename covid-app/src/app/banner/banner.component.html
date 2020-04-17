@@ -9,25 +9,17 @@
             <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">Banner</h3>
+                    <button class="btn btn-info btn-flat pull-right" (click)="openCreateBanner()">
+                        Add Banner
+                     </button>
                 </div>
                 <form class="form-horizontal">
                     <div class="box-body">
-                        <div class="col-md-12">
-                            <div class="form-group form-inline">
-                                <label class=" checkbox-inline" style="padding-right: 20px;">Search: </label> <input
-                                    class="form-control" type="text" />
-                                <button class="btn btn-info btn-flat pull-right" (click)="openCreateBanner()">
-                                    <b>
-                                        <span class="fa fa-user-plus"></span>
-                                    </b> Add Banner
-                                </button>
-                            </div>
-                        </div>
                         <div class="clearfix"></div>
                         <div class="col-md-12">
                             <div class="table-responsive">
 
-                                <table id="dataTable" class="table table-bordered table-hover">
+                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
                                             <th sortable="placeName" (sort)="onSort($event)">#</th>

@@ -12,22 +12,11 @@
                 </div>
                 <form class="form-horizontal">
                     <div class="box-body">
-                        <div class="col-md-12">
-                            <div class="form-group form-inline">
-                                <label class=" checkbox-inline" style="padding-right: 20px;">Search: </label> <input
-                                    class="form-control" type="text" placeholder="Search..."/>
-                                <!-- <button class="btn btn-info btn-flat pull-right" (click)="openCreateQuarantinePatient()">
-                                    <b>
-                                        <span class="fa fa-user-plus"></span>
-                                    </b> Add Person
-                                </button> -->
-                            </div>
-                        </div>
                         <div class="clearfix"></div>
                         <div class="col-md-12">
                             <div class="table-responsive">
 
-                                <table id="dataTable" class="table table-bordered table-hover">
+                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
                                             <th sortable="patientId" (sort)="onSort($event)">Person Id</th>

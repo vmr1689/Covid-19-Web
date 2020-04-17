@@ -39,3 +39,10 @@ export function createChild(row, tableColumns, tableData, lastupdatedtime, child
         },
     });
 }
+
+export const dtOptions: DataTables.Settings = {
+    autoWidth: false,
+    jQueryUI: true,
+    dom: '<"pull-left"f><"pull-right"l>tip',
+    order: ['9']
+};

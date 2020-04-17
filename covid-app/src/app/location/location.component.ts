@@ -1,6 +1,7 @@
-import { Component, OnInit, EventEmitter, Input, Output, QueryList, ViewChildren, AfterContentInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, QueryList, ViewChildren, AfterViewChecked } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sortable.directive';
 
@@ -9,14 +10,19 @@ import { Location, ngBootstrapTable } from '../shared/models';
 
 declare var $;
 
-
-
 @Component({
   selector: 'app-location',
   templateUrl: './location.component.html',
   styleUrls: ['./location.component.css']
 })
-export class LocationComponent implements OnInit, AfterContentInit {
+export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
+  public dtOptions: DataTables.Settings = {
+    autoWidth: false,
+    jQueryUI: true,
+    dom: '<"pull-left"f><"pull-right"l>tip',
+    order: ['9']
+  };
+  public dtTrigger = new Subject();
 
   public model: Location = {} as Location;
   public patientModel: any = {};
@@ -32,14 +38,22 @@ export class LocationComponent implements OnInit, AfterContentInit {
     this.getAllLocations();
   }
 
-  ngAfterContentInit() {
-
+  ngAfterViewChecked() {
+    $('.dataTables_filter input, .dataTables_length select').addClass('form-control');
   }
+
+  ngOnDestroy(): void {
+    if (this.dtTrigger) {
+      this.dtTrigger.unsubscribe();
+    }
+  }
+
   getAllLocations() {
     this.locationService.getAllLocations().subscribe((response: Location[]) => {
       this.locations = [];
       if (response && response.length > 0) {
         this.locations = response;
+        this.dtTrigger.next();
       }
     });
   }
@@ -108,7 +122,7 @@ export class LocationComponent implements OnInit, AfterContentInit {
     $('#deleteLocation').modal('toggle');
   }
 
-  
+
   addLocation(event, form: NgForm) {
 
   }

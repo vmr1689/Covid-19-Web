@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChildren, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren, ViewChild, OnDestroy, AfterViewChecked } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -6,6 +6,7 @@ import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sor
 
 import { PatientService } from '../shared/services';
 import { Patient, ngBootstrapTable } from '../shared/models';
+import { Subject } from 'rxjs';
 
 declare var $;
 
@@ -14,8 +15,14 @@ declare var $;
   templateUrl: './quarantine-patient.component.html',
   styleUrls: ['./quarantine-patient.component.css']
 })
-export class QuarantinePatientComponent implements OnInit {
-
+export class QuarantinePatientComponent implements OnInit, AfterViewChecked, OnDestroy {
+  public dtOptions: DataTables.Settings = {
+    autoWidth: false,
+    jQueryUI: true,
+    dom: '<"pull-left"f><"pull-right"l>tip',
+  };
+  public dtTrigger = new Subject();
+  
   public patients: Patient[] = [];
   publiclocationTable: ngBootstrapTable;
   public model: Patient;
@@ -54,12 +61,22 @@ export class QuarantinePatientComponent implements OnInit {
     this.getAllPatients();
   }
 
+  ngAfterViewChecked() {
+    $('.dataTables_filter input, .dataTables_length select').addClass('form-control');
+  }
+
+  ngOnDestroy(): void {
+    if (this.dtTrigger) {
+      this.dtTrigger.unsubscribe();
+    }
+  }
 
   getAllPatients() {
     this.patientService.getAllPatients().subscribe((response: Patient[]) => {
       this.patients = [];
       if (response && response.length > 0) {
         this.patients = response;
+        this.dtTrigger.next();
       }
     });
   }

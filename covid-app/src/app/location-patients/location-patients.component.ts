@@ -1,6 +1,7 @@
-import { Component, OnInit, QueryList, ViewChildren, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren, ViewChild , OnDestroy, AfterViewChecked } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
 
 import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sortable.directive';
 
@@ -14,8 +15,13 @@ declare var $;
   templateUrl: './location-patients.component.html',
   styleUrls: ['./location-patients.component.css']
 })
-export class LocationPatientsComponent implements OnInit {
-
+export class LocationPatientsComponent implements OnInit, AfterViewChecked, OnDestroy {
+  public dtOptions: DataTables.Settings = {
+    autoWidth: false,
+    jQueryUI: true,
+    dom: '<"pull-left"f><"pull-right"l>tip',
+  };
+  public dtTrigger = new Subject();
   public locations: Location[] = [];
   public locationId: number;
   public location: Location = {} as Location;
@@ -40,6 +46,16 @@ export class LocationPatientsComponent implements OnInit {
     });
   }
 
+  ngAfterViewChecked() {
+    $('.dataTables_filter input, .dataTables_length select').addClass('form-control');
+  }
+
+  ngOnDestroy(): void {
+    if (this.dtTrigger) {
+      this.dtTrigger.unsubscribe();
+    }
+  }
+
   getAllLocations() {
     this.locationService.getAllLocations().subscribe((response: Location[]) => {
       this.locations = [];
@@ -55,6 +71,7 @@ export class LocationPatientsComponent implements OnInit {
       this.patients = [];
       if (response && response.length > 0) {
         this.patients = response;
+        this.dtTrigger.next();
       }
     });
   }

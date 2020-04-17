@@ -37,31 +37,32 @@
           <li *ngIf="!currentUser.username" class="custom-hide-menu-mobile" routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/login']">Login</a></li>
 
-          <li class="custom-hide-menu-mobile" routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/']">Home <span
-                class="sr-only">(current)</span></a></li>
+          <li class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><a
+              [routerLink]="['/']">Home <span class="sr-only">(current)</span></a></li>
 
           <li *appHasRole="['SuperAdmin']" class="custom-hide-menu-mobile" routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/users']">Users</a></li>
 
-          <li *appHasRole="['Level1']" class="custom-hide-menu-mobile" routerLinkActive="active"
+          <li *appHasRole="['Admin']" class="custom-hide-menu-mobile" routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/location']">Location</a></li>
 
-          <li *appHasRole="['Level1']" class="custom-hide-menu-mobile" routerLinkActive="active"
+          <li *appHasRole="['Admin']" class="custom-hide-menu-mobile" routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/patients']">Patients</a></li>
 
-          <li *appHasRole="['Level1']" class="custom-hide-menu-mobile" routerLinkActive="active"
+          <li *appHasRole="['Admin']" class="custom-hide-menu-mobile" routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/quarantinepersons']">Quarantine Persons</a>
           </li>
 
-          <li *appHasRole="['Level1']" class="custom-hide-menu-mobile" routerLinkActive="active"
+          <li *appHasRole="['Admin']" class="custom-hide-menu-mobile" routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }" class="dropdown">
-            <a  href="javascript:void(0)" class="dropdown-toggle"
-              data-toggle="dropdown">Settings <span class="caret"></span></a>
+            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Settings <span
+                class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li *appHasRole="['Level1']" class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              <li *appHasRole="['Admin']" class="custom-hide-menu-mobile" routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }">
                 <a [routerLink]="['/updates']">Updates</a></li>
-              <li *appHasRole="['Level1']" class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              <li *appHasRole="['Admin']" class="custom-hide-menu-mobile" routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }">
                 <a [routerLink]="['/banner']">Banner</a></li>
             </ul>
           </li>

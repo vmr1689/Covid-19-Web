@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { DataTablesModule } from 'angular-datatables';
 
 // used to create fake backend
 import { fakeBackendProvider, AuthGuard, JwtInterceptor, ErrorInterceptor } from './shared/helpers';
@@ -69,10 +69,10 @@ import { SpinnerComponent } from './spinner/spinner.component';
     ReactiveFormsModule,
     NgbModule,
     BrowserAnimationsModule,
-    NgxDatatableModule,
     BsDatepickerModule.forRoot(),
     TimepickerModule.forRoot(),
     HttpClientModule,
+    DataTablesModule,
     AppRoutingModule,
     DirectivesModule
   ],

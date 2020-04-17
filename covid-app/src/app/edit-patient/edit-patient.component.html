@@ -199,6 +199,8 @@
 
                                 <div class="row text-right">
                                     <div class="col-md-12">
+                                        <button type="button" (click)="BackToList()" class="btn btn-default"
+                                        style="margin-right:5px">Cancel</button>
 
                                         <button type="button" (click)="previousTab()"
                                             class="pad_ex btn btn-default btn-flat prev-step"
@@ -222,7 +224,7 @@
                                 </div> -->
                                 <div class="table-responsive">
 
-                                    <table id="dataTable" class="table table-bordered table-hover">
+                                    <table datatable [dtOptions]="dtOptions" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
                                                 <th sortable="placeName" (sort)="onLocationSort($event)">Location</th>
@@ -266,11 +268,14 @@
                                             </tr>
                                         </tbody>
                                     </table>
-
+                                    <br>
                                 </div>
 
                                 <div class="row text-right">
                                     <div class="col-md-12">
+                                        <button type="button" (click)="BackToList()" class="btn btn-default"
+                                            style="margin-right:5px">Cancel</button>
+
                                         <button type="button" (click)="previousTab()"
                                             class="pad_ex btn btn-default btn-flat prev-step"
                                             style="margin-right:5px">Previous</button>
@@ -293,7 +298,7 @@
                                 </div> -->
                                 <div class="table-responsive">
 
-                                    <table id="dataTable" class="table table-bordered table-hover">
+                                    <table datatable [dtOptions]="dtOptions" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
                                                 <th sortable="deviceId" (sort)="onDeviceSort($event)">Bluetooth Device Id</th>
@@ -333,10 +338,14 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <br>
                                 </div>
 
                                 <div class="row text-right">
                                     <div class="col-md-12">
+                                        <button type="button" (click)="BackToList()" class="btn btn-default"
+                                            style="margin-right:5px">Cancel</button>
+
                                         <button type="button" (click)="previousTab()"
                                             class="pad_ex btn btn-default btn-flat prev-step"
                                             style="margin-right:5px">Previous</button>
@@ -427,6 +436,9 @@
 
                                 <div class="row text-right">
                                     <div class="col-md-12">
+                                        <button type="button" (click)="BackToList()" class="btn btn-default"
+                                            style="margin-right:5px">Cancel</button>
+                                            
                                         <button type="button" (click)="previousTab()"
                                             class="pad_ex btn btn-default btn-flat prev-step"
                                             style="margin-right:5px">Previous</button>

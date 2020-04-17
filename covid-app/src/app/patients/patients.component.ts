@@ -1,6 +1,7 @@
-import { Component, OnInit, QueryList, ViewChildren, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren, ViewChild, OnDestroy, AfterViewChecked } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
 
 import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sortable.directive';
 
@@ -14,7 +15,13 @@ declare var $;
   templateUrl: './patients.component.html',
   styleUrls: ['./patients.component.css']
 })
-export class PatientsComponent implements OnInit {
+export class PatientsComponent implements OnInit, AfterViewChecked, OnDestroy {
+  public dtOptions: DataTables.Settings = {
+    autoWidth: false,
+    jQueryUI: true,
+    dom: '<"pull-left"f><"pull-right"l>tip',
+  };
+  public dtTrigger = new Subject();
 
   public patients: Patient[] = [];
   publiclocationTable: ngBootstrapTable;
@@ -40,7 +47,7 @@ export class PatientsComponent implements OnInit {
   public placeId: AbstractControl;
   public severity: AbstractControl;
   public submitted: boolean;
-  
+
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   @ViewChild('formDirective') private formDirective: NgForm;
 
@@ -54,6 +61,15 @@ export class PatientsComponent implements OnInit {
     this.getAllPatients();
   }
 
+  ngAfterViewChecked() {
+    $('.dataTables_filter input, .dataTables_length select').addClass('form-control');
+  }
+
+  ngOnDestroy(): void {
+    if (this.dtTrigger) {
+      this.dtTrigger.unsubscribe();
+    }
+  }
 
   getAllPatients() {
     this.patientService.getAllPatients().subscribe((response: Patient[]) => {
@@ -70,10 +86,11 @@ export class PatientsComponent implements OnInit {
             element.rowColor = '#dd4b39';
           } else if (element.status === 'deceased') {
             element.rowColor = '#0073b7';
-          } 
+          }
         });
+        this.dtTrigger.next();
       }
-      
+
     });
   }
 

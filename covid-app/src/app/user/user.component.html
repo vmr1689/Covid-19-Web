@@ -9,55 +9,44 @@
             <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">Users</h3>
+                    <button class="btn btn-info btn-flat pull-right" (click)="openCreateUser()">
+                        <b>
+                            <span class="fa fa-user-plus"></span>
+                        </b> Add User
+                    </button>
                 </div>
                 <form class="form-horizontal">
                     <div class="box-body">
-                        <div class="col-md-12">
-                            <div class="form-group form-inline">
-                                <label class=" checkbox-inline" style="padding-right: 20px;">Search: </label> <input
-                                    class="form-control" type="text" />
-                                <!-- <div class="checkbox-inline">
-                                    <label class="checkbox-inline"><input type="checkbox" id="deletedrecord"
-                                            class="text-center" name="deletedrecord" (click)="ShowDeletedRecords()" />
-                                        Show Inactive Users? </label>
-                                </div> -->
-                                <button class="btn btn-info btn-flat pull-right" (click)="openCreateUser()">
-                                    <b>
-                                        <span class="fa fa-user-plus"></span>
-                                    </b> Add User
-                                </button>
-                            </div>
-                        </div>
                         <div class="clearfix"></div>
                         <div class="col-md-12">
                             <div class="table-responsive">
 
-                                <table id="dataTable" class="table table-bordered table-hover">
+                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th scope="col" sortable="lastName" (sort)="onSort($event)">Hospital Address</th>
-                                            <th scope="col" sortable="lastName" (sort)="onSort($event)">Hospital Id</th>
-                                            <th scope="col" sortable="firstName" (sort)="onSort($event)">First Name</th>
-                                            <th scope="col" sortable="lastName" (sort)="onSort($event)">Last Name</th>
-                                            <th scope="col" sortable="username" (sort)="onSort($event)">Email</th>
-                                            <th scope="col" sortable="phoneNumber" (sort)="onSort($event)">Phone Number
-                                            </th>
-                                            <th scope="col" sortable="isEmailConfirmed" (sort)="onSort($event)">Email
-                                                Confirmed</th>
-                                            <th scope="col" sortable="role" (sort)="onSort($event)">Role</th>
-                                            <th scope="col" sortable="status" (sort)="onSort($event)">Status</th>
+                                            <th>Hospital ID</th>
+                                            <th>Hospital Name</th>
+                                            <th>Hospital Address</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>Phone Number</th>
+                                            <!-- <th>Email Confirmed</th> -->
+                                            <th>Role</th>
+                                            <th>Status</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let data of users">
                                             <td>{{data.hospitalId}}</td>
+                                            <td>{{data.hospitalName}}</td>
                                             <td>{{data.hospitalAddress}}</td>
                                             <td>{{data.firstName}}</td>
                                             <td>{{data.lastName}}</td>
                                             <td>{{data.username}}</td>
                                             <td>{{data.phoneNumber}}</td>
-                                            <td>{{data.isEmailConfirmed ? 'Yes': 'No'}}</td>
+                                            <!-- <td>{{data.isEmailConfirmed ? 'Yes': 'No'}}</td> -->
                                             <td>{{data.role}}</td>
                                             <td>{{data.status ? 'Active': 'In-Active'}}</td>
                                             <td>
@@ -94,59 +83,59 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close">
                     <span aria-hidden="true">×</span>
                 </button>
                 <h4 class="modal-title">Add User</h4>
             </div>
-            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && addUser(f)" #f="ngForm" novalidate>
+            <form class="form-horizontal" name="addform" (ngSubmit)="addform.form.valid && addUser(addform)" #addform="ngForm" novalidate>
                 <div class="modal-body">
                     <div class="row">
 
                         <div class="col-md-6 col-xs-12">
                             <div class="form-group">
                                 <div class="col-sm-4">
-                                    <label for="firstName" class="control-label">First Name:</label>
+                                    <label for="addformfirstName" class="control-label">First Name:</label>
                                 </div>
     
                                 <div class="col-sm-8">
-                                    <input name="id" id="id" [(ngModel)]="model.id" #id="ngModel" type="hidden"
+                                    <input name="addformid" id="addformid" [(ngModel)]="model.id" #addformid="ngModel" type="hidden"
                                         class="form-control" />
     
-                                    <input id="firstName" type="text" autocomplete="off" class="form-control"
-                                        name="firstName" [(ngModel)]="model.firstName" #firstName="ngModel"
+                                    <input id="addformfirstName" type="text" autocomplete="off" class="form-control"
+                                        name="addformfirstName" [(ngModel)]="model.firstName" #addformfirstName="ngModel"
                                         placeholder="First Name" required>
     
-                                    <div *ngIf="f.submitted && !firstName.valid" class="text-danger">First Name is required
+                                    <div *ngIf="addform.submitted && addformfirstName.dirty && !addformfirstName.valid" class="text-danger">First Name is required
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-sm-4">
-                                    <label for="lastName" class="control-label">Last Name:</label>
+                                    <label for="addformlastName" class="control-label">Last Name:</label>
                                 </div>
     
                                 <div class="col-sm-8">
-                                    <input id="lastName" type="text" autocomplete="off" class="form-control" name="lastName"
-                                        [(ngModel)]="model.lastName" #lastName="ngModel" placeholder="Last Name" required>
+                                    <input id="addformlastName" type="text" autocomplete="off" class="form-control" name="addformlastName"
+                                        [(ngModel)]="model.lastName" #addformlastName="ngModel" placeholder="Last Name" required>
     
-                                    <div *ngIf="f.submitted && !lastName.valid" class="text-danger">Last Name is required
+                                    <div *ngIf="addform.submitted && addformlastName.dirty && !addformlastName.valid" class="text-danger">Last Name is required
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group ">
                                 <div class="col-sm-4">
-                                    <label for="phoneNumber" class="control-label">Phone Number:</label>
+                                    <label for="addformphoneNumber" class="control-label">Phone Number:</label>
                                 </div>
     
                                 <div class="col-sm-8">
-                                    <input id="phoneNumber" type="text" autocomplete="off" class="form-control"
-                                        name="phoneNumber" [(ngModel)]="model.phoneNumber" #phoneNumber="ngModel"
+                                    <input id="addformphoneNumber" type="text" autocomplete="off" class="form-control"
+                                        name="addformphoneNumber" [(ngModel)]="model.phoneNumber" #addformphoneNumber="ngModel"
                                         placeholder="Phone Number" required>
     
-                                    <div *ngIf="f.submitted && !phoneNumber.valid" class="text-danger">Phone Number is
+                                    <div *ngIf="addform.submitted && addformphoneNumber.dirty && !addformphoneNumber.valid" class="text-danger">Phone Number is
                                         required
                                     </div>
                                 </div>
@@ -154,91 +143,107 @@
 
                             <div class="form-group">
                                 <div class="col-sm-4">
-                                    <label for="role" class="control-label">Active:</label>
+                                    <label for="addformrole" class="control-label">Role:</label>
                                 </div>
     
                                 <div class="col-sm-8">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input id="status" [(ngModel)]="model.status" #status="ngModel" type="checkbox"
-                                                id="status" name="status">
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-xs-12">
-
-                            <div class="form-group">
-                                <div class="col-sm-4">
-                                    <label for="role" class="control-label">Role:</label>
-                                </div>
-    
-                                <div class="col-sm-8">
-                                    <select name="role" #role="ngModel" [(ngModel)]="model.role" id="role"
+                                    <select name="addformrole" #addformrole="ngModel" [(ngModel)]="model.role" id="addformrole"
                                         class="form-control" required>
                                         <option *ngFor="let location of roles; let i = index" value={{location.id}}>
                                             {{location.value}}
                                         </option>
                                     </select>
     
-                                    <div *ngIf="f.submitted && !role.valid" class="text-danger">Role is required
+                                    <div *ngIf="addform.submitted && addformrole.dirty && !addformrole.valid" class="text-danger">Role is required
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-sm-4">
-                                    <label for="username" class="control-label">Email:</label>
+                                    <label for="addformstatus" class="control-label">Active:</label>
                                 </div>
     
                                 <div class="col-sm-8">
-                                    <input id="username" type="text" autocomplete="off" class="form-control" name="username"
-                                        [(ngModel)]="model.username" #username="ngModel" placeholder="Email" required>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="addformstatus" [(ngModel)]="model.status" #addformstatus="ngModel" type="checkbox"
+                                                id="addformstatus" name="addformstatus">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6 col-xs-12">
+
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <label for="addformusername" class="control-label">Email:</label>
+                                </div>
     
-                                    <div *ngIf="f.submitted && !username.valid" class="text-danger">Email is required
+                                <div class="col-sm-8">
+                                    <input id="addformusername" type="text" autocomplete="off" class="form-control" name="addformusername"
+                                        [(ngModel)]="model.username" #addformusername="ngModel" placeholder="Email" required>
+    
+                                    <div *ngIf="addform.submitted && addformusername.dirty && !addformusername.valid" class="text-danger">Email is required
                                     </div>
                                 </div>
                             </div>
     
                             <div class="form-group">
                                 <div class="col-sm-4">
-                                    <label for="password" class="control-label">Password:</label>
+                                    <label for="addformpassword" class="control-label">Password:</label>
                                 </div>
     
                                 <div class="col-sm-8">
-                                    <input id="password" type="text" autocomplete="off" class="form-control" name="password"
-                                        [(ngModel)]="model.password" #password="ngModel" placeholder="Password" required>
+                                    <input id="addformpassword" type="text" autocomplete="off" class="form-control" name="addformpassword"
+                                        [(ngModel)]="model.password" #addformpassword="ngModel" placeholder="Password" required>
     
-                                    <div *ngIf="f.submitted && !password.valid" class="text-danger">Password is required
+                                    <div *ngIf="addform.submitted && addformhospitalId.dirty && addformhospitalId.dirty && !addformpassword.valid" class="text-danger">Password is required
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-sm-4">
-                                    <label for="hospitalId" class="control-label">Hospital ID:</label>
+                                    <label for="addformhospitalId" class="control-label">Hospital ID:</label>
                                 </div>
     
                                 <div class="col-sm-8">
-                                    <input id="hospitalId" type="text" autocomplete="off" class="form-control" name="hospitalId"
-                                        [(ngModel)]="model.hospitalId" #hospitalId="ngModel" placeholder="Hospital ID" required>
+                                    <input id="addformhospitalId" type="text" autocomplete="off" class="form-control" name="addformhospitalId"
+                                        [(ngModel)]="model.hospitalId" #addformhospitalId="ngModel" placeholder="Hospital ID">
     
-                                    <div *ngIf="f.submitted && !hospitalId.valid" class="text-danger">Hospital ID is required
+                                    <div *ngIf="addform.submitted && addformhospitalId.dirty && !addformhospitalId.valid" class="text-danger">Hospital ID is required
                                     </div>
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <div class="col-sm-4">
-                                    <label for="hospitalAddress" class="control-label">Hospital Address:</label>
+                                    <label for="addformhospitalName" class="control-label">Hospital Name:</label>
                                 </div>
     
                                 <div class="col-sm-8">
-                                    <input id="hospitalAddress" type="text" autocomplete="off" class="form-control" name="hospitalAddress"
-                                        [(ngModel)]="model.hospitalAddress" #hospitalAddress="ngModel" placeholder="Hospital Address" required>
+                                    <input id="addformhospitalName" type="text" autocomplete="off" class="form-control" name="addformhospitalName"
+                                        [(ngModel)]="model.hospitalName" #addformhospitalName="ngModel" placeholder="Hospital Name">
     
-                                    <div *ngIf="f.submitted && !hospitalAddress.valid" class="text-danger">Hospital Address is required
+                                    <div *ngIf="addform.submitted && addformhospitalName.dirty && !addformhospitalName.valid" class="text-danger">Hospital Name is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <label for="addformhospitalAddress" class="control-label">Hospital Address:</label>
+                                </div>
+    
+                                <div class="col-sm-8">
+                                    <input id="addformhospitalAddress" type="text" autocomplete="off" class="form-control" name="addformhospitalAddress"
+                                        [(ngModel)]="model.hospitalAddress" #addformhospitalAddress="ngModel" placeholder="Hospital Address">
+    
+                                    <div *ngIf="addform.submitted && addformhospitalAddress.dirty && !addformhospitalAddress.valid" class="text-danger">Hospital Address is required
                                     </div>
                                 </div>
                             </div>
@@ -247,7 +252,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
-                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
+                    <button [disabled]="!addform.form.valid" class="btn btn-info btn-flat">Save</button>
                 </div>
             </form>
         </div>
@@ -259,12 +264,12 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close">
                     <span aria-hidden="true">×</span>
                 </button>
                 <h4 class="modal-title">Edit User</h4>
             </div>
-            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && editUser(f)" #f="ngForm" novalidate>
+            <form class="form-horizontal" name="editForm" (ngSubmit)="editForm.form.valid && editUser(editForm)" #editForm="ngForm" novalidate>
                 <div class="modal-body">
                     <div class="row">
 
@@ -282,7 +287,7 @@
                                         name="firstName" [(ngModel)]="model.firstName" #firstName="ngModel"
                                         placeholder="First Name" required>
     
-                                    <div *ngIf="f.submitted && !firstName.valid" class="text-danger">First Name is required
+                                    <div *ngIf="editForm.submitted && !firstName.valid" class="text-danger">First Name is required
                                     </div>
                                 </div>
                             </div>
@@ -296,7 +301,7 @@
                                     <input id="lastName" type="text" autocomplete="off" class="form-control" name="lastName"
                                         [(ngModel)]="model.lastName" #lastName="ngModel" placeholder="Last Name" required>
     
-                                    <div *ngIf="f.submitted && !lastName.valid" class="text-danger">Last Name is required
+                                    <div *ngIf="editForm.submitted && !lastName.valid" class="text-danger">Last Name is required
                                     </div>
                                 </div>
                             </div>
@@ -311,8 +316,26 @@
                                         name="phoneNumber" [(ngModel)]="model.phoneNumber" #phoneNumber="ngModel"
                                         placeholder="Phone Number" required>
     
-                                    <div *ngIf="f.submitted && !phoneNumber.valid" class="text-danger">Phone Number is
+                                    <div *ngIf="editForm.submitted && !phoneNumber.valid" class="text-danger">Phone Number is
                                         required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <label for="role" class="control-label">Role:</label>
+                                </div>
+    
+                                <div class="col-sm-8">
+                                    <select name="role" #role="ngModel" [(ngModel)]="model.role" id="role"
+                                        class="form-control" required>
+                                        <option *ngFor="let location of roles; let i = index" value={{location.id}}>
+                                            {{location.value}}
+                                        </option>
+                                    </select>
+    
+                                    <div *ngIf="editForm.submitted && !role.valid" class="text-danger">Role is required
                                     </div>
                                 </div>
                             </div>
@@ -335,23 +358,7 @@
 
                         <div class="col-md-6 col-xs-12">
 
-                            <div class="form-group">
-                                <div class="col-sm-4">
-                                    <label for="role" class="control-label">Role:</label>
-                                </div>
-    
-                                <div class="col-sm-8">
-                                    <select name="role" #role="ngModel" [(ngModel)]="model.role" id="role"
-                                        class="form-control" required>
-                                        <option *ngFor="let location of roles; let i = index" value={{location.id}}>
-                                            {{location.value}}
-                                        </option>
-                                    </select>
-    
-                                    <div *ngIf="f.submitted && !role.valid" class="text-danger">Role is required
-                                    </div>
-                                </div>
-                            </div>
+                            
 
                             <div class="form-group">
                                 <div class="col-sm-4">
@@ -362,7 +369,7 @@
                                     <input id="username" type="text" autocomplete="off" class="form-control" name="username"
                                         [(ngModel)]="model.username" #username="ngModel" placeholder="Email" required>
     
-                                    <div *ngIf="f.submitted && !username.valid" class="text-danger">Email is required
+                                    <div *ngIf="editForm.submitted && !username.valid" class="text-danger">Email is required
                                     </div>
                                 </div>
                             </div>
@@ -376,7 +383,7 @@
                                     <input id="password" type="text" autocomplete="off" class="form-control" name="password"
                                         [(ngModel)]="model.password" #password="ngModel" placeholder="Password" required>
     
-                                    <div *ngIf="f.submitted && !password.valid" class="text-danger">Password is required
+                                    <div *ngIf="editForm.submitted && !password.valid" class="text-danger">Password is required
                                     </div>
                                 </div>
                             </div>
@@ -387,12 +394,28 @@
     
                                 <div class="col-sm-8">
                                     <input id="hospitalId" type="text" autocomplete="off" class="form-control" name="hospitalId"
-                                        [(ngModel)]="model.hospitalId" #hospitalId="ngModel" placeholder="Hospital ID" required>
+                                        [(ngModel)]="model.hospitalId" #hospitalId="ngModel" placeholder="Hospital ID">
     
-                                    <div *ngIf="f.submitted && !hospitalId.valid" class="text-danger">Hospital ID is required
+                                    <div *ngIf="editForm.submitted && !hospitalId.valid" class="text-danger">Hospital ID is required
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <label for="hospitalName" class="control-label">Hospital Name:</label>
+                                </div>
+    
+                                <div class="col-sm-8">
+                                    <input id="hospitalName" type="text" autocomplete="off" class="form-control" name="hospitalName"
+                                        [(ngModel)]="model.hospitalName" #hospitalName="ngModel" placeholder="Hospital Name">
+    
+                                    <div *ngIf="editForm.submitted && !hospitalName.valid" class="text-danger">Hospital Name is required
+                                    </div>
+                                </div>
+                            </div>
+
+
                             <div class="form-group">
                                 <div class="col-sm-4">
                                     <label for="hospitalAddress" class="control-label">Hospital Address:</label>
@@ -400,9 +423,9 @@
     
                                 <div class="col-sm-8">
                                     <input id="hospitalAddress" type="text" autocomplete="off" class="form-control" name="hospitalAddress"
-                                        [(ngModel)]="model.hospitalAddress" #hospitalAddress="ngModel" placeholder="Hospital Address" required>
+                                        [(ngModel)]="model.hospitalAddress" #hospitalAddress="ngModel" placeholder="Hospital Address">
     
-                                    <div *ngIf="f.submitted && !hospitalAddress.valid" class="text-danger">Hospital Address is required
+                                    <div *ngIf="editForm.submitted && !hospitalAddress.valid" class="text-danger">Hospital Address is required
                                     </div>
                                 </div>
                             </div>
@@ -411,7 +434,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
-                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
+                    <button [disabled]="!editForm.form.valid" class="btn btn-info btn-flat">Save</button>
                 </div>
             </form>
         </div>
@@ -424,7 +447,7 @@
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close">
                     <span aria-hidden="true">×</span>
                 </button>
                 <h4 class="modal-title">Delete User</h4>

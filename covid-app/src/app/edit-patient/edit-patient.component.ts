@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren, AfterViewChecked, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -6,6 +6,7 @@ import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sor
 
 import { Patient } from '../shared/models';
 import { PatientService } from '../shared/services';
+import { Subject } from 'rxjs';
 
 declare var $;
 
@@ -14,7 +15,13 @@ declare var $;
   templateUrl: './edit-patient.component.html',
   styleUrls: ['./edit-patient.component.css']
 })
-export class EditPatientComponent implements OnInit {
+export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy {
+  public dtOptions: DataTables.Settings = {
+    autoWidth: false,
+    jQueryUI: true,
+    dom: '<"pull-left"f><"pull-right"l>tip',
+  };
+  public dtTrigger = new Subject();
 
   public form: FormGroup;
   public patientId: AbstractControl;
@@ -38,8 +45,8 @@ export class EditPatientComponent implements OnInit {
   public deceased: AbstractControl;
   public isReadOnly = true;
 
-  public locationModel: any = { placeId: '', severity: '', date: ''};
-  public deviceModel: any = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: ''};
+  public locationModel: any = { placeId: '', severity: '', date: '' };
+  public deviceModel: any = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: '' };
 
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
@@ -72,6 +79,16 @@ export class EditPatientComponent implements OnInit {
     this.initLoginForm();
   }
 
+  ngAfterViewChecked() {
+    $('.dataTables_filter input, .dataTables_length select').addClass('form-control');
+  }
+
+  ngOnDestroy(): void {
+    if (this.dtTrigger) {
+      this.dtTrigger.unsubscribe();
+    }
+  }
+
   public initLoginForm() {
 
     this.form = this.fb.group({
@@ -102,7 +119,7 @@ export class EditPatientComponent implements OnInit {
     this.email = this.form.controls.email;
 
     this.address1 = this.form.controls.address1;
-    
+
 
     this.zipcode = this.form.controls.zipcode;
     this.latitude = this.form.controls.latitude;
@@ -127,7 +144,7 @@ export class EditPatientComponent implements OnInit {
     if (this.form.valid) {
       this.patientService.createPatient(null).subscribe((response: any) => {
         if (response) {
-          this.navigateToLocation();
+          this.BackToList();
         }
       });
 
@@ -149,22 +166,22 @@ export class EditPatientComponent implements OnInit {
       $('.nav-tabs li:eq(0) a').trigger('click');
     }
   }
-  navigateToLocation() {
+  BackToList() {
     this.router.navigate(['/patients']);
   }
 
   CreateLocationPopup($event) {
-    this.locationModel =  { placeId: '', severity: '', date: ''};
+    this.locationModel = { placeId: '', severity: '', date: '' };
     $('#addLocation').modal('toggle');
   }
 
   openEditLocationPopup($event, locationRow: any) {
-    this.locationModel =  { placeId: '', severity: '', date: ''};
+    this.locationModel = { placeId: '', severity: '', date: '' };
     $('#editLocation').modal('toggle');
   }
 
   openDeleteLocationPopup($event, locationRow: any) {
-    this.locationModel =  { placeId: '', severity: '', date: ''};
+    this.locationModel = { placeId: '', severity: '', date: '' };
     $('#deleteLocation').modal('toggle');
   }
 
@@ -193,18 +210,18 @@ export class EditPatientComponent implements OnInit {
 
   CreateDevicePopup(event) {
     event.preventDefault();
-    this.deviceModel = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: ''};
+    this.deviceModel = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: '' };
     $('#addDevice').modal('toggle');
   }
 
   openEditDevicePopup(event, deviceRow: any) {
     event.preventDefault();
-    this.deviceModel = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: ''};
+    this.deviceModel = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: '' };
     $('#editDevice').modal('toggle');
   }
 
   openDeleteDevicePopup(event, deviceRow: any) {
-    this.deviceModel = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: ''};
+    this.deviceModel = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: '' };
     $('#deleteDevice').modal('toggle');
   }
 

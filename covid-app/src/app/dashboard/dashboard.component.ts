@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, NgZone, OnDestroy, AfterViewInit, ViewChild, AfterViewChecked } from '@angular/core';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
@@ -26,7 +26,7 @@ declare var $;
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
+export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
 
   public bannerList: SampleWebData;
   public infoIndex = 0;
@@ -49,6 +49,10 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getBannerData();
     this.getUpdatesData();
     this.getDetails();
+  }
+
+  ngAfterViewChecked() {
+    $('.dataTables_filter input, .dataTables_length select').addClass('form-control');
   }
 
   public getStateDistrictData() {

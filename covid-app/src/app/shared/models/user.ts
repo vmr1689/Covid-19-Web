@@ -11,4 +11,5 @@ export class User {
     status: boolean;
     hospitalId?: string;
     hospitalAddress?: string;
+    hospitalName?: string;
 }

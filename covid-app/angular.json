@@ -31,7 +31,8 @@
               "node_modules/admin-lte/bower_components/Ionicons/css/ionicons.min.css",
               "node_modules/admin-lte/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css",
               "node_modules/admin-lte/dist/css/AdminLTE.min.css",
-              "node_modules/admin-lte/dist/css/skins/_all-skins.min.css"
+              "node_modules/admin-lte/dist/css/skins/_all-skins.min.css",
+              "node_modules/datatables.net-dt/css/jquery.dataTables.css"
             ],
             "scripts": [
               "node_modules/admin-lte/bower_components/jquery/dist/jquery.min.js",
@@ -42,7 +43,8 @@
               "node_modules/admin-lte/bower_components/fastclick/lib/fastclick.js",
               "node_modules/admin-lte/dist/js/adminlte.min.js",
               "node_modules/admin-lte/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js",
-              "node_modules/admin-lte/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"
+              "node_modules/admin-lte/bower_components/jquery-slimscroll/jquery.slimscroll.min.js",
+              "node_modules/datatables.net/js/jquery.dataTables.js"
             ]
           },
           "configurations": {

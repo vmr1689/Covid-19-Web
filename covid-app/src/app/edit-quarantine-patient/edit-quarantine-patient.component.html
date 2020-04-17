@@ -197,6 +197,8 @@
                                 </div>
                                 <div class="row text-right">
                                     <div class="col-md-12">
+                                        <button type="button" (click)="BackToList()" class="btn btn-default"
+                                            style="margin-right:5px">Cancel</button>
                                         <button type="button" (click)="previousTab()"
                                             class="pad_ex btn btn-default btn-flat prev-step"
                                             style="margin-right:5px">Previous</button>
@@ -211,15 +213,13 @@
                                     <div class="col-md-12" style="padding-bottom: 10px">
                                         <button type="button" (click)="CreateReferencePopup($event)"
                                             class="btn btn-info btn-flat pull-right" data-toggle="modal">
-                                            <b>
-                                                <span class="fa fa-user-plus"></span>
-                                            </b> Add Reference
+                                            Add Reference
                                         </button>
                                     </div>
                                 </div>
                                 <div class="table-responsive">
 
-                                    <table id="dataTable" class="table table-bordered table-hover">
+                                    <table datatable [dtOptions]="dtOptions" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
                                                 <th sortable="referenceId" (sort)="onReferenceSort($event)">Location
@@ -261,11 +261,14 @@
                                             </tr>
                                         </tbody>
                                     </table>
-
+                                    <br>
                                 </div>
 
                                 <div class="row text-right">
                                     <div class="col-md-12">
+                                        <button type="button" (click)="BackToList()" class="btn btn-default"
+                                            style="margin-right:5px">Cancel</button>
+
                                         <button type="button" (click)="previousTab()"
                                             class="pad_ex btn btn-default btn-flat prev-step"
                                             style="margin-right:5px">Previous</button>
@@ -399,6 +402,9 @@
 
                                 <div class="row text-right">
                                     <div class="col-md-12">
+                                        <button type="button" (click)="BackToList()" class="btn btn-default"
+                                            style="margin-right:5px">Cancel</button>
+                                            
                                         <button type="button" (click)="previousTab()"
                                             class="pad_ex btn btn-default btn-flat prev-step"
                                             style="margin-right:5px">Previous</button>
