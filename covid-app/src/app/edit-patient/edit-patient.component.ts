@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sortable.directive';
 
 import { Patient } from '../shared/models';
-import { PatientService } from '../shared/services';
+import { PatientService, SpinnerService } from '../shared/services';
 import { Subject } from 'rxjs';
 
 declare var $;
@@ -73,6 +73,7 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
     private router: Router,
     private patientService: PatientService,
     private activatedRoute: ActivatedRoute,
+    private spinnerService: SpinnerService
   ) { }
 
   ngOnInit(): void {

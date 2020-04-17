@@ -9,7 +9,7 @@
             <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">Location</h3>
-                    <button class="btn btn-info btn-flat pull-right" (click)="openCreateLocation($event)">
+                    <button class="btn btn-info btn-flat pull-right" (click)="openCreateLocation()">
                         Add Location
                     </button>
                 </div>
@@ -53,31 +53,31 @@
                                             <td>
 
                                                 <button style="margin-right:5px" title="Patients"
-                                                    (click)="openAssignedPatients($event, data)"
+                                                    (click)="openAssignedPatients(data)"
                                                     class="btn btn-small btn-flat btn-default">
                                                     <i class="btn-icon-only fa fa-users"> </i>
                                                 </button>
 
                                                 <button style="margin-right:5px" title="Edit Location"
-                                                    (click)="openEditLocation($event, data)"
+                                                    (click)="openEditLocation(data)"
                                                     class="btn btn-small btn-flat btn-warning">
                                                     <i class="btn-icon-only fa fa-pencil"> </i>
                                                 </button>
 
                                                 <button style="margin-right:5px" title="Delete Location"
-                                                    (click)="openDeleteLocation($event,data)"
+                                                    (click)="openDeleteLocation(data)"
                                                     class="btn btn-small btn-flat btn-danger">
                                                     <i class="btn-icon-only fa fa-trash"> </i>
                                                 </button>
 
                                                 <button style="margin-right:5px" title="Add Patient"
-                                                    (click)="openAddPatient($event, data)"
+                                                    (click)="openAddPatient(data)"
                                                     class="btn btn-small btn-flat btn-default">
                                                     <i class="btn-icon-only fa  fa-user"> </i>
                                                 </button>
 
                                                 <button style="margin-right:5px" title="Add Quarantine Person"
-                                                    (click)="openQuarantinePerson($event, data)"
+                                                    (click)="openQuarantinePerson(data)"
                                                     class="btn btn-small btn-flat btn-default">
                                                     <i class="btn-icon-only fa  fa-user-plus"> </i>
                                                 </button>
@@ -108,7 +108,7 @@
                 </button>
                 <h4 class="modal-title">Add Location</h4>
             </div>
-            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && addLocation($event, f)" #f="ngForm"
+            <form class="form-horizontal" name="addForm" (ngSubmit)="addForm.form.valid && addLocation(addForm)" #addForm="ngForm"
                 novalidate>
                 <div class="modal-body">
                     <div class="row">
@@ -128,7 +128,7 @@
                                         name="placeName" [(ngModel)]="model.placeName" #placeName="ngModel"
                                         placeholder="Place" required>
 
-                                    <div *ngIf="f.submitted && !placeName.valid" class="text-danger">Place is required
+                                    <div *ngIf="addForm.submitted && !placeName.valid" class="text-danger">Place is required
                                     </div>
                                 </div>
                             </div>
@@ -143,7 +143,7 @@
                                         name="latitude" [(ngModel)]="model.latitude" #latitude="ngModel"
                                         placeholder="Latitude" required>
 
-                                    <div *ngIf="f.submitted && !latitude.valid" class="text-danger">Latitude is required
+                                    <div *ngIf="addForm.submitted && !latitude.valid" class="text-danger">Latitude is required
                                     </div>
                                 </div>
                             </div>
@@ -158,7 +158,7 @@
                                         name="longitude" [(ngModel)]="model.longitude" #longitude="ngModel"
                                         placeholder="Longitude" required>
 
-                                    <div *ngIf="f.submitted && !longitude.valid" class="text-danger">Longitude is
+                                    <div *ngIf="addForm.submitted && !longitude.valid" class="text-danger">Longitude is
                                         required
                                     </div>
                                 </div>
@@ -188,7 +188,7 @@
                                         </option>
                                     </select>
 
-                                    <div *ngIf="f.submitted && !rootId.valid" class="text-danger">Root Location is
+                                    <div *ngIf="addForm.submitted && !rootId.valid" class="text-danger">Root Location is
                                         required
                                     </div>
 
@@ -202,7 +202,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
-                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
+                    <button [disabled]="!addForm.form.valid" class="btn btn-info btn-flat">Save</button>
                 </div>
             </form>
         </div>
@@ -218,7 +218,7 @@
                 </button>
                 <h4 class="modal-title">Edit Location</h4>
             </div>
-            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && editLocation($event, f)" #f="ngForm"
+            <form class="form-horizontal" name="editForm" (ngSubmit)="editForm.form.valid && editLocation(editForm)" #editForm="ngForm"
                 novalidate>
                 <div class="modal-body">
                     <div class="row">
@@ -238,7 +238,7 @@
                                         name="placeName" [(ngModel)]="model.placeName" #placeName="ngModel"
                                         placeholder="Place" required>
 
-                                    <div *ngIf="f.submitted && !placeName.valid" class="text-danger">Place is required
+                                    <div *ngIf="editForm.submitted && !placeName.valid" class="text-danger">Place is required
                                     </div>
                                 </div>
                             </div>
@@ -253,7 +253,7 @@
                                         name="latitude" [(ngModel)]="model.latitude" #latitude="ngModel"
                                         placeholder="Latitude" required>
 
-                                    <div *ngIf="f.submitted && !latitude.valid" class="text-danger">Latitude is required
+                                    <div *ngIf="editForm.submitted && !latitude.valid" class="text-danger">Latitude is required
                                     </div>
                                 </div>
                             </div>
@@ -268,7 +268,7 @@
                                         name="longitude" [(ngModel)]="model.longitude" #longitude="ngModel"
                                         placeholder="Longitude" required>
 
-                                    <div *ngIf="f.submitted && !longitude.valid" class="text-danger">Longitude is
+                                    <div *ngIf="editForm.submitted && !longitude.valid" class="text-danger">Longitude is
                                         required
                                     </div>
                                 </div>
@@ -298,7 +298,7 @@
                                         </option>
                                     </select>
 
-                                    <div *ngIf="f.submitted && !rootId.valid" class="text-danger">Root Location is
+                                    <div *ngIf="editForm.submitted && !rootId.valid" class="text-danger">Root Location is
                                         required
                                     </div>
 
@@ -312,7 +312,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
-                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
+                    <button [disabled]="!editForm.form.valid" class="btn btn-info btn-flat">Save</button>
                 </div>
             </form>
         </div>
@@ -335,7 +335,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">No</button>
-                <button (click)="deleteLocation($event, model)" class="btn btn-info btn-flat">Yes</button>
+                <button (click)="deleteLocation(model)" class="btn btn-info btn-flat">Yes</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -353,7 +353,7 @@
                 <h4 class="modal-title">Add Patient</h4>
             </div>
             <form class="form-horizontal" name="addPatientForm"
-                (ngSubmit)="addPatientForm.form.valid && addPatient($event, addPatientForm)" #addPatientForm="ngForm"
+                (ngSubmit)="addPatientForm.form.valid && addPatient(addPatientForm)" #addPatientForm="ngForm"
                 novalidate>
                 <div class="modal-body">
                     <div class="row">
@@ -545,7 +545,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button (click)="closeAddPatient($event)" type="button" class="btn btn-danger btn-flat"
+                    <button type="button" class="btn btn-danger btn-flat"
                         data-dismiss="modal">Close</button>
                     <button [disabled]="!addPatientForm.form.valid" class="btn btn-info btn-flat">Save</button>
                 </div>
@@ -563,9 +563,9 @@
                 </button>
                 <h4 class="modal-title">Add Quarantine Person</h4>
             </div>
-            <form class="form-horizontal" name="addQuarantinePersonForm"
-                (ngSubmit)="addQuarantinePersonForm.form.valid && addQuarantinePerson($event, addQuarantinePersonForm)"
-                #addQuarantinePersonForm="ngForm" novalidate>
+            <form class="form-horizontal" name="addQuarantineForm"
+                (ngSubmit)="addQuarantineForm.form.valid && addQuarantinePerson(addQuarantineForm)"
+                #addQuarantineForm="ngForm" novalidate>
 
                 <div class="modal-body">
                     <div class="row">
@@ -584,7 +584,7 @@
                                         name="qplaceName" [(ngModel)]="patientModel.placeName" #qplaceName="ngModel"
                                         placeholder="Location" required readonly="true">
 
-                                    <div *ngIf="addQuarantinePersonForm.submitted && !qplaceName.valid"
+                                    <div *ngIf="addQuarantineForm.submitted && !qplaceName.valid"
                                         class="text-danger">Location is
                                         required
                                     </div>
@@ -599,7 +599,7 @@
                                         name="firstName" [(ngModel)]="patientModel.firstName" #firstName="ngModel"
                                         placeholder="First Name" required>
 
-                                    <div *ngIf="addQuarantinePersonForm.submitted && !firstName.valid"
+                                    <div *ngIf="addQuarantineForm.submitted && !firstName.valid"
                                         class="text-danger">First
                                         Name is
                                         required
@@ -616,7 +616,7 @@
                                         name="lastName" [(ngModel)]="patientModel.lastName" #lastName="ngModel"
                                         placeholder="Last Name" required>
 
-                                    <div *ngIf="addQuarantinePersonForm.submitted && !lastName.valid"
+                                    <div *ngIf="addQuarantineForm.submitted && !lastName.valid"
                                         class="text-danger">First
                                         Name is
                                         required
@@ -632,7 +632,7 @@
                                     <input id="age" type="text" autocomplete="off" class="form-control" name="age"
                                         [(ngModel)]="patientModel.age" #age="ngModel" placeholder="Age" required>
 
-                                    <div *ngIf="addQuarantinePersonForm.submitted && !age.valid" class="text-danger">Age
+                                    <div *ngIf="addQuarantineForm.submitted && !age.valid" class="text-danger">Age
                                         is
                                         required
                                     </div>
@@ -674,7 +674,7 @@
                                         [(ngModel)]="patientModel.phone" #phone="ngModel" placeholder="Phone Number"
                                         required>
 
-                                    <div *ngIf="addQuarantinePersonForm.submitted && !phone.valid" class="text-danger">
+                                    <div *ngIf="addQuarantineForm.submitted && !phone.valid" class="text-danger">
                                         Phone
                                         Number is
                                         required
@@ -691,7 +691,7 @@
                                     <input id="email" type="text" autocomplete="off" class="form-control" name="email"
                                         [(ngModel)]="patientModel.email" #email="ngModel" placeholder="Email" required>
 
-                                    <div *ngIf="addQuarantinePersonForm.submitted && !email.valid" class="text-danger">
+                                    <div *ngIf="addQuarantineForm.submitted && !email.valid" class="text-danger">
                                         Email is
                                         required
                                     </div>
@@ -707,7 +707,7 @@
                                         name="address1" [(ngModel)]="patientModel.address1" #address1="ngModel"
                                         placeholder="Address" required>
 
-                                    <div *ngIf="addQuarantinePersonForm.submitted && !address1.valid"
+                                    <div *ngIf="addQuarantineForm.submitted && !address1.valid"
                                         class="text-danger">Address
                                          is
                                         required
@@ -724,7 +724,7 @@
                                         name="zipcode" [(ngModel)]="patientModel.zipcode" #zipcode="ngModel"
                                         placeholder="ZipCode" required>
 
-                                    <div *ngIf="addQuarantinePersonForm.submitted && !zipcode.valid"
+                                    <div *ngIf="addQuarantineForm.submitted && !zipcode.valid"
                                         class="text-danger">ZipCode
                                         is required
                                     </div>
@@ -735,9 +735,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button (click)="closeAddQuarantinePerson($event)" type="button" class="btn btn-danger btn-flat"
+                    <button type="button" class="btn btn-danger btn-flat"
                         data-dismiss="modal">Close</button>
-                    <button [disabled]="!addQuarantinePersonForm.form.valid" class="btn btn-info btn-flat">Save</button>
+                    <button [disabled]="!addQuarantineForm.form.valid" class="btn btn-info btn-flat">Save</button>
                 </div>
             </form>
         </div>

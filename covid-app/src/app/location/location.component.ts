@@ -1,11 +1,12 @@
-import { Component, OnInit, OnDestroy, QueryList, ViewChildren, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, OnDestroy, QueryList, ViewChildren, AfterViewChecked, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { DataTableDirective } from 'angular-datatables';
 
 import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sortable.directive';
 
-import { LocationService } from '../shared/services';
+import { LocationService, SpinnerService } from '../shared/services';
 import { Location, ngBootstrapTable } from '../shared/models';
 
 declare var $;
@@ -16,6 +17,14 @@ declare var $;
   styleUrls: ['./location.component.css']
 })
 export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
+  @ViewChild(DataTableDirective, { static: false }) dtElement: DataTableDirective;
+  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
+  @ViewChild('addForm') addForm: NgForm;
+  @ViewChild('editForm') editForm: NgForm;
+  @ViewChild('addPatientForm') addPatientForm: NgForm;
+  @ViewChild('addQuarantineForm') addQuarantineForm: NgForm;
+  public isDtInitialized = false;
+
   public dtOptions: DataTables.Settings = {
     autoWidth: false,
     jQueryUI: true,
@@ -29,8 +38,9 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   public locations: Location[] = [];
   public locationTable: ngBootstrapTable;
-  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
+
   constructor(
+    private spinnerService: SpinnerService,
     private router: Router,
     private locationService: LocationService) { }
 
@@ -49,13 +59,28 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   getAllLocations() {
+    this.spinnerService.show();
     this.locationService.getAllLocations().subscribe((response: Location[]) => {
       this.locations = [];
       if (response && response.length > 0) {
         this.locations = response;
-        this.dtTrigger.next();
+        this.rerender();
       }
+    }).add(() => {
+      this.spinnerService.hide();
     });
+  }
+
+  rerender(): void {
+    if (this.isDtInitialized) {
+      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.destroy();
+        this.dtTrigger.next();
+      });
+    } else {
+      this.isDtInitialized = true;
+      this.dtTrigger.next();
+    }
   }
 
   onSort({ column, direction }: SortEvent) {
@@ -79,8 +104,8 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
   }
 
-  openAddPatient(event, data) {
-    event.preventDefault();
+  openAddPatient(data) {
+    this.addPatientForm.resetForm();
     this.patientModel = {};
     this.patientModel.placeId = data.placeId;
     this.patientModel.confirmed = true;
@@ -89,8 +114,8 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
     $('#addPatient').modal('toggle');
   }
 
-  openQuarantinePerson(event, data) {
-    event.preventDefault();
+  openQuarantinePerson(data) {
+    this.addQuarantineForm.resetForm();
     this.patientModel = {};
     this.patientModel.placeId = data.placeId;
     this.patientModel.quarantined = true;
@@ -98,40 +123,38 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
     $('#addQuarantinePerson').modal('toggle');
   }
 
-  openAssignedPatients(event, data: Location) {
-    event.preventDefault();
+  openAssignedPatients(data: Location) {
     this.model = { ...data };
     this.router.navigate(['/location/' + this.model.placeId + '/patients']);
   }
 
-  openCreateLocation(event) {
-    event.preventDefault();
+  openCreateLocation() {
+    this.addForm.resetForm();
     this.model = {} as Location;
     $('#addLocation').modal('toggle');
   }
 
-  openEditLocation(event, data: Location) {
-    event.preventDefault();
+  openEditLocation(data: Location) {
+    this.editForm.resetForm();
     this.model = { ...data };
     $('#editLocation').modal('toggle');
   }
 
-  openDeleteLocation(event, data: Location) {
-    event.preventDefault();
+  openDeleteLocation(data: Location) {
     this.model = { ...data };
     $('#deleteLocation').modal('toggle');
   }
 
 
-  addLocation(event, form: NgForm) {
+  addLocation(form: NgForm) {
 
   }
 
-  editLocation(event, form: NgForm) {
+  editLocation(form: NgForm) {
 
   }
 
-  deleteLocation(event, data: Location) {
+  deleteLocation(data: Location) {
 
   }
 
@@ -139,22 +162,14 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   }
 
-  addPatient(event, form: NgForm) {
+  addPatient(form: NgForm) {
     $('#addPatient').modal('hide');
   }
 
-  closeAddPatient(event) {
-    event.preventDefault();
-    $('#addPatient').modal('toggle');
-  }
 
-  addQuarantinePerson(event, form: NgForm) {
+  addQuarantinePerson(form: NgForm) {
     $('#addQuarantinePerson').modal('hide');
   }
 
-  closeAddQuarantinePerson(event) {
-    event.preventDefault();
-    $('#addQuarantinePerson').modal('toggle');
-  }
 }
 

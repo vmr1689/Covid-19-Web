@@ -72,7 +72,7 @@
                 </button>
                 <h4 class="modal-title">Add Updates</h4>
             </div>
-            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && addUpdates(f)" #f="ngForm" novalidate>
+            <form class="form-horizontal" name="addForm" (ngSubmit)="addForm.form.valid && addUpdates(addForm)" #addForm="ngForm" novalidate>
                 <div class="modal-body">
                     <div class="modal-body">
                         <div class="row">
@@ -96,7 +96,7 @@
     
     
     
-                                            <div *ngIf="f.submitted && !update.valid" class="text-danger">Update is required
+                                            <div *ngIf="addForm.submitted && !update.valid" class="text-danger">Update is required
                                             </div>
                                         </div>
                                     </div>
@@ -120,7 +120,7 @@
                                             #update="ngModel" name="update" rows="3" placeholder="Enter ..."
                                             required></textarea>
     
-                                        <div *ngIf="f.submitted && !update.valid" class="text-danger">Update is required
+                                        <div *ngIf="addForm.submitted && !update.valid" class="text-danger">Update is required
                                         </div>
                                     </div>
                                 </div>
@@ -130,7 +130,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
-                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
+                    <button [disabled]="!addForm.form.valid" class="btn btn-info btn-flat">Save</button>
                 </div>
             </form>
         </div>
@@ -147,7 +147,7 @@
                 </button>
                 <h4 class="modal-title">Edit Updates</h4>
             </div>
-            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && editUpdates(f)" #f="ngForm" novalidate>
+            <form class="form-horizontal" name="editForm" (ngSubmit)="editForm.form.valid && editUpdates(editForm)" #editForm="ngForm" novalidate>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12 col-xs-12">
@@ -170,7 +170,7 @@
 
 
 
-                                        <div *ngIf="f.submitted && !update.valid" class="text-danger">Update is required
+                                        <div *ngIf="editForm.submitted && !update.valid" class="text-danger">Update is required
                                         </div>
                                     </div>
                                 </div>
@@ -194,7 +194,7 @@
                                         #update="ngModel" name="update" rows="3" placeholder="Enter ..."
                                         required></textarea>
 
-                                    <div *ngIf="f.submitted && !update.valid" class="text-danger">Update is required
+                                    <div *ngIf="editForm.submitted && !update.valid" class="text-danger">Update is required
                                     </div>
                                 </div>
                             </div>
@@ -203,7 +203,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
-                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
+                    <button [disabled]="!editForm.form.valid" class="btn btn-info btn-flat">Save</button>
                 </div>
             </form>
         </div>

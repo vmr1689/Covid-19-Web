@@ -1,7 +1,8 @@
-import { Component, OnInit, EventEmitter, Input, Output, QueryList, ViewChildren, OnDestroy, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, QueryList, ViewChildren, ViewChild, OnDestroy, AfterViewChecked } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { DataTableDirective } from 'angular-datatables';
 
 import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sortable.directive';
 
@@ -16,12 +17,16 @@ declare var $;
   styleUrls: ['./banner.component.css']
 })
 export class BannerComponent implements OnInit, AfterViewChecked, OnDestroy {
+  @ViewChild(DataTableDirective, { static: false }) dtElement: DataTableDirective;
+  @ViewChild('addForm') addForm: NgForm;
+  @ViewChild('editForm') editForm: NgForm;
   public dtOptions: DataTables.Settings = {
     autoWidth: false,
     jQueryUI: true,
     dom: '<"pull-left"f><"pull-right"l>tip',
   };
   public dtTrigger = new Subject();
+  public isDtInitialized = false;
 
   public model: Banner = {} as Banner;
 
@@ -53,11 +58,23 @@ export class BannerComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.banners = [];
       if (response && response.length > 0) {
         this.banners = response;
-        this.dtTrigger.next();
+        this.rerender();
       }
     }).add(() => {
       this.spinnerService.hide();
     });
+  }
+
+  rerender(): void {
+    if (this.isDtInitialized) {
+      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.destroy();
+        this.dtTrigger.next();
+      });
+    } else {
+      this.isDtInitialized = true;
+      this.dtTrigger.next();
+    }
   }
 
   onSort({ column, direction }: SortEvent) {
@@ -83,11 +100,13 @@ export class BannerComponent implements OnInit, AfterViewChecked, OnDestroy {
 
 
   openCreateBanner() {
+    this.addForm.resetForm();
     this.model = {} as Banner;
     $('#addBanner').modal('toggle');
   }
 
   openEditBanner(data: Banner) {
+    this.editForm.resetForm();
     this.model = { ...data };
     $('#editBanner').modal('toggle');
   }

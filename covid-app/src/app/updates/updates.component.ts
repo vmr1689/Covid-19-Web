@@ -1,8 +1,9 @@
-import { Component, OnInit, EventEmitter, Input, Output, QueryList, ViewChildren, OnDestroy, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, QueryList, ViewChildren, ViewChild, OnDestroy, AfterViewChecked } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
+import { DataTableDirective } from 'angular-datatables';
 
 import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sortable.directive';
 
@@ -18,12 +19,16 @@ declare var $;
   styleUrls: ['./updates.component.css']
 })
 export class UpdatesComponent implements OnInit, AfterViewChecked, OnDestroy {
+  @ViewChild(DataTableDirective, { static: false }) dtElement: DataTableDirective;
+  @ViewChild('addForm') addForm: NgForm;
+  @ViewChild('editForm') editForm: NgForm;
   public dtOptions: DataTables.Settings = {
     autoWidth: false,
     jQueryUI: true,
     dom: '<"pull-left"f><"pull-right"l>tip',
   };
   public dtTrigger = new Subject();
+  public isDtInitialized = false;
 
   public currentDate = new Date();
   public model: Updatedto = {} as Updatedto;
@@ -56,11 +61,23 @@ export class UpdatesComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.updates = [];
       if (response && response.length > 0) {
         this.updates = response;
-        this.dtTrigger.next();
+        this.rerender();
       }
     }).add(() => {
       this.spinnerService.hide();
     });
+  }
+
+  rerender(): void {
+    if (this.isDtInitialized) {
+      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.destroy();
+        this.dtTrigger.next();
+      });
+    } else {
+      this.isDtInitialized = true;
+      this.dtTrigger.next();
+    }
   }
 
   onSort({ column, direction }: SortEvent) {
@@ -86,11 +103,13 @@ export class UpdatesComponent implements OnInit, AfterViewChecked, OnDestroy {
 
 
   openCreateUpdates() {
+    this.addForm.resetForm();
     this.model = {} as Updatedto;
     $('#addUpdates').modal('toggle');
   }
 
   openEditUpdates(data: Updatedto) {
+    this.editForm.resetForm();
     this.model = { ...data };
     $('#editUpdates').modal('toggle');
   }

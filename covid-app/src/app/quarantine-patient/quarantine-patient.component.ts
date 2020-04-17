@@ -1,10 +1,11 @@
 import { Component, OnInit, QueryList, ViewChildren, ViewChild, OnDestroy, AfterViewChecked } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { DataTableDirective } from 'angular-datatables';
 
 import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sortable.directive';
 
-import { PatientService } from '../shared/services';
+import { PatientService, SpinnerService } from '../shared/services';
 import { Patient, ngBootstrapTable } from '../shared/models';
 import { Subject } from 'rxjs';
 
@@ -16,13 +17,15 @@ declare var $;
   styleUrls: ['./quarantine-patient.component.css']
 })
 export class QuarantinePatientComponent implements OnInit, AfterViewChecked, OnDestroy {
+  @ViewChild(DataTableDirective, { static: false }) dtElement: DataTableDirective;
   public dtOptions: DataTables.Settings = {
     autoWidth: false,
     jQueryUI: true,
     dom: '<"pull-left"f><"pull-right"l>tip',
   };
   public dtTrigger = new Subject();
-  
+  public isDtInitialized = false;
+
   public patients: Patient[] = [];
   publiclocationTable: ngBootstrapTable;
   public model: Patient;
@@ -54,7 +57,8 @@ export class QuarantinePatientComponent implements OnInit, AfterViewChecked, OnD
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private patientService: PatientService) { }
+    private patientService: PatientService,
+    private spinnerService: SpinnerService) { }
 
   ngOnInit(): void {
     this.initLoginForm();
@@ -72,13 +76,28 @@ export class QuarantinePatientComponent implements OnInit, AfterViewChecked, OnD
   }
 
   getAllPatients() {
+    this.spinnerService.show();
     this.patientService.getAllPatients().subscribe((response: Patient[]) => {
       this.patients = [];
       if (response && response.length > 0) {
         this.patients = response;
-        this.dtTrigger.next();
+        this.rerender();
       }
+    }).add(() => {
+      this.spinnerService.hide();
     });
+  }
+
+  rerender(): void {
+    if (this.isDtInitialized) {
+      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.destroy();
+        this.dtTrigger.next();
+      });
+    } else {
+      this.isDtInitialized = true;
+      this.dtTrigger.next();
+    }
   }
 
   onSort({ column, direction }: SortEvent) {

@@ -2,10 +2,11 @@ import { Component, OnInit, QueryList, ViewChildren, ViewChild, OnDestroy, After
 import { FormBuilder, FormGroup, Validators, AbstractControl, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
+import { DataTableDirective } from 'angular-datatables';
 
 import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sortable.directive';
 
-import { PatientService } from '../shared/services';
+import { PatientService, SpinnerService } from '../shared/services';
 import { Patient, ngBootstrapTable } from '../shared/models';
 
 declare var $;
@@ -16,6 +17,9 @@ declare var $;
   styleUrls: ['./patients.component.css']
 })
 export class PatientsComponent implements OnInit, AfterViewChecked, OnDestroy {
+  @ViewChild(DataTableDirective, { static: false }) dtElement : DataTableDirective;
+  public isDtInitialized = false;
+
   public dtOptions: DataTables.Settings = {
     autoWidth: false,
     jQueryUI: true,
@@ -52,6 +56,7 @@ export class PatientsComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('formDirective') private formDirective: NgForm;
 
   constructor(
+    private spinnerService: SpinnerService,
     private fb: FormBuilder,
     private router: Router,
     private patientService: PatientService) { }
@@ -72,6 +77,7 @@ export class PatientsComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   getAllPatients() {
+    this.spinnerService.show();
     this.patientService.getAllPatients().subscribe((response: Patient[]) => {
       this.patients = [];
       if (response && response.length > 0) {
@@ -88,10 +94,24 @@ export class PatientsComponent implements OnInit, AfterViewChecked, OnDestroy {
             element.rowColor = '#0073b7';
           }
         });
-        this.dtTrigger.next();
+        this.rerender();
       }
 
+    }).add(() => {
+      this.spinnerService.hide();
     });
+  }
+
+  rerender(): void {
+    if (this.isDtInitialized) {
+      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.destroy();
+        this.dtTrigger.next();
+      });
+    } else {
+      this.isDtInitialized = true;
+      this.dtTrigger.next();
+    }
   }
 
   onSort({ column, direction }: SortEvent) {
