@@ -103,14 +103,14 @@ export class UpdatesComponent implements OnInit, AfterViewChecked, OnDestroy {
 
 
   openCreateUpdates() {
-    this.addForm.resetForm();
     this.model = {} as Updatedto;
+    this.addForm.resetForm({ ...this.model });
     $('#addUpdates').modal('toggle');
   }
 
   openEditUpdates(data: Updatedto) {
-    this.editForm.resetForm();
     this.model = { ...data };
+    this.editForm.resetForm({ ...this.model });
     $('#editUpdates').modal('toggle');
   }
 

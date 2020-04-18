@@ -1,0 +1,274 @@
+<section class="content-header">
+    <h1>
+        Help Links
+    </h1>
+</section>
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Help Links</h3>
+                    <button style="margin-right:5px" class="btn btn-info btn-flat pull-right"
+                        (click)="openCreateHelpLink()">
+                        Add HelpLink
+                    </button>
+                </div>
+                <form class="form-horizontal">
+                    <div class="box-body">
+                        <div class="clearfix"></div>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+
+                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                    class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Category</th>
+                                            <th>Header</th>
+                                            <th>Content</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let data of helpLinks; let i = index">
+                                            <td>{{data.id}}</td>
+                                            <td>{{data.category}}</td>
+                                            <td>{{data.header}}</td>
+                                            <td><a href="javascript:void(0)"
+                                                    (click)="openHelpLink(data.content)">{{data.content}}</a></td>
+                                            <td>
+
+                                                <!-- <button style="margin-right:5px" title="Edit HelpLink"
+                                                    (click)="openEditHelpLink(data)"
+                                                    class="btn btn-small btn-flat btn-warning">
+                                                    <i class="btn-icon-only fa fa-pencil"> </i>
+                                                </button> -->
+
+                                                <button style="margin-right:5px" title="Delete HelpLink"
+                                                    (click)="openDeleteHelpLink(data)"
+                                                    class="btn btn-small btn-flat btn-danger">
+                                                    <i class="btn-icon-only fa fa-trash"> </i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="box-footer">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" data-backdrop="static" id="deleteHelpLink">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Delete HelpLink</h4>
+            </div>
+            <div class="modal-body">
+                <p style="font-weight: bold; word-wrap: break-word;">
+                    Do you want to delete {{model.content}} ?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">No</button>
+                <button (click)="deleteHelpLink(model)" class="btn btn-info btn-flat">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" data-backdrop="static" id="addHelpLink" >
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Add HelpLink</h4>
+            </div>
+            <form class="form-horizontal" name="addForm" (ngSubmit)="addForm.form.valid && addHelpLink(addForm)"
+                #addForm="ngForm" novalidate>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 col-xs-12">
+                            <div class="form-group">
+                                <input name="id" id="id" [(ngModel)]="model.id" #id="ngModel" type="hidden"
+                                    class="form-control" />
+
+
+                                <label for="categoryId" class="col-sm-3 control-label">Category:</label>
+
+                                <div class="col-sm-9">
+
+                                    <select name="categoryId" #categoryId="ngModel" [(ngModel)]="model.categoryId"
+                                        id="categoryId" class="form-control"
+                                        required>
+                                        <option *ngFor="let location of categories; let i = index"
+                                            [value]="location.id">
+                                            {{location.text}}
+                                        </option>
+                                    </select>
+
+                                    <div *ngIf="addForm.submitted && !categoryId.valid" class="text-danger">Category is
+                                        required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="header" class="col-sm-3 control-label">Header:</label>
+
+                                <div class="col-sm-9">
+                                    <input id="header" type="text" autocomplete="off" class="form-control" name="header"
+                                        [(ngModel)]="model.header" #header="ngModel" placeholder="Header" required>
+
+                                    <div *ngIf="addForm.submitted && !header.valid" class="text-danger">Header is
+                                        required
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="content" class="col-sm-3 control-label">Content:</label>
+
+                                <div class="col-sm-9" *ngIf="(model.categoryId == 1)">
+                                    <input id="content" type="text" autocomplete="off" class="form-control"
+                                        name="content" [(ngModel)]="model.content" #content="ngModel"
+                                        placeholder="Header" required>
+
+                                    <div *ngIf="addForm.submitted && !content.valid" class="text-danger">Content is
+                                        required
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-9" *ngIf="(model.categoryId == 2)">
+
+                                    <input id="file" name="file"
+                                        class="form-control" type="file" #fileInput
+                                        />
+<!-- 
+                                    <div *ngIf="addForm.submitted && !file.valid" class="text-danger">Content is
+                                        required
+                                    </div> -->
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
+                    <button [disabled]="!addForm.form.valid" class="btn btn-info btn-flat">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="modal fade" data-backdrop="static" id="editHelpLink">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Add HelpLink</h4>
+            </div>
+            <form class="form-horizontal" name="editForm" (ngSubmit)="editForm.form.valid && editHelpLink(editForm)"
+                #editForm="ngForm" novalidate>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 col-xs-12">
+                            <div class="form-group">
+                                <input name="id" id="id" [(ngModel)]="model.id" #id="ngModel" type="hidden"
+                                    class="form-control" />
+
+
+                                <label for="categoryId" class="col-sm-3 control-label">Category:</label>
+
+                                <div class="col-sm-9">
+
+                                    <select name="categoryId" #categoryId="ngModel" [(ngModel)]="model.categoryId"
+                                        (ngModelChange)="onChangeCategory($event)" id="categoryId" class="form-control"
+                                        required>
+                                        <option *ngFor="let location of categories; let i = index"
+                                            value={{location.id}}>
+                                            {{location.text}}
+                                        </option>
+                                    </select>
+
+                                    <div *ngIf="editForm.submitted && !categoryId.valid" class="text-danger">Category is
+                                        required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="header" class="col-sm-3 control-label">Header:</label>
+
+                                <div class="col-sm-9">
+                                    <input id="header" type="text" autocomplete="off" class="form-control" name="header"
+                                        [(ngModel)]="model.header" #header="ngModel" placeholder="Header" required>
+
+                                    <div *ngIf="editForm.submitted && !header.valid" class="text-danger">Header is
+                                        required
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="content" class="col-sm-3 control-label">Content:</label>
+
+                                <div class="col-sm-9" *ngIf="(model.categoryId == 1)">
+                                    <input id="content" type="text" autocomplete="off" class="form-control"
+                                        name="content" [(ngModel)]="model.content" #content="ngModel"
+                                        placeholder="Header" [required]="(model.categoryId == 1)">
+
+                                    <div *ngIf="editForm.submitted && !content.valid" class="text-danger">Content is
+                                        required
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-9" *ngIf="(model.categoryId == 2)">
+
+                                    <input id="content" name="content" [(ngModel)]="model.content" #content="ngModel"
+                                        class="form-control" type="file" #editfileInput 
+                                        [required]="(model.categoryId == 2)" />
+
+                                    <div *ngIf="editForm.submitted && !content.valid" class="text-danger">Content is
+                                        required
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
+                    <button [disabled]="!editForm.form.valid" class="btn btn-info btn-flat">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> -->

@@ -108,14 +108,14 @@ export class UserComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   openCreateUser() {
-    this.addForm.resetForm();
     this.model = {} as User;
+    this.addForm.resetForm({ ...this.model });
     $('#addUser').modal('toggle');
   }
 
   openEditUser(data: User) {
-    this.editForm.resetForm();
     this.model = { ...data };
+    this.editForm.resetForm({ ...this.model });
     $('#editUser').modal('toggle');
   }
 

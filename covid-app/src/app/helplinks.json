@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "category": "link",
+        "categoryId": 1,
+        "header": "CDC",
+        "content": "https://www.cdc.gov/coronavirus/2019-ncov/faq.html"
+    },
+    {
+        "id": 2,
+        "category": "document",
+        "categoryId": 2,
+        "header": "HELPLINE NUMBERS [by State]",
+        "content": "https://www.mohfw.gov.in/pdf/coronvavirushelplinenumber.pdf"
+    },
+    {
+        "id": 3,
+        "category": "link",
+        "categoryId": 1,
+        "header": "WHO : COVID-19 Home Page",
+        "content": "https://www.who.int/emergencies/diseases/novel-coronavirus-2019"
+    },
+    {
+        "id": 4,
+        "category": "link",
+        "categoryId": 1,
+        "header": "Crowdsourced list of Resources & Essentials from across India",
+        "content": "https://bit.ly/covid19resourcelist"
+    },
+    {
+        "id": 5,
+        "category": "document",
+        "categoryId": 1,
+        "header": "COVID-19 Global Tracker",
+        "content": "https://coronavirus.thebaselab.com/"
+    },
+    {
+        "id": 6,
+        "category": "link",
+        "categoryId": 1,
+        "header": "Ministry of Health and Family Welfare, Gov. of India",
+        "content": "https://www.mohfw.gov.in/"
+    }
+]

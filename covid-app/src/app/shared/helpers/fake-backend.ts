@@ -13,7 +13,7 @@ import SampleUsersJson from '../../users.json';
 import SampleBannerJson1 from '../../banner.json';
 import SampleUpdatedDtoJson from '../../updatedto.json';
 import SampleOrganisationJson from '../../organisation.json';
-
+import SampleHelpLinksJson from '../../helplinks.json';
 import {
     SampleData,
     SampleStateDistrictWiseData,
@@ -24,7 +24,8 @@ import {
     Banner,
     Updates,
     Updatedto,
-    Organisation
+    Organisation,
+    HelpLink
 } from '../models';
 
 // array in local storage for registered users
@@ -116,6 +117,17 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return editOrganisation();
                 case url.match(/\/organisation\/\d+$/) && method === 'DELETE':
                     return deleteOrganisation();
+
+                case url.endsWith('helplinks/getAllHelpLinks') && method === 'GET':
+                    return getAllHelpLinks();
+                case url.match(/\/getHelpLinksById\/\d+$/) && method === 'GET':
+                    return getHelpLinks();
+                case url.endsWith('helplinks/createHelpLink') && method === 'POST':
+                    return createHelpLinks();
+                case url.endsWith('helplinks/editHelpLink') && method === 'PUT':
+                    return editHelpLinks();
+                case url.match(/\/helplinks\/\d+$/) && method === 'DELETE':
+                    return deleteHelpLinks();
 
                 default:
                     // pass through any requests not handled above
@@ -381,6 +393,35 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function deleteOrganisation() {
+            const user = body;
+            return ok(true);
+        }
+
+
+        function getAllHelpLinks() {
+            const mainData = SampleHelpLinksJson;
+            const castObject = mainData as HelpLink[];
+            return ok(castObject);
+        }
+
+        function getHelpLinks() {
+            const mainData = SampleOrganisationJson;
+            const castObject = mainData as HelpLink[];
+            const aa = castObject[0];
+            return ok(aa);
+        }
+
+        function createHelpLinks() {
+            const user = body;
+            return ok(true);
+        }
+
+        function editHelpLinks() {
+            const user = body;
+            return ok(true);
+        }
+
+        function deleteHelpLinks() {
             const user = body;
             return ok(true);
         }

@@ -374,11 +374,11 @@
                                 <label for="placeId" class="col-sm-3 control-label">Location:</label>
 
                                 <div class="col-sm-9">
-                                    <input id="pplaceName" type="text" autocomplete="off" class="form-control"
-                                        name="pplaceName" [(ngModel)]="patientModel.placeName" #pplaceName="ngModel"
+                                    <input id="placeName" type="text" autocomplete="off" class="form-control"
+                                        name="placeName" [(ngModel)]="patientModel.placeName" #placeName="ngModel"
                                         placeholder="Location" required readonly="true">
 
-                                    <div *ngIf="addPatientForm.submitted && !pplaceName.valid" class="text-danger">
+                                    <div *ngIf="addPatientForm.submitted && !placeName.valid" class="text-danger">
                                         Location is
                                         required
                                     </div>
@@ -606,11 +606,11 @@
                                 <label for="placeName" class="col-sm-3 control-label">Location:</label>
 
                                 <div class="col-sm-9">
-                                    <input id="qplaceName" type="text" autocomplete="off" class="form-control"
-                                        name="qplaceName" [(ngModel)]="patientModel.placeName" #qplaceName="ngModel"
+                                    <input id="placeName" type="text" autocomplete="off" class="form-control"
+                                        name="placeName" [(ngModel)]="patientModel.placeName" #placeName="ngModel"
                                         placeholder="Location" required readonly="true">
 
-                                    <div *ngIf="addQuarantineForm.submitted && !qplaceName.valid" class="text-danger">
+                                    <div *ngIf="addQuarantineForm.submitted && !placeName.valid" class="text-danger">
                                         Location is
                                         required
                                     </div>

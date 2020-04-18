@@ -40,6 +40,7 @@ import { SpinnerComponent } from './spinner/spinner.component';
 import { OrganisationComponent } from './organisation/organisation.component';
 import { AddOrganisationComponent } from './add-organisation/add-organisation.component';
 import { EditOrganisationComponent } from './edit-organisation/edit-organisation.component';
+import { HelpLinkComponent } from './help-link/help-link.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { EditOrganisationComponent } from './edit-organisation/edit-organisation
     SpinnerComponent,
     OrganisationComponent,
     AddOrganisationComponent,
-    EditOrganisationComponent
+    EditOrganisationComponent,
+    HelpLinkComponent
   ],
   imports: [
     BrowserModule,

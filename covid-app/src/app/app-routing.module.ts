@@ -22,6 +22,7 @@ import { EditQuarantinePatientComponent } from './edit-quarantine-patient/edit-q
 import { OrganisationComponent } from './organisation/organisation.component';
 import { AddOrganisationComponent } from './add-organisation/add-organisation.component';
 import { EditOrganisationComponent } from './edit-organisation/edit-organisation.component';
+import { HelpLinkComponent } from './help-link/help-link.component';
 
 const levelOneRole = {
   data: {
@@ -133,6 +134,12 @@ const routes: Routes = [
   {
     path: 'editorganisation/:organisationId',
     component: EditOrganisationComponent,
+    data: levelOneRole.data,
+    canActivate: levelOneRole.canActivate,
+  },
+  {
+    path: 'helplinks',
+    component: HelpLinkComponent,
     data: levelOneRole.data,
     canActivate: levelOneRole.canActivate,
   },

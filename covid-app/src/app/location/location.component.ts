@@ -105,21 +105,21 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   openAddPatient(data) {
-    this.addPatientForm.resetForm();
     this.patientModel = {};
     this.patientModel.placeId = data.placeId;
     this.patientModel.confirmed = true;
     this.patientModel.active = true;
     this.patientModel.placeName = data.placeName;
+    this.addPatientForm.resetForm({...this.patientModel});
     $('#addPatient').modal('toggle');
   }
 
   openQuarantinePerson(data) {
-    this.addQuarantineForm.resetForm();
     this.patientModel = {};
     this.patientModel.placeId = data.placeId;
     this.patientModel.quarantined = true;
     this.patientModel.placeName = data.placeName;
+    this.addQuarantineForm.resetForm({...this.patientModel});
     $('#addQuarantinePerson').modal('toggle');
   }
 
@@ -129,14 +129,15 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   openCreateLocation() {
-    this.addForm.resetForm();
     this.model = {} as Location;
+    this.addForm.resetForm({ ...this.model });
     $('#addLocation').modal('toggle');
   }
 
   openEditLocation(data: Location) {
-    this.editForm.resetForm();
+    
     this.model = { ...data };
+    this.editForm.resetForm({ ...this.model });
     $('#editLocation').modal('toggle');
   }
 

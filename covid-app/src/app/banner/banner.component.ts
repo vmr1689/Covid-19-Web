@@ -100,14 +100,14 @@ export class BannerComponent implements OnInit, AfterViewChecked, OnDestroy {
 
 
   openCreateBanner() {
-    this.addForm.resetForm();
     this.model = {} as Banner;
+    this.addForm.resetForm({ ...this.model });
     $('#addBanner').modal('toggle');
   }
 
   openEditBanner(data: Banner) {
-    this.editForm.resetForm();
     this.model = { ...data };
+    this.editForm.resetForm({ ...this.model });
     $('#editBanner').modal('toggle');
   }
 

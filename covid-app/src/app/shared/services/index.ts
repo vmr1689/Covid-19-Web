@@ -6,3 +6,4 @@ export * from './location.service';
 export * from './patient.service';
 export * from './updates.service';
 export * from './organisation.service';
+export * from './helplinks.service';

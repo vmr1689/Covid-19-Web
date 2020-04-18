@@ -67,6 +67,9 @@
               <li *appHasRole="['Admin']" class="custom-hide-menu-mobile" routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true }">
                 <a [routerLink]="['/organisation']">Organisation</a></li>
+              <li *appHasRole="['Admin']" class="custom-hide-menu-mobile" routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }">
+                <a [routerLink]="['/helplinks']">Help Links</a></li>
             </ul>
           </li>
         </ul>

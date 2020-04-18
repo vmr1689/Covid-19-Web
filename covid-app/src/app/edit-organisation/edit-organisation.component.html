@@ -32,6 +32,9 @@
                                             {{location.text}}
                                         </option>
                                     </select>
+
+                                    <div *ngIf="editForm.submitted && !category.valid" class="text-danger">Category is required
+                                    </div>
                                 </div>
                             </div>
 
