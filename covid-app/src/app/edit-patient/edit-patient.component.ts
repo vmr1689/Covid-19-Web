@@ -28,6 +28,7 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
   public firstName: AbstractControl;
   public lastName: AbstractControl;
   public age: AbstractControl;
+  public gender: AbstractControl;
   public phone: AbstractControl;
   public email: AbstractControl;
   public address1: AbstractControl;
@@ -111,6 +112,7 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
       active: [true],
       recovered: [false],
       deceased: [false],
+      gender: ['male']
     });
     this.patientId = this.form.controls.patientId;
     this.firstName = this.form.controls.firstName;
@@ -118,7 +120,7 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
     this.age = this.form.controls.age;
     this.phone = this.form.controls.phone;
     this.email = this.form.controls.email;
-
+    this.gender = this.form.controls.gender;
     this.address1 = this.form.controls.address1;
 
 
@@ -137,6 +139,8 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
     this.recovered = this.form.controls.recovered;
     this.deceased = this.form.controls.deceased;
 
+    this.form.disable();
+
   }
   public onSubmit(event: Event, form: any): void {
     event.stopPropagation();
@@ -154,6 +158,12 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
 
   editInfo() {
     this.isReadOnly = !this.isReadOnly;
+    if (!this.isReadOnly) {
+      this.form.enable();
+    }
+    else {
+      this.form.disable();
+    }
   }
   nextTab() {
     $('.nav-tabs > .active').next('li').find('a').trigger('click');

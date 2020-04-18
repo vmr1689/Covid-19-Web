@@ -37,7 +37,8 @@
 
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" formControlName="firstName"
-                                                id="firstName" name="firstName" placeholder="First Name" [readonly]="isReadOnly">
+                                                id="firstName" name="firstName" placeholder="First Name"
+                                                [readonly]="isReadOnly">
 
                                             <small
                                                 *ngIf="(submitted || firstName.dirty || firstName.touched) && firstName.hasError('required')"
@@ -50,7 +51,8 @@
 
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" formControlName="lastName"
-                                                id="lastName" name="lastName" placeholder="Last Name" [readonly]="isReadOnly">
+                                                id="lastName" name="lastName" placeholder="Last Name"
+                                                [readonly]="isReadOnly">
 
                                             <small
                                                 *ngIf="(submitted || lastName.dirty || lastName.touched) && lastName.hasError('required')"
@@ -72,6 +74,31 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label for="gender" class="col-sm-3 control-label">Gender</label>
+
+                                        <div class="col-sm-9">
+
+                                            <select name="gender" formControlName="gender" id="gender"
+                                                class="form-control" required [disabled]="isReadOnly">
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                                <option value="unknown">Unknown</option>
+                                            </select>
+
+                                            <small
+                                                *ngIf="(submitted || phone.dirty || phone.touched) && phone.hasError('required')"
+                                                class="text-danger">Phone is required</small>
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
                                         <label for="phone" class="col-sm-3 control-label">Phone Number</label>
 
                                         <div class="col-sm-9">
@@ -83,13 +110,6 @@
                                                 class="text-danger">Phone is required</small>
                                         </div>
                                     </div>
-
-                                    
-
-
-                                </div>
-
-                                <div class="col-md-6">
 
                                     <div class="form-group">
                                         <label for="email" class="col-sm-3 control-label">Email</label>
@@ -109,7 +129,8 @@
 
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" formControlName="address1"
-                                                id="address1" name="address1" placeholder="Address" [readonly]="isReadOnly">
+                                                id="address1" name="address1" placeholder="Address"
+                                                [readonly]="isReadOnly">
 
                                             <small
                                                 *ngIf="(submitted || address1.dirty || address1.touched) && address1.hasError('required')"
@@ -177,7 +198,8 @@
 
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" formControlName="zipcode"
-                                                id="zipcode" name="zipcode" placeholder="Zipcode" [readonly]="isReadOnly">
+                                                id="zipcode" name="zipcode" placeholder="Zipcode"
+                                                [readonly]="isReadOnly">
 
                                             <small
                                                 *ngIf="(submitted || zipcode.dirty || zipcode.touched) && zipcode.hasError('required')"
@@ -189,10 +211,10 @@
                                     <div class="col-md-12">
 
                                         <button *ngIf="isReadOnly" type="button" (click)="editInfo()"
-                                        class="pad_ex btn btn-info btn-flat next-step">Edit</button>
+                                            class="pad_ex btn btn-info btn-flat next-step">Edit</button>
 
                                         <button *ngIf="!isReadOnly" type="button" (click)="editInfo()"
-                                        class="pad_ex btn btn-info btn-flat next-step">View</button>
+                                            class="pad_ex btn btn-info btn-flat next-step">View</button>
 
                                     </div>
                                 </div>
@@ -200,7 +222,7 @@
                                 <div class="row text-right">
                                     <div class="col-md-12">
                                         <button type="button" (click)="BackToList()" class="btn btn-default"
-                                        style="margin-right:5px">Cancel</button>
+                                            style="margin-right:5px">Cancel</button>
 
                                         <button type="button" (click)="previousTab()"
                                             class="pad_ex btn btn-default btn-flat prev-step"
@@ -301,7 +323,8 @@
                                     <table datatable [dtOptions]="dtOptions" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th sortable="deviceId" (sort)="onDeviceSort($event)">Bluetooth Device Id</th>
+                                                <th sortable="deviceId" (sort)="onDeviceSort($event)">Bluetooth Device
+                                                    Id</th>
                                                 <th scope="col" sortable="deviceName" (sort)="onDeviceSort($event)">
                                                     Bluetooth Device Name</th>
                                                 <!-- <th scope="col" sortable="PhoneNumber" (sort)="onDeviceSort($event)">
@@ -438,12 +461,12 @@
                                     <div class="col-md-12">
                                         <button type="button" (click)="BackToList()" class="btn btn-default"
                                             style="margin-right:5px">Cancel</button>
-                                            
+
                                         <button type="button" (click)="previousTab()"
                                             class="pad_ex btn btn-default btn-flat prev-step"
                                             style="margin-right:5px">Previous</button>
 
-                                        <button  *ngIf="!isReadOnly" type="submit" id="btnSubmit"
+                                        <button *ngIf="!isReadOnly" type="submit" id="btnSubmit"
                                             class="pad_ex btn btn-info btn-flat next-step">Save and Exit</button>
 
                                     </div>

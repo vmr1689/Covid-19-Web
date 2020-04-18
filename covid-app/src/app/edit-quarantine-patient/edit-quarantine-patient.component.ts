@@ -30,6 +30,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
   public firstName: AbstractControl;
   public lastName: AbstractControl;
   public age: AbstractControl;
+  public gender: AbstractControl;
   public phone: AbstractControl;
   public email: AbstractControl;
   public address1: AbstractControl;
@@ -100,6 +101,12 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
 
   editInfo() {
     this.isReadOnly = !this.isReadOnly;
+    if (!this.isReadOnly) {
+      this.form.enable();
+    }
+    else {
+      this.form.disable();
+    }
   }
 
   public initLoginForm() {
@@ -125,6 +132,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
       recovered: [false],
       deceased: [false],
       released: [false],
+      gender: ['male']
     });
     this.patientId = this.form.controls.patientId;
     this.firstName = this.form.controls.firstName;
@@ -132,7 +140,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
     this.age = this.form.controls.age;
     this.phone = this.form.controls.phone;
     this.email = this.form.controls.email;
-
+    this.gender = this.form.controls.gender;
     this.address1 = this.form.controls.address1;
 
     this.zipcode = this.form.controls.zipcode;
@@ -150,6 +158,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
 
     this.deviceName = this.form.controls.deviceName;
     this.deviceAddress = this.form.controls.deviceAddress;
+    this.form.disable();
   }
   public onSubmit(event: Event, form: any): void {
     event.stopPropagation();

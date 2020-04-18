@@ -38,6 +38,9 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
   public dailySpreadList: CasesTimeSeries[] = [];
 
   public mapchart: am4maps.MapChart;
+  public confirmedChart: am4charts.XYChart;
+  public recoveredChart: am4charts.XYChart;
+  public deceasedChart: am4charts.XYChart;
 
   constructor(
     private zone: NgZone,
@@ -73,6 +76,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
       if (response && response.casestimeseries.length > 0) {
         this.dailySpreadList = response.casestimeseries.slice(-14);
         console.log(this.dailySpreadList);
+        this.destroyCharts();
         this.renderDailyCharts();
       }
     });
@@ -379,7 +383,40 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
   }
 
   public renderDailyCharts() {
-    // Confirmed Chart
+    this.destroyCharts();
+    this.renderConfirmedChart();
+    this.renderRecoveredChart();
+    this.renderDeceasedChart();
+  }
+
+  destroyMaps() {
+    this.zone.runOutsideAngular(() => {
+      if (this.mapchart) {
+        this.mapchart.dispose();
+      }
+    });
+  }
+
+  destroyCharts() {
+    this.zone.runOutsideAngular(() => {
+      if (this.confirmedChart) {
+        this.confirmedChart.dispose();
+      }
+      if (this.recoveredChart) {
+        this.recoveredChart.dispose();
+      }
+      if (this.deceasedChart) {
+        this.deceasedChart.dispose();
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.destroyMaps();
+    this.destroyCharts();
+  }
+
+  public renderConfirmedChart() {
     const confirmedChart = am4core.create('confirmedChart', am4charts.XYChart);
     let confirmedData = [];
     if (this.dailySpreadList.length > 0) {
@@ -419,10 +456,10 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
     series.bullets.create(am4charts.CircleBullet);
     confirmedChart.cursor = new am4charts.XYCursor();
 
+    this.confirmedChart = confirmedChart;
+  }
 
-
-
-    // Recovered chart
+  public renderRecoveredChart() {
     const recoveredChart = am4core.create('recoveredChart', am4charts.XYChart);
     let recoveredData = [];
     if (this.dailySpreadList.length > 0) {
@@ -462,10 +499,10 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
     recoveredseries.bullets.create(am4charts.CircleBullet);
     recoveredChart.cursor = new am4charts.XYCursor();
 
+    this.recoveredChart = recoveredChart;
+  }
 
-
-
-    // Deceased Chart
+  public renderDeceasedChart() {
     const deceasedChart = am4core.create('deceasedChart', am4charts.XYChart);
     let deceasedData = [];
     if (this.dailySpreadList.length > 0) {
@@ -506,14 +543,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
     deceasedseries.bullets.create(am4charts.CircleBullet);
     deceasedChart.cursor = new am4charts.XYCursor();
 
-  }
-
-  ngOnDestroy() {
-    this.zone.runOutsideAngular(() => {
-      if (this.mapchart) {
-        this.mapchart.dispose();
-      }
-    });
+    this.deceasedChart = deceasedChart;
   }
 
   public getData(parentData: StateWise, childData: any) {
