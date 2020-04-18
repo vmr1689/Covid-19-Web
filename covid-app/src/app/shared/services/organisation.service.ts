@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment';
 import { Organisation } from '../models';
@@ -26,5 +27,14 @@ export class OrganisationService {
 
     delete(id: number) {
         return this.http.delete(`${environment.apiUrl}/organisation/${id}`);
+    }
+
+    importExcel(formData: FormData) {
+        const headers = new HttpHeaders();
+        headers.append('Content-Type', 'multipart/form-data');
+        headers.append('Accept', 'application/json');
+        const httpOptions = { headers };
+
+        return this.http.post(`${environment.apiUrl}/organisation/UploadExcel`, formData, httpOptions);
     }
 }

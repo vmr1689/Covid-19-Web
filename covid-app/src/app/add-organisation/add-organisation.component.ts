@@ -56,7 +56,6 @@ export class AddOrganisationComponent implements OnInit {
   }
 
   readThis(inputValue: any): void {
-
     const file: File = inputValue.files[0];
     const myReader: FileReader = new FileReader();
 

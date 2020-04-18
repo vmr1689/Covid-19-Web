@@ -9,9 +9,14 @@
             <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">Organisation</h3>
-                    <button class="btn btn-info btn-flat pull-right" (click)="openCreateOrganisation()">
+                    <button style="margin-right:5px" class="btn btn-info btn-flat pull-right"
+                        (click)="openCreateOrganisation()">
                         Add Organisation
-                     </button>
+                    </button>
+                    <button style="margin-right:5px" class="btn btn-info btn-flat pull-right"
+                        (click)="openImportOrganisation()">
+                        Import Organisation
+                    </button>
                 </div>
                 <form class="form-horizontal">
                     <div class="box-body">
@@ -19,7 +24,8 @@
                         <div class="col-md-12">
                             <div class="table-responsive">
 
-                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-hover">
+                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                    class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -72,97 +78,55 @@
     </div>
 </section>
 
+<div class="modal fade" data-backdrop="static" id="deleteOrganisation">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Delete Organisation</h4>
+            </div>
+            <div class="modal-body">
+                <p style="font-weight: bold;">
+                    Do you want to delete {{model.name}} ?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">No</button>
+                <button (click)="deleteOrganisation(model)" class="btn btn-info btn-flat">Yes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 
-<!-- <div class="modal fade" data-backdrop="static" id="addOrganisation">
+<div class="modal fade" data-backdrop="static" id="importOrganisation">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title">Add Organisation</h4>
+                <h4 class="modal-title">Import Organisation</h4>
             </div>
-            <form class="form-horizontal" name="addForm" (ngSubmit)="addForm.form.valid && addBanner(addForm)" #addForm="ngForm" novalidate>
+            <form class="form-horizontal" name="importForm"
+                (ngSubmit)="importForm.form.valid && importOrganisation(importForm)" #importForm="ngForm" novalidate>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6 col-xs-12">
                             <div class="form-group">
-                                <div class="col-sm-3">
-                                    <label for="category" class="control-label">Category:</label>
-                                </div>
-
-                                <div class="col-sm-9">
-                                    <input name="id" id="id" [(ngModel)]="model.id" #id="ngModel"
-                                    type="hidden" class="form-control" />
-
-
-                                    <select name="category" #category="ngModel" [(ngModel)]="model.category" id="category"
-                                        class="form-control" required>
-                                        <option *ngFor="let location of categories; let i = index"
-                                            value={{location.id}}>
-                                            {{location.text}}
-                                        </option>
-                                    </select>
-                                </div>
+                                <input class="form-control" type="file" #fileInput  accept=".xlsx, .xls "/>
                             </div>
-
-                            <div class="form-group">
-                                <div class="col-sm-3">
-                                    <label for="name" class="control-label">Name:</label>
-                                </div>
-
-                                <div class="col-sm-9">
-                                    <input id="name" type="text" autocomplete="off" class="form-control"
-                                        name="name" [(ngModel)]="model.name" #name="ngModel"
-                                        placeholder="Name" required>
-
-                                    <div *ngIf="addForm.submitted && !name.valid" class="text-danger">Name is required
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-sm-3">
-                                    <label for="latitude" class="control-label">Latitude:</label>
-                                </div>
-
-                                <div class="col-sm-9">
-                                    <input id="latitude" type="text" autocomplete="off" class="form-control"
-                                        name="latitude" [(ngModel)]="model.latitude" #latitude="ngModel"
-                                        placeholder="Latitude" required>
-
-                                    <div *ngIf="addForm.submitted && !latitude.valid" class="text-danger">Latitude is required
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-sm-3">
-                                    <label for="longitude" class="control-label">Longitude:</label>
-                                </div>
-
-                                <div class="col-sm-9">
-                                    <input id="longitude" type="text" autocomplete="off" class="form-control"
-                                        name="longitude" [(ngModel)]="model.longitude" #longitude="ngModel"
-                                        placeholder="Longitude" required>
-
-                                    <div *ngIf="addForm.submitted && !latitude.valid" class="text-danger">Longitude is required
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-md-6 col-xs-12">
-                            
-
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
-                    <button [disabled]="!addForm.form.valid" class="btn btn-info btn-flat">Save</button>
+                    <button [disabled]="!importForm.form.valid" class="btn btn-info btn-flat">Upload</button>
                 </div>
             </form>
         </div>
     </div>
-</div> -->
+</div>

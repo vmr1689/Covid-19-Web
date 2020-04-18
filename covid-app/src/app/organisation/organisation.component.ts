@@ -19,6 +19,9 @@ declare var $;
 export class OrganisationComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild(DataTableDirective, { static: false }) dtElement: DataTableDirective;
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
+  @ViewChild('importForm') importForm: NgForm;
+  @ViewChild('fileInput') fileInput;
+  public importMessage: string;
 
   public dtOptions: DataTables.Settings = {
     autoWidth: false,
@@ -89,12 +92,29 @@ export class OrganisationComponent implements OnInit, AfterViewChecked, OnDestro
     $('#deleteOrganisation').modal('toggle');
   }
 
+  openImportOrganisation() {
+    this.importForm.reset();
+    this.fileInput.nativeElement.value = '';
+    $('#importOrganisation').modal('toggle');
+  }
+
   deleteOrganisation(data: Organisation) {
     this.spinnerService.show();
     this.organisationService.delete(data.id).subscribe((response: any) => {
       $('#deleteOrganisation').modal('toggle');
     }).add(() => {
       this.spinnerService.hide();
+    });
+  }
+
+  importOrganisation(form: NgForm) {
+    const formData = new FormData();
+    formData.append('upload', this.fileInput.nativeElement.files[0]);
+
+    this.organisationService.importExcel(formData).subscribe(result => {
+      $('#importOrganisation').modal('toggle');
+      this.importMessage = result.toString();
+      this.getAllOrganisations();
     });
   }
 }
