@@ -41,6 +41,8 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
   public confirmedChart: am4charts.XYChart;
   public recoveredChart: am4charts.XYChart;
   public deceasedChart: am4charts.XYChart;
+  public patientGenderChart: am4charts.PieChart;
+  public patientAgeChart: am4charts.XYChart;
 
   constructor(
     private zone: NgZone,
@@ -387,6 +389,8 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
     this.renderConfirmedChart();
     this.renderRecoveredChart();
     this.renderDeceasedChart();
+    this.renderPatientGenderChart();
+    this.renderPatientAgeChart();
   }
 
   destroyMaps() {
@@ -407,6 +411,12 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
       }
       if (this.deceasedChart) {
         this.deceasedChart.dispose();
+      }
+      if (this.patientGenderChart) {
+        this.patientGenderChart.dispose();
+      }
+      if (this.patientAgeChart) {
+        this.patientAgeChart.dispose();
       }
     });
   }
@@ -542,8 +552,97 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
     deceasedseries.tooltip.pointerOrientation = 'horizontal';
     deceasedseries.bullets.create(am4charts.CircleBullet);
     deceasedChart.cursor = new am4charts.XYCursor();
-
+    
     this.deceasedChart = deceasedChart;
+  }
+
+  public renderPatientAgeChart() {
+    const chart = am4core.create('patientAgeChart', am4charts.XYChart);
+
+    chart.data = [
+      { age: '0-10', count: 61 },
+      { age: '11-20', count: 130 },
+      { age: '21-30', count: 334 },
+      { age: '31-40', count: 382 },
+      { age: '41-50', count: 267 },
+      { age: '51-60', count: 226 },
+      { age: '61-70', count: 153 },
+      { age: '71-80', count: 47 },
+      { age: '81-90', count: 7 },
+      { age: '91-100', count: 2 },
+    ];
+
+    const categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.dataFields.category = 'age';
+    categoryAxis.renderer.grid.template.location = 0;
+    categoryAxis.renderer.minGridDistance = 30;
+
+    categoryAxis.renderer.labels.template.adapter.add('dy', function (dy, target) {
+      // if (target.dataItem && (target.dataItem.index & 2) == 2) {
+      //   return dy + 25;
+      // }
+      return dy;
+    });
+
+    chart.yAxes.push(new am4charts.ValueAxis());
+
+    // Create series
+    const series = chart.series.push(new am4charts.ColumnSeries());
+    series.dataFields.valueY = 'count';
+    series.dataFields.categoryX = 'age';
+    series.name = 'count';
+    series.columns.template.tooltipText = '{categoryX}: [bold]{valueY}[/]';
+    series.columns.template.fillOpacity = .8;
+    series.fill = am4core.color('#DC143C');
+
+    const columnTemplate = series.columns.template;
+    columnTemplate.strokeWidth = 2;
+    columnTemplate.strokeOpacity = 1;
+
+    chart.legend = new am4charts.Legend();
+    chart.legend.itemContainers.template.clickable = false;
+    chart.legend.itemContainers.template.focusable = false;
+    chart.legend.itemContainers.template.cursorOverStyle = am4core.MouseCursorStyle.default;
+    chart.legend.data = [{
+      name: 'Awaiting details for 11396',
+    }];
+    this.patientAgeChart = chart;
+  }
+
+  public renderPatientGenderChart() {
+    const chart = am4core.create('patientGenderChart', am4charts.PieChart);
+
+    chart.data = [
+      { gender: 'Male', count: 1951, color: am4core.color('blue') },
+      { gender: 'Female', count: 872, color: am4core.color('#FFB6C1') },
+      { gender: 'Awaiting Details', count: 11916, color: am4core.color('#778899') }
+    ];
+
+    const pieSeries = chart.series.push(new am4charts.PieSeries());
+    pieSeries.dataFields.value = 'count';
+    pieSeries.dataFields.category = 'gender';
+
+    chart.innerRadius = am4core.percent(40);
+
+    pieSeries.slices.template.stroke = am4core.color('white');
+    pieSeries.slices.template.strokeWidth = 2;
+    pieSeries.slices.template.strokeOpacity = 1;
+    pieSeries.slices.template.propertyFields.fill = 'color';
+
+    pieSeries.labels.template.disabled = true;
+    pieSeries.ticks.template.disabled = true;
+    //pieSeries.slices.template.tooltipText = "";
+
+    const as = pieSeries.slices.template.states.getKey('active');
+    as.properties.shiftRadius = 0;
+    pieSeries.slices.template.fillOpacity = 1;
+
+    const hs = pieSeries.slices.template.states.getKey('hover');
+    hs.properties.scale = 1;
+    hs.properties.fillOpacity = 0.5;
+
+    chart.legend = new am4charts.Legend();
+    this.patientGenderChart = chart;
   }
 
   public getData(parentData: StateWise, childData: any) {
