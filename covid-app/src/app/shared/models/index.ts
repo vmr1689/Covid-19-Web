@@ -5,6 +5,8 @@ export * from './ngBootstrapTable';
 export * from './patient.model';
 export * from './banner.model';
 export * from './updatedto.model';
+export * from './organisation.model';
+
 
 export * from './sample_data.model';
 export * from './sample_state-district-wise.model';

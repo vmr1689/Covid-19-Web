@@ -12,6 +12,7 @@ import SamplePatientsJson from '../../patients.json';
 import SampleUsersJson from '../../users.json';
 import SampleBannerJson1 from '../../banner.json';
 import SampleUpdatedDtoJson from '../../updatedto.json';
+import SampleOrganisationJson from '../../organisation.json';
 
 import {
     SampleData,
@@ -22,7 +23,8 @@ import {
     Patient,
     Banner,
     Updates,
-    Updatedto
+    Updatedto,
+    Organisation
 } from '../models';
 
 // array in local storage for registered users
@@ -103,6 +105,18 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return editUpdates();
                 case url.match(/\/DeleteUpdates\/\d+$/) && method === 'DELETE':
                     return deleteUpdates();
+
+                case url.endsWith('organisation/getAllOrganisations') && method === 'GET':
+                    return getAllOrganisations();
+                case url.match(/\/getOrganisationById\/\d+$/) && method === 'GET':
+                    return getOrganisation();
+                case url.endsWith('organisation/createOrganisation') && method === 'POST':
+                    return createOrganisation();
+                case url.endsWith('organisation/editOrganisation') && method === 'PUT':
+                    return editOrganisation();
+                case url.match(/\/organisation\/\d+$/) && method === 'DELETE':
+                    return deleteOrganisation();
+
                 default:
                     // pass through any requests not handled above
                     return next.handle(request);
@@ -341,6 +355,36 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             const aa = castObject[2];
             return ok(aa);
         }
+
+
+        function getAllOrganisations() {
+            const mainData = SampleOrganisationJson;
+            const castObject = mainData as Organisation[];
+            return ok(castObject);
+        }
+
+        function getOrganisation() {
+            const mainData = SampleOrganisationJson;
+            const castObject = mainData as Organisation[];
+            const aa = castObject[2];
+            return ok(aa);
+        }
+
+        function createOrganisation() {
+            const user = body;
+            return ok(true);
+        }
+
+        function editOrganisation() {
+            const user = body;
+            return ok(true);
+        }
+
+        function deleteOrganisation() {
+            const user = body;
+            return ok(true);
+        }
+
     }
 }
 

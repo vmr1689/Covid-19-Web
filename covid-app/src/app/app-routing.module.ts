@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { AuthGuard, RoleGuard } from './shared/helpers';
+
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LocationComponent } from './location/location.component';
 import { AddLocationComponent } from './add-location/add-location.component';
@@ -17,8 +19,9 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { QuarantinePatientComponent } from './quarantine-patient/quarantine-patient.component';
 import { AddQuarantinePatientComponent } from './add-quarantine-patient/add-quarantine-patient.component';
 import { EditQuarantinePatientComponent } from './edit-quarantine-patient/edit-quarantine-patient.component';
-
-import { AuthGuard, RoleGuard } from './shared/helpers';
+import { OrganisationComponent } from './organisation/organisation.component';
+import { AddOrganisationComponent } from './add-organisation/add-organisation.component';
+import { EditOrganisationComponent } from './edit-organisation/edit-organisation.component';
 
 const levelOneRole = {
   data: {
@@ -112,6 +115,24 @@ const routes: Routes = [
   {
     path: 'editquarantineperson/:patientId',
     component: EditQuarantinePatientComponent,
+    data: levelOneRole.data,
+    canActivate: levelOneRole.canActivate,
+  },
+  {
+    path: 'organisation',
+    component: OrganisationComponent,
+    data: levelOneRole.data,
+    canActivate: levelOneRole.canActivate,
+  },
+  {
+    path: 'addorganisation',
+    component: AddOrganisationComponent,
+    data: levelOneRole.data,
+    canActivate: levelOneRole.canActivate,
+  },
+  {
+    path: 'editorganisation/:organisationId',
+    component: EditOrganisationComponent,
     data: levelOneRole.data,
     canActivate: levelOneRole.canActivate,
   },

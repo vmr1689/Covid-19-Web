@@ -37,6 +37,9 @@ import { QuarantinePatientComponent } from './quarantine-patient/quarantine-pati
 import { AddQuarantinePatientComponent } from './add-quarantine-patient/add-quarantine-patient.component';
 import { EditQuarantinePatientComponent } from './edit-quarantine-patient/edit-quarantine-patient.component';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { OrganisationComponent } from './organisation/organisation.component';
+import { AddOrganisationComponent } from './add-organisation/add-organisation.component';
+import { EditOrganisationComponent } from './edit-organisation/edit-organisation.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +64,10 @@ import { SpinnerComponent } from './spinner/spinner.component';
     AddQuarantinePatientComponent,
     EditQuarantinePatientComponent,
     HasRoleDirective,
-    SpinnerComponent
+    SpinnerComponent,
+    OrganisationComponent,
+    AddOrganisationComponent,
+    EditOrganisationComponent
   ],
   imports: [
     BrowserModule,

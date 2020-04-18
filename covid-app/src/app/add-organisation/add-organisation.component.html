@@ -1,0 +1,190 @@
+<section class="content-header">
+    <h1>
+        Add Organisation
+    </h1>
+</section>
+<section class="content container-fluid">
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Add Organisation</h3>
+                </div>
+                <form class="form-horizontal" name="addForm" (ngSubmit)="addForm.form.valid && addOrganisation(addForm)" #addForm="ngForm" novalidate>
+                    <div class="box-body">
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="category" class="control-label">Category:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+                                    <input name="id" id="id" [(ngModel)]="model.id" #id="ngModel"
+                                    type="hidden" class="form-control" />
+
+
+                                    <select name="category" #category="ngModel" [(ngModel)]="model.category" id="category"
+                                        class="form-control" required>
+                                        <option *ngFor="let location of categories; let i = index"
+                                            value={{location.id}}>
+                                            {{location.text}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="name" class="control-label">Name:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+                                    <input id="name" type="text" autocomplete="off" class="form-control"
+                                        name="name" [(ngModel)]="model.name" #name="ngModel"
+                                        placeholder="Name" required>
+
+                                    <div *ngIf="addForm.submitted && !name.valid" class="text-danger">Name is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="latitude" class="control-label">Latitude:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+                                    <input id="latitude" type="text" autocomplete="off" class="form-control"
+                                        name="latitude" [(ngModel)]="model.latitude" #latitude="ngModel"
+                                        placeholder="Latitude" required>
+
+                                    <div *ngIf="addForm.submitted && !latitude.valid" class="text-danger">Latitude is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="longitude" class="control-label">Longitude:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+                                    <input id="longitude" type="text" autocomplete="off" class="form-control"
+                                        name="longitude" [(ngModel)]="model.longitude" #longitude="ngModel"
+                                        placeholder="Longitude" required>
+
+                                    <div *ngIf="addForm.submitted && !longitude.valid" class="text-danger">Longitude is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="phoneNumber" class="control-label">Phone Number:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+                                    <input id="phoneNumber" type="text" autocomplete="off" class="form-control"
+                                        name="phoneNumber" [(ngModel)]="model.phoneNumber" #phoneNumber="ngModel"
+                                        placeholder="Phone Number" required>
+
+                                    <div *ngIf="addForm.submitted && !phoneNumber.valid" class="text-danger">Phone Number is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="city" class="control-label">City:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+                                    <input id="city" type="text" autocomplete="off" class="form-control"
+                                        name="city" [(ngModel)]="model.city" #city="ngModel"
+                                        placeholder="City" required>
+
+                                    <div *ngIf="addForm.submitted && !city.valid" class="text-danger">City is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="district" class="control-label">District:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+                                    <input id="district" type="text" autocomplete="off" class="form-control"
+                                        name="district" [(ngModel)]="model.district" #district="ngModel"
+                                        placeholder="District" required>
+
+                                    <div *ngIf="addForm.submitted && !district.valid" class="text-danger">District is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="state" class="control-label">State:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+                                    <input id="state" type="text" autocomplete="off" class="form-control"
+                                        name="state" [(ngModel)]="model.state" #state="ngModel"
+                                        placeholder="State" required>
+
+                                    <div *ngIf="addForm.submitted && !state.valid" class="text-danger">State is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="country" class="control-label">Country:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+                                    <input id="country" type="text" autocomplete="off" class="form-control"
+                                        name="country" [(ngModel)]="model.country" #country="ngModel"
+                                        placeholder="Country" required>
+
+                                    <div *ngIf="addForm.submitted && !country.valid" class="text-danger">Country is required
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="profilePic" class="control-label">Profile:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+
+                                    <div class="form-row d-flex justify-content-center" style="margin-top: 20px;">
+                                        <img src="{{model.profilePic}}" alt="image" height="200" width="200" style="border-radius: 50%;"
+                                            alt="avatar">
+                                    </div>
+
+                                    <input type="file" class="custom-file-input" id="uploadButton" name="file"
+                                    accept="image/gif, image/jpeg, image/png " autocomplete="off"
+                                    (change)="changeListener($event,this)">
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <button type="button" class="btn btn-default" style="margin-right: 15px;"
+                            (click)="navigateToMainPage()">Cancel</button>
+                        <button type="submit" class="btn btn-primary" style="margin-right: 15px;">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
