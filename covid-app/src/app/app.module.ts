@@ -41,6 +41,9 @@ import { OrganisationComponent } from './organisation/organisation.component';
 import { AddOrganisationComponent } from './add-organisation/add-organisation.component';
 import { EditOrganisationComponent } from './edit-organisation/edit-organisation.component';
 import { HelpLinkComponent } from './help-link/help-link.component';
+import { GuidelinesComponent } from './guidelines/guidelines.component';
+import { LinksComponent } from './links/links.component';
+import { EssentialsComponent } from './essentials/essentials.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +72,10 @@ import { HelpLinkComponent } from './help-link/help-link.component';
     OrganisationComponent,
     AddOrganisationComponent,
     EditOrganisationComponent,
-    HelpLinkComponent
+    HelpLinkComponent,
+    GuidelinesComponent,
+    LinksComponent,
+    EssentialsComponent
   ],
   imports: [
     BrowserModule,

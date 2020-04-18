@@ -23,6 +23,9 @@ import { OrganisationComponent } from './organisation/organisation.component';
 import { AddOrganisationComponent } from './add-organisation/add-organisation.component';
 import { EditOrganisationComponent } from './edit-organisation/edit-organisation.component';
 import { HelpLinkComponent } from './help-link/help-link.component';
+import { GuidelinesComponent } from './guidelines/guidelines.component';
+import { LinksComponent } from './links/links.component';
+import { EssentialsComponent } from './essentials/essentials.component';
 
 const levelOneRole = {
   data: {
@@ -50,6 +53,14 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+  },
+  {
+    path: 'links',
+    component: LinksComponent,
+  },
+  {
+    path: 'essentials',
+    component: EssentialsComponent,
   },
   {
     path: 'login',
@@ -140,6 +151,12 @@ const routes: Routes = [
   {
     path: 'helplinks',
     component: HelpLinkComponent,
+    data: levelOneRole.data,
+    canActivate: levelOneRole.canActivate,
+  },
+  {
+    path: 'guidelines',
+    component: GuidelinesComponent,
     data: levelOneRole.data,
     canActivate: levelOneRole.canActivate,
   },

@@ -40,6 +40,12 @@
           <li class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><a
               [routerLink]="['/']">Home <span class="sr-only">(current)</span></a></li>
 
+          <li class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a [routerLink]="['/essentials']">Essentials</a></li>
+
+          <li class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a [routerLink]="['/links']">Links</a></li>
+
           <li *appHasRole="['SuperAdmin']" class="custom-hide-menu-mobile" routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/users']">Users</a></li>
 
@@ -70,6 +76,9 @@
               <li *appHasRole="['Admin']" class="custom-hide-menu-mobile" routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true }">
                 <a [routerLink]="['/helplinks']">Help Links</a></li>
+              <li *appHasRole="['Admin']" class="custom-hide-menu-mobile" routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }">
+                <a [routerLink]="['/guidelines']">Guidelines</a></li>
             </ul>
           </li>
         </ul>
