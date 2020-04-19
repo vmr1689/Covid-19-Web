@@ -7,6 +7,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DataTablesModule } from 'angular-datatables';
+import { AgmCoreModule } from '@agm/core';
 
 // used to create fake backend
 import { fakeBackendProvider, AuthGuard, JwtInterceptor, ErrorInterceptor } from './shared/helpers';
@@ -86,6 +87,9 @@ import { EssentialsComponent } from './essentials/essentials.component';
     BsDatepickerModule.forRoot(),
     TimepickerModule.forRoot(),
     HttpClientModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBHqjazKg_SINMhocRoz-XK-CzY_Po4_Ww'
+    }),
     DataTablesModule,
     AppRoutingModule,
     DirectivesModule

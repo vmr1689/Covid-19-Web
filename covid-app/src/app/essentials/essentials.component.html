@@ -14,10 +14,9 @@
                                 <label for="state" class="col-sm-3 control-label">State:</label>
 
                                 <div class="col-sm-9">
-                                    <select name="state" #state="ngModel" [(ngModel)]="model.state"
-                                        id="state" class="form-control">
-                                        <option *ngFor="let state of states; let i = index"
-                                            value={{state}}>
+                                    <select name="state" #state="ngModel" [(ngModel)]="model.state" id="state"
+                                        class="form-control">
+                                        <option *ngFor="let state of states; let i = index" value={{state}}>
                                             {{state}}
                                         </option>
                                     </select>
@@ -31,10 +30,9 @@
                                 <label for="district" class="col-sm-3 control-label">District:</label>
 
                                 <div class="col-sm-9">
-                                    <select name="district" #district="ngModel"
-                                        [(ngModel)]="model.district" id="district" class="form-control">
-                                        <option *ngFor="let district of districts; let i = index"
-                                            value={{district}}>
+                                    <select name="district" #district="ngModel" [(ngModel)]="model.district"
+                                        id="district" class="form-control">
+                                        <option *ngFor="let district of districts; let i = index" value={{district}}>
                                             {{district}}
                                         </option>
                                     </select>
@@ -48,10 +46,10 @@
                                 <label for="city" class="col-sm-3 control-label">City:</label>
 
                                 <div class="col-sm-9">
-                                    <select name="city" #city="ngModel" [(ngModel)]="model.city"
-                                        id="city" class="form-control">
-                                        <option *ngFor="let city of cities; let i = index"
-                                            value={{city}} [selected]="i == 0">
+                                    <select name="city" #city="ngModel" [(ngModel)]="model.city" id="city"
+                                        class="form-control">
+                                        <option *ngFor="let city of cities; let i = index" value={{city}}
+                                            [selected]="i == 0">
                                             {{city}}
                                         </option>
                                     </select>
@@ -65,9 +63,8 @@
                                 <label for="categoryId" class="col-sm-3 control-label">Category:</label>
 
                                 <div class="col-sm-9">
-                                    <select name="categoryId" #categoryId="ngModel"
-                                        [(ngModel)]="model.categoryId" id="categoryId"
-                                        class="form-control">
+                                    <select name="categoryId" #categoryId="ngModel" [(ngModel)]="model.categoryId"
+                                        id="categoryId" class="form-control">
                                         <option *ngFor="let category of categories; let i = index"
                                             value={{category.categoryId}} [selected]="i == 0">
                                             {{category.category}}
@@ -122,8 +119,7 @@
                                             <td>{{data.country}}</td>
                                             <td>{{data.phoneNumber}}</td>
                                             <td>
-                                                <button style="margin-right:5px"
-                                                    title="View Map"
+                                                <button style="margin-right:5px" title="View Map"
                                                     (click)="openMapOrganisation(data)"
                                                     class="btn btn-small btn-flat btn-warning">
                                                     <i class="btn-icon-only fa fa-eye"> </i>
@@ -136,6 +132,31 @@
                         </div>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Maps</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <agm-map [latitude]='latitude' [longitude]='longitude ' >
+                        <agm-marker [latitude]="marlatitude" [longitude]="marongitude" ></agm-marker>
+                    </agm-map>  
+                </div>
             </div>
         </div>
     </div>

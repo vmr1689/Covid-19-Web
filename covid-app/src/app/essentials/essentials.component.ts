@@ -40,6 +40,12 @@ export class EssentialsComponent implements OnInit, AfterViewChecked, OnDestroy 
     { categoryId: 1, category: 'Hospital' },
     { categoryId: 2, category: 'CoVID-19 Testing Lab' },
   ];
+  latitude = 11.020522;
+  longitude = 76.966698;
+  marlatitude= 11.020522;
+  marongitude =76.966698;;
+  mapType = 'satellite';
+  
   constructor(
     private spinnerService: SpinnerService,
     private router: Router,
