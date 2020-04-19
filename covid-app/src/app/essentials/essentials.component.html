@@ -1,1 +1,142 @@
-<p>essentials works!</p>
+<section class="content-header">
+    <h1>
+        Essentials
+    </h1>
+</section>
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <form class="form-horizontal">
+                    <div class="box-body">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="state" class="col-sm-3 control-label">State:</label>
+
+                                <div class="col-sm-9">
+                                    <select name="state" #state="ngModel" [(ngModel)]="model.state"
+                                        id="state" class="form-control">
+                                        <option *ngFor="let state of states; let i = index"
+                                            value={{state}}>
+                                            {{state}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="district" class="col-sm-3 control-label">District:</label>
+
+                                <div class="col-sm-9">
+                                    <select name="district" #district="ngModel"
+                                        [(ngModel)]="model.district" id="district" class="form-control">
+                                        <option *ngFor="let district of districts; let i = index"
+                                            value={{district}}>
+                                            {{district}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="city" class="col-sm-3 control-label">City:</label>
+
+                                <div class="col-sm-9">
+                                    <select name="city" #city="ngModel" [(ngModel)]="model.city"
+                                        id="city" class="form-control">
+                                        <option *ngFor="let city of cities; let i = index"
+                                            value={{city}} [selected]="i == 0">
+                                            {{city}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="categoryId" class="col-sm-3 control-label">Category:</label>
+
+                                <div class="col-sm-9">
+                                    <select name="categoryId" #categoryId="ngModel"
+                                        [(ngModel)]="model.categoryId" id="categoryId"
+                                        class="form-control">
+                                        <option *ngFor="let category of categories; let i = index"
+                                            value={{category.categoryId}} [selected]="i == 0">
+                                            {{category.category}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-row text-center">
+                                <div class="col-12">
+                                    <button style="margin-right:5px" class="btn btn-primary"
+                                        (click)="searchOrganisation()">
+                                        Search
+                                    </button>
+
+                                    <button style="margin-right:5px" class="btn btn-primary"
+                                        (click)="ResetSearchOrganisation()">
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="clearfix"></div>
+                        <div class="col-md-12">
+                            <div class="table-responsive table-responsive-sm">
+
+                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                    class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Category</th>
+                                            <th>Organisation</th>
+                                            <th>City</th>
+                                            <th>District</th>
+                                            <th>State</th>
+                                            <th>Country</th>
+                                            <th>Phone Number</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let data of organisations; let i = index">
+                                            <td>{{data.category}}</td>
+                                            <td>{{data.name}}</td>
+                                            <td>{{data.city}}</td>
+                                            <td>{{data.district}}</td>
+                                            <td>{{data.state}}</td>
+                                            <td>{{data.country}}</td>
+                                            <td>{{data.phoneNumber}}</td>
+                                            <td>
+                                                <button style="margin-right:5px"
+                                                    title="View Map"
+                                                    (click)="openMapOrganisation(data)"
+                                                    class="btn btn-small btn-flat btn-warning">
+                                                    <i class="btn-icon-only fa fa-eye"> </i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
