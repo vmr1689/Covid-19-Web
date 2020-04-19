@@ -14,6 +14,8 @@ import SampleBannerJson1 from '../../banner.json';
 import SampleUpdatedDtoJson from '../../updatedto.json';
 import SampleOrganisationJson from '../../organisation.json';
 import SampleHelpLinksJson from '../../helplinks.json';
+import SampleGuidelinesJson from '../../guidelines.json';
+
 import {
     SampleData,
     SampleStateDistrictWiseData,
@@ -25,7 +27,8 @@ import {
     Updates,
     Updatedto,
     Organisation,
-    HelpLink
+    HelpLink,
+    Guidelines
 } from '../models';
 
 // array in local storage for registered users
@@ -128,6 +131,17 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return editHelpLinks();
                 case url.match(/\/helplinks\/\d+$/) && method === 'DELETE':
                     return deleteHelpLinks();
+
+                case url.endsWith('guidelines/getAllGuidelines') && method === 'GET':
+                    return getAllGuidelines();
+                case url.match(/\/getGuidelinesById\/\d+$/) && method === 'GET':
+                    return getGuidelines();
+                case url.endsWith('guidelines/createGuidelines') && method === 'POST':
+                    return createGuidelines();
+                case url.endsWith('guidelines/editGuidelines') && method === 'PUT':
+                    return editGuidelines();
+                case url.match(/\/guidelines\/\d+$/) && method === 'DELETE':
+                    return deleteGuidelines();
 
                 default:
                     // pass through any requests not handled above
@@ -422,6 +436,37 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function deleteHelpLinks() {
+            const user = body;
+            return ok(true);
+        }
+
+
+
+
+        function getAllGuidelines() {
+            const mainData = SampleGuidelinesJson;
+            const castObject = mainData as Guidelines[];
+            return ok(castObject);
+        }
+
+        function getGuidelines() {
+            const mainData = SampleGuidelinesJson;
+            const castObject = mainData as Guidelines[];
+            const aa = castObject[0];
+            return ok(aa);
+        }
+
+        function createGuidelines() {
+            const user = body;
+            return ok(true);
+        }
+
+        function editGuidelines() {
+            const user = body;
+            return ok(true);
+        }
+
+        function deleteGuidelines() {
             const user = body;
             return ok(true);
         }

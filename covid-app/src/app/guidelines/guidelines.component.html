@@ -1,1 +1,208 @@
-<p>guidelines works!</p>
+<section class="content-header">
+    <h1>
+        Guidelines
+    </h1>
+</section>
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Help Links</h3>
+                    <button style="margin-right:5px" class="btn btn-info btn-flat pull-right"
+                        (click)="openCreateGuidelines()">
+                        Add Guidelines
+                    </button>
+
+                    <button style="margin-right:5px" class="btn btn-info btn-flat pull-right"
+                        (click)="openImportGuidelines()">
+                        Import Guidelines
+                    </button>
+                </div>
+                <form class="form-horizontal">
+                    <div class="box-body">
+                        <div class="clearfix"></div>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+
+                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                    class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Category</th>
+                                            <th>Description</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let data of guidelines; let i = index">
+                                            <td>{{data.id}}</td>
+                                            <td>{{data.category}}</td>
+                                            <td>{{data.description}}</td>
+                                            <td>
+
+                                                <!-- <button style="margin-right:5px" title="Edit HelpLink"
+                                                    (click)="openEditHelpLink(data)"
+                                                    class="btn btn-small btn-flat btn-warning">
+                                                    <i class="btn-icon-only fa fa-pencil"> </i>
+                                                </button> -->
+
+                                                <button style="margin-right:5px" title="Delete HelpLink"
+                                                    (click)="openDeleteGuidelines(data)"
+                                                    class="btn btn-small btn-flat btn-danger">
+                                                    <i class="btn-icon-only fa fa-trash"> </i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="box-footer">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" data-backdrop="static" id="deleteGuidelines">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Delete Guidelines</h4>
+            </div>
+            <div class="modal-body">
+                <p style="font-weight: bold; word-wrap: break-word;">
+                    Do you want to delete {{model.description}} ?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">No</button>
+                <button (click)="deleteGuidelines(model)" class="btn btn-info btn-flat">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" data-backdrop="static" id="importGuidelines">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Import Guidelines</h4>
+            </div>
+            <form class="form-horizontal" name="importForm"
+                (ngSubmit)="importForm.form.valid && importGuidelines(importForm)" #importForm="ngForm" novalidate>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 col-xs-12">
+
+                            <div class="form-group">
+                                <label for="description" class="col-sm-3 control-label">Description:</label>
+
+                                <div class="col-sm-9">
+                                    <input id="description" type="text" autocomplete="off" class="form-control"
+                                    name="description" [(ngModel)]="model.description" #description="ngModel"
+                                    placeholder="Description" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="content" class="col-sm-3 control-label">Content:</label>
+
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="file" #fileInput required="required"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
+                    <button [disabled]="!importForm.form.valid" class="btn btn-info btn-flat">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" data-backdrop="static" id="addGuidelines">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Add Guidelines</h4>
+            </div>
+            <form class="form-horizontal" name="addForm" (ngSubmit)="addForm.form.valid && addGuidelines(addForm)"
+                #addForm="ngForm" novalidate>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 col-xs-12">
+
+                            <div class="form-group">
+                                <input name="id" id="id" [(ngModel)]="model.id" #id="ngModel" type="hidden"
+                                class="form-control" />
+
+                                <label for="description" class="col-sm-3 control-label">Description:</label>
+
+                                <div class="col-sm-9">
+                                    <input id="description" type="text" autocomplete="off" class="form-control" name="description"
+                                        [(ngModel)]="model.description" #description="ngModel" placeholder="Description" required>
+
+                                    <div *ngIf="addForm.submitted && !description.valid" class="text-danger">Description is
+                                        required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-12">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1 col-xs-12">
+
+                           
+                        </div>
+
+                        <div class="col-md-10 col-xs-12">
+
+                            <div class="form-group">
+
+
+                                <div class="col-sm-12">
+
+                                    <textarea class="form-control" id="content" [(ngModel)]="model.content"
+                                        #content="ngModel" name="content" rows="5" placeholder="Content ..."
+                                        required></textarea>
+
+                                    <div *ngIf="addForm.submitted && !content.valid" class="text-danger">Content is required
+                                    </div>
+                                 
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
+                    <button [disabled]="!addForm.form.valid" class="btn btn-info btn-flat">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
