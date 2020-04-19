@@ -1,1 +1,20 @@
-<p>links works!</p>
+<section class="content" >
+    <div class="row">
+        <div class="col-md-12">
+
+            <ul class="timeline">
+                <li *ngFor="let data of helpLinks; let i = index">
+                    <div class="timeline-item">
+
+                        <h3 class="timeline-header no-border" style="font-weight: bold;">{{data.header}}</h3>
+
+                        <div class="timeline-body" style="font-weight: bold;">
+                            <a href="javascript:void(0)" (click)="openHelpLink(data.content)">{{data.content}}</a>
+                        </div>
+
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
