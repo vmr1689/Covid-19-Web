@@ -8,7 +8,7 @@ import * as moment from 'moment';
 
 import { Countries, Continents } from '../../environments/environment';
 import { renderTable, createChild, destroyChild } from '../shared/helpers';
-import { DashboardService, SpinnerService } from '../shared/services';
+import { DashboardService, SpinnerService, GuidelinesService } from '../shared/services';
 import {
   Updates,
   SampleData,
@@ -16,7 +16,8 @@ import {
   SampleUpdatesData,
   SampleWebData,
   CasesTimeSeries,
-  StateWise
+  StateWise,
+  Guidelines
 } from '../shared/models';
 
 declare var $;
@@ -35,6 +36,11 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
   public sampleData: SampleData;
   public sampleStateDistrictData: SampleStateDistrictWiseData;
   public updatesList: Updates[] = [];
+  public guidelinesList: Guidelines[] = [];
+  public dosList: Guidelines[] = [];
+  public dontsList: Guidelines[] = [];
+  public symptomsList: Guidelines[] = [];
+
   public dailySpreadList: CasesTimeSeries[] = [];
 
   public mapchart: am4maps.MapChart;
@@ -47,10 +53,12 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
   constructor(
     private zone: NgZone,
     private spinnerService: SpinnerService,
-    private dashboardService: DashboardService) { }
+    private dashboardService: DashboardService,
+    private guidelinesService: GuidelinesService) { }
 
   ngOnInit(): void {
     this.getStateDistrictData();
+    this.getGuidelines();
     this.getBannerData();
     this.getUpdatesData();
     this.getDetails();
@@ -60,11 +68,26 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
     $('.dataTables_filter input, .dataTables_length select').addClass('form-control');
   }
 
+  public getGuidelines() {
+    this.guidelinesList = [];
+    this.dosList = [];
+    this.dontsList = [];
+    this.symptomsList = [];
+    this.guidelinesService.getAllGuidelines().subscribe((response: Guidelines[]) => {
+      if (response) {
+        this.guidelinesList = response;
+        debugger;
+        this.symptomsList = response.filter(x => x.type === 'SYMPTOMS');
+        this.dontsList = response.filter(x => x.type === "DONT'S");
+        this.dosList = response.filter(x => x.type === "DO'S");
+      }
+    });
+  }
+
   public getStateDistrictData() {
     this.dashboardService.getStateDistrictData().subscribe((response: SampleStateDistrictWiseData) => {
       if (response) {
         this.sampleStateDistrictData = response;
-        console.log(this.sampleStateDistrictData);
       }
     });
   }

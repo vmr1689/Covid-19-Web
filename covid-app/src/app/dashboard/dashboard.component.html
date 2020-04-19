@@ -208,7 +208,58 @@
       </div>
     </div>
 
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-info">
+          <div class="box-body" style="background-color: #fff1b0;">
+            <div class="col-md-6 symptoms">
+              <!-- <img src="https://www.mygov.in/sites/all/themes/mygov/images/covid/symptoms.png" alt="symptoms" /> -->
+  
+              <h3 style="color: #fa7c01; text-align: center;">SYMPTOMS</h3>
+              <br>
+              <div class="col-md-4" *ngFor="let data of symptomsList">
+                <div class="img-with-text">
+                  <img src="{{data.image}}" alt="symptoms" width="50" height="50" />
+                  <p style="text-align: center;">{{data.description}}</p>
+                </div>
+  
+              </div>
+            </div>
+  
+            <div class="col-md-6 corona">
+  
+              <div class="row">
+                <h3 style="color: #fa7c01;text-align: center;">DO'S</h3>
+                <br>
+                <!-- <img src="https://www.mygov.in/sites/all/themes/mygov/images/covid/block-one.png" alt="symptoms" /> -->
+  
+                <div class="col-md-4" *ngFor="let data of dosList">
+                  <div class="img-with-text">
+                    <img src="{{data.image}}" alt="symptoms" width="50" height="50" />
+                    <p style="text-align: center;">{{data.description}}</p>
+                  </div>
+                </div>
+  
+              </div>
+              <div class="row">
+  
+  
+                <h3 style="color: #fa7c01;text-align: center;">DONT'S</h3>
+                <br>
+                <!-- <img src="https://www.mygov.in/sites/all/themes/mygov/images/covid/block-two.png" alt="symptoms" /> -->
+  
+                <div class="col-md-4" *ngFor="let data of dontsList">
+                  <div class="img-with-text">
+                    <img src="{{data.image}}" alt="symptoms" width="50" height="50" />
+                    <p style="text-align: center;">{{data.description}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
   </section>
 </div>
-
-s

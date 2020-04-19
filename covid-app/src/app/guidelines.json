@@ -1,18 +1,20 @@
 [
     {
         "id": 1,
-        "category": "html",
+        "category": "image",
         "categoryId": 1,
-        "content": "<!DOCTYPE html>\n    <html>\n    <head>\n    <style>\n    div {\n      border: 1px solid gray;\n      padding: 8px;\n    }\n    \n    h1 {\n      text-align: center;\n      text-transform: uppercase;\n      color: #4CAF50;\n    }\n    \n    p {\n      text-indent: 50px;\n      text-align: justify;\n      letter-spacing: 3px;\n    }\n    \n    a {\n      text-decoration: none;\n      color: #008CBA;\n    }\n    </style>\n    </head>\n    <body>\n    \n    <div>\n      <h1>text formatting</h1>\n      <p>This text is styled with some of the text formatting properties. The heading uses the text-align, text-transform, and color properties.\n      The paragraph is indented, aligned, and the space between characters is specified. The underline is removed from this colored\n      <a target=\"_blank\" href=\"tryit.asp?filename=trycss_text\">\"Try it Yourself\"</a> link.</p>\n    </div>\n    \n    </body>\n    </html>",
-        "image":"",
-        "description": "handwash"
+        "type": "DO'S",
+        "content": "",
+        "image":"/assets/images/corona/handwash.png",
+        "description": "hand wash"
     },
     {
         "id": 2,
-        "category": "html",
+        "category": "image",
         "categoryId": 1,
-        "content": "<!DOCTYPE html>\n    <html>\n    <head>\n    <style>\n    body {\n      background-color: lightblue;\n    }\n    \n    h1 {\n      color: white;\n      text-align: center;\n    }\n    \n    p {\n      font-family: verdana;\n      font-size: 20px;\n    }\n    </style>\n    </head>\n    <body>\n    \n    <h1>My First CSS Example</h1>\n    <p>This is a paragraph.</p>\n    \n    </body>\n    </html>\n    ",
-        "image":"",
+        "type": "DO'S",
+        "content": "",
+        "image":"/assets/images/corona/selfquraantine.png",
         "description": "self quarantine"
     },
     {
@@ -20,23 +22,80 @@
         "category": "image",
         "categoryId": 2,
         "content": "",
-        "image":"",
+        "type": "DO'S",
+        "image":"/assets/images/corona/avoidpublic.png",
         "description": "avoid over crowd"
     },
     {
         "id": 4,
-        "category": "html",
+        "category": "image",
         "categoryId": 1,
         "content": "",
-        "image":"",
-        "description": "symptoms"
+        "type": "SYMPTOMS",
+        "image":"/assets/images/corona/highfever.png",
+        "description": "High Fever"
+    },
+    {
+        "id": 4,
+        "category": "image",
+        "categoryId": 1,
+        "content": "",
+        "type": "SYMPTOMS",
+        "image":"/assets/images/corona/lowenergy.png",
+        "description": "Low Energy"
     },
     {
         "id": 5,
-        "category": "html",
+        "category": "image",
         "categoryId": 1,
         "content": "",
-        "image":"",
-        "description": "preventions"
+        "type": "SYMPTOMS",
+        "image":"/assets/images/corona/bodypain.png",
+        "description": "Body Pain"
+    },
+    {
+        "id": 6,
+        "category": "image",
+        "categoryId": 1,
+        "content": "",
+        "type": "SYMPTOMS",
+        "image":"/assets/images/corona/breathingproblem.png",
+        "description": "Breathing Problem"
+    },
+    {
+        "id": 6,
+        "category": "image",
+        "categoryId": 1,
+        "content": "",
+        "type": "Symptoms",
+        "image":"/assets/images/corona/cough.png",
+        "description": "Cough"
+    },
+    {
+        "id": 7,
+        "category": "image",
+        "categoryId": 1,
+        "content": "",
+        "type": "DONT'S",
+        "image":"/assets/images/corona/avoidrumour.png",
+        "description": "Avoid Rumour"
+    },
+    {
+        "id": 8,
+        "category": "image",
+        "categoryId": 1,
+        "content": "",
+        "type": "DONT'S",
+        "image":"/assets/images/corona/avoidtravel.png",
+        "description": "Avoid Travel"
+    },
+    {
+        "id": 9,
+        "category": "image",
+        "categoryId": 1,
+        "content": "",
+        "type": "DO'S",
+        "image":"/assets/images/corona/mouthclose.png",
+        "description": "Cover Mouth"
     }
 ]

@@ -17,4 +17,19 @@ td.child-table {
     float: left !important;
 }
 
+.img-with-text {
+    text-align: justify;
+    width: 50px !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.img-with-text img {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 

@@ -3,6 +3,7 @@ export interface Guidelines {
     category: string;
     categoryId: number;
     content: string;
+    type: string;
     image: any;
     description: string;
 }
