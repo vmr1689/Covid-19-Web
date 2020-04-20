@@ -4,6 +4,7 @@
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
+        <p class="login-box-msg" style="font-weight: bold;">For healthcare service provider's only</p>
         <p class="login-box-msg">Sign in to start your session</p>
 
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit($event, loginForm.value)">

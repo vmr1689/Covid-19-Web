@@ -68,14 +68,17 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
   ];
 
   Persons: any[] = [
-    { id: '1', name: 'Test Patient 1' },
-    { id: '2', name: 'Test Patient 2' }
+    { id: '1', name: 'Gajendra Panchal' },
+    { id: '2', name: 'Umesh Pandya' },
+    { id: '3', name: 'Supriya Hayer' },
+    { id: '4', name: 'Asatha Ganesh' },
+    { id: '5', name: 'Kirti Date' }
   ];
 
   references: any[] = [
-    { referenceId: '1', patient: 'Test Patient 1', status: 'Active', placeName: 'Pune', severity: 'high', date: '11/04/2020 18:20:24' },
-    { referenceId: '2', patient: 'Test Patient 2', status: 'Confirmed', placeName: 'New Delhi', severity: 'Medium', date: '11/01/2020 18:20:24' },
-    { referenceId: '3', patient: 'Test Patient 3', status: 'Deceased', placeName: 'Puri', severity: 'High', date: '11/15/2020 18:20:24' },
+    { referenceId: '1', patient: 'Gajendra Panchal', status: 'Active', placeName: 'Coimbatore', severity: 'high', date: '11/04/2020 06:10:24' },
+    { referenceId: '2', patient: 'Umesh Pandya', status: 'Confirmed', placeName: 'New Delhi', severity: 'Medium', date: '11/03/2020 12:20:24' },
+    { referenceId: '3', patient: 'Supriya Hayer', status: 'Deceased', placeName: 'Puri', severity: 'High', date: '03/11/2019 18:20:24' },
   ];
 
   constructor(
@@ -113,11 +116,11 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
 
     this.form = this.fb.group({
       patientId: ['41', [Validators.required]],
-      firstName: ['Test 11', [Validators.required]],
-      lastName: ['45', [Validators.required]],
-      age: ['Test 11', Validators.required],
+      firstName: ['Iqbal', [Validators.required]],
+      lastName: ['Thomas', [Validators.required]],
+      age: ['30', Validators.required],
       phone: ['9874563210', [Validators.required]],
-      email: ['test2@test.com', [Validators.required]],
+      email: ['Thomas121@gmail.com', [Validators.required]],
       address1: ['84 DB 67, ST Street, West Delhi', [Validators.required]],
       zipcode: ['613545', [Validators.required]],
       latitude: ['', [Validators.required]],

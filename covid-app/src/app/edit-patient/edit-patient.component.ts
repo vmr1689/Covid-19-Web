@@ -52,15 +52,15 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
   locations: any[] = [
-    { locationId: '1', latitude: '78.45512', longitude: '108.45512', place: 'Orissa', status: 'Active', severity: 'high', date: '11/04/2020 18:20:24' },
-    { locationId: '2', latitude: '80.45512', longitude: '100.45512', place: 'Kerala', status: 'Recovered', severity: 'medium', date: '11/03/2020 18:20:24' },
-    { locationId: '3', latitude: '80.45512', longitude: '100.45512', place: 'Delhi', status: 'Deceased', severity: 'medium', date: '11/04/2020 18:20:24' }
+    { locationId: '1', latitude: '28.7041', longitude: '77.1025', place: 'Orissa', status: 'Active', severity: 'high', date: '11/04/2020 06:10:24' },
+    { locationId: '2', latitude: '10.8505', longitude: '76.2711', place: 'Kerala', status: 'Recovered', severity: 'medium', date: '11/03/2020 12:20:24' },
+    { locationId: '3', latitude: '20.9517', longitude: '85.0985', place: 'Delhi', status: 'Deceased', severity: 'medium', date: '03/11/2019 18:20:24' }
   ];
 
   devices: any[] = [
-    { deviceId: '1', deviceName: 'Device 1', deviceAddress: 'Orissa', PhoneNumber: '159751565', date: '11/04/2020 18:20:24', place: 'Orissa' },
-    { deviceId: '2', deviceName: 'Device 2', deviceAddress: 'Kerala', PhoneNumber: '147955555', date: '11/03/2020 18:20:24', place: 'Kerala' },
-    { deviceId: '3', deviceName: 'Device 3', deviceAddress: 'Delhi', PhoneNumber: '147955555', date: '11/04/2020 18:20:24', place: 'Delhi' }
+    { deviceId: '1', deviceName: 'Srini_IPhone_bsu', deviceAddress: '34:E9:D2:75:CE:86', PhoneNumber: '159751565', date: '11/04/2020 06:10:24', place: 'Orissa' },
+    { deviceId: '2', deviceName: 'msu_andriod_d', deviceAddress: 'E3:87:F2:81:5A:42', PhoneNumber: '147955555', date: '11/03/2020 12:20:24', place: 'Kerala' },
+    { deviceId: '3', deviceName: 'chiti_dev', deviceAddress: '70:7C:97:B2:23:B4', PhoneNumber: '147955555', date: '03/11/2019 18:20:24', place: 'Delhi' }
   ];
 
   // devices: any[] = [
@@ -95,13 +95,13 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
 
     this.form = this.fb.group({
       patientId: ['1', [Validators.required]],
-      firstName: ['Test 2', [Validators.required]],
-      lastName: ['Test 2', [Validators.required]],
-      age: ['54', Validators.required],
-      phone: ['9874563210', [Validators.required]],
-      email: ['test2@test.com', [Validators.required]],
-      address1: ['84 DB 67, ST Street', [Validators.required]],
-      zipcode: ['545798', [Validators.required]],
+      firstName: ['Srinivasan', [Validators.required]],
+      lastName: ['Kapadia', [Validators.required]],
+      age: ['83', Validators.required],
+      phone: ['+91 561 1159111', [Validators.required]],
+      email: ['srnikp32f@live.com', [Validators.required]],
+      address1: ['1359  Kuhl Avenue, Atlanta, GA', [Validators.required]],
+      zipcode: ['745798', [Validators.required]],
       latitude: ['', [Validators.required]],
       longitude: ['', [Validators.required]],
       deviceName: ['', [Validators.required]],

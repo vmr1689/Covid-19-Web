@@ -38,18 +38,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let data of locations">
+                                        <tr *ngFor="let data of locations; let i = index">
                                             <td [style.fontWeight]="data.istarget ? 'bold': 'inherit'">
                                                 {{data.placeName}}</td>
                                             <td>{{data.root ? (data.root.placeName ? data.root.placeName : ''): ''}}
                                             </td>
                                             <td>{{data.latitude}}</td>
                                             <td>{{data.longitude}}</td>
-                                            <td>100</td>
-                                            <td>10</td>
-                                            <td>20</td>
-                                            <td>30</td>
-                                            <td>40</td>
+                                            <td>{{ (i+1) * (i +10)}}</td>
+                                            <td>{{ (i+1) * (i +8)}}</td>
+                                            <td>{{ (i+1) * (i +6)}}</td>
+                                            <td>{{ (i+1) * (i +4)}}</td>
+                                            <td>{{ (i+1) * (i +2)}}</td>
                                             <td>{{data.istarget ? 'Yes' : 'No'}}</td>
                                             <td>
 

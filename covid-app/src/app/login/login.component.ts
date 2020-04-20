@@ -58,7 +58,15 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.loginForm.valid) {
       this.spinnerService.show();
       this.authenticationService.login(form.email, form.password).subscribe((result: any) => {
-        this.router.navigate(['/']);
+        debugger;
+        const isSuperAdmin = this.authenticationService.roleMatch(['SuperAdmin']);
+        const isAdmin = this.authenticationService.roleMatch(['Admin']);
+        if (isSuperAdmin) {
+          this.router.navigate(['/users']);
+        }
+         else if (isAdmin) {
+          this.router.navigate(['/location']);
+         }
       }, error => {
         if (error) {
           this.message = error;

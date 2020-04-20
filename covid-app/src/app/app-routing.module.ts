@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AuthGuard, RoleGuard } from './shared/helpers';
+import { AuthGuard, RoleGuard, UserRoleGuard } from './shared/helpers';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LocationComponent } from './location/location.component';
@@ -48,19 +48,23 @@ const routes: Routes = [
   // { path: 'editlocation/:placeId', component: EditLocationComponent },
   {
     path: '',
-    component: DashboardComponent
+    component: DashboardComponent,
+    canActivate: [UserRoleGuard]
   },
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [ UserRoleGuard]
   },
   {
     path: 'links',
     component: LinksComponent,
+    canActivate: [UserRoleGuard]
   },
   {
     path: 'essentials',
     component: EssentialsComponent,
+    canActivate: [UserRoleGuard]
   },
   {
     path: 'login',

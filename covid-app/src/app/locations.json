@@ -2,16 +2,16 @@
     {
         "placeId": 1,
         "placeName": "INDIA",
-        "latitude": 4,
-        "longitude": 5,
+        "latitude": 20.5937,
+        "longitude": 78.9629,
         "istarget": true,
         "rootId": null
     },
     {
         "placeId": 2,
         "placeName": "ODISHA",
-        "latitude": 55,
-        "longitude": 77,
+        "latitude": 20.9517,
+        "longitude": 85.0985,
         "istarget": false,
         "rootId": 1,
         "root": {
@@ -26,8 +26,8 @@
     {
         "placeId": 4,
         "placeName": "BHADRAK",
-        "latitude": 5,
-        "longitude": 66,
+        "latitude": 21.0574,
+        "longitude": 86.4963,
         "istarget": false,
         "rootId": 2,
         "root": {
@@ -42,8 +42,8 @@
     {
         "placeId": 8,
         "placeName": "BALESWAR",
-        "latitude": 4,
-        "longitude": 33,
+        "latitude": 21.4934,
+        "longitude": 86.9135,
         "istarget": false,
         "rootId": 2,
         "root": {
@@ -58,8 +58,8 @@
     {
         "placeId": 9,
         "placeName": "REMUNA",
-        "latitude": 45,
-        "longitude": 23,
+        "latitude": 21.5266,
+        "longitude": 86.8697,
         "istarget": false,
         "rootId": 8,
         "root": {
@@ -74,8 +74,8 @@
     {
         "placeId": 10,
         "placeName": "KALYANPUR",
-        "latitude": 77,
-        "longitude": 54,
+        "latitude": 26.5108,
+        "longitude": 80.2469,
         "istarget": false,
         "rootId": 9,
         "root": {
@@ -90,8 +90,8 @@
     {
         "placeId": 3,
         "placeName": "PURI",
-        "latitude": 77,
-        "longitude": 44,
+        "latitude": 19.8135,
+        "longitude": 85.8312,
         "istarget": false,
         "rootId": 2,
         "root": {
@@ -106,8 +106,8 @@
     {
         "placeId": 5,
         "placeName": "PUNJAB",
-        "latitude": 64,
-        "longitude": 43,
+        "latitude": 31.1471,
+        "longitude": 75.3412,
         "istarget": false,
         "rootId": 1,
         "root": {
@@ -122,8 +122,8 @@
     {
         "placeId": 6,
         "placeName": "MANSA",
-        "latitude": 55,
-        "longitude": 77,
+        "latitude": 29.9995,
+        "longitude": 75.3937,
         "istarget": false,
         "rootId": 5,
         "root": {
@@ -138,8 +138,8 @@
     {
         "placeId": 7,
         "placeName": "JALANDHAR",
-        "latitude": 33,
-        "longitude": 55,
+        "latitude": 31.3260,
+        "longitude": 75.5762,
         "istarget": false,
         "rootId": 5,
         "root": {
@@ -154,8 +154,8 @@
     {
         "placeId": 7,
         "placeName": "JALANDHAR",
-        "latitude": 33,
-        "longitude": 55,
+        "latitude": 31.3260,
+        "longitude": 75.5762,
         "istarget": false,
         "rootId": 5,
         "root": {
@@ -170,8 +170,8 @@
     {
         "placeId": 7,
         "placeName": "JALANDHAR",
-        "latitude": 33,
-        "longitude": 55,
+        "latitude": 31.3260,
+        "longitude": 75.5762,
         "istarget": false,
         "rootId": 5,
         "root": {

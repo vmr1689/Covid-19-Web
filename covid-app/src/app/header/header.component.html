@@ -37,13 +37,13 @@
           <li *ngIf="!currentUser.username" class="custom-hide-menu-mobile" routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/login']">Login</a></li>
 
-          <li class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><a
+          <li *ngIf="!currentUser.username" class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><a
               [routerLink]="['/']">Home <span class="sr-only">(current)</span></a></li>
 
-          <li class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-            <a [routerLink]="['/essentials']">Essentials</a></li>
+          <li *ngIf="!currentUser.username" class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a [routerLink]="['/essentials']">Nearby Hospitals</a></li>
 
-          <li class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <li *ngIf="!currentUser.username" class="custom-hide-menu-mobile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             <a [routerLink]="['/links']">Helpful Links</a></li>
 
           <li *appHasRole="['SuperAdmin']" class="custom-hide-menu-mobile" routerLinkActive="active"
@@ -96,7 +96,7 @@
                 <img src="../../assets/images/profile_1.png" class="img-circle" alt="User Image">
 
                 <p>
-                  {{currentUser.firstName + '' + currentUser.lastName}}
+                  {{currentUser.firstName + ' ' + currentUser.lastName}}
                 </p>
               </li>
               <li class="user-footer">
