@@ -1,0 +1,150 @@
+[
+    {
+        "id": "IN-AP",
+        "value": 1000
+    },
+    {
+        "id": "IN-AR",
+        "value": 20
+    },
+    {
+        "id": "IN-AS",
+        "value": 100
+    },
+    {
+        "id": "IN-BR",
+        "value": 22
+    },
+    {
+        "id": "IN-CT",
+        "value": 300
+    },
+    {
+        "id": "IN-GA",
+        "value": 600
+    },
+    {
+        "id": "IN-GJ",
+        "value": 99
+    },
+    {
+        "id": "IN-HR",
+        "value": 45
+    },
+    {
+        "id": "IN-HP",
+        "value": 12
+    },
+    {
+        "id": "IN-JH",
+        "value": 0
+    },
+    {
+        "id": "IN-KA",
+        "value": 93
+    },
+    {
+        "id": "IN-KL",
+        "value": 360
+    },
+    {
+        "id": "IN-MP",
+        "value": 0
+    },
+    {
+        "id": "IN-MH",
+        "value": 112
+    },
+    {
+        "id": "IN-MN",
+        "value": 252
+    },
+    {
+        "id": "IN-ML",
+        "value": 60
+    },
+    {
+        "id": "IN-NL",
+        "value": 457
+    },
+    {
+        "id": "IN-MZ",
+        "value": 330
+    },
+    {
+        "id": "IN-OR",
+        "value": 773
+    },
+    {
+        "id": "IN-PB",
+        "value": 262
+    },
+    {
+        "id": "IN-RJ",
+        "value": 478
+    },
+    {
+        "id": "IN-SK",
+        "value": 698
+    },
+    {
+        "id": "IN-TN",
+        "value": 883
+    },
+    {
+        "id": "IN-TG",
+        "value": 120
+    },
+    {
+        "id": "IN-TR",
+        "value": 700
+    },
+    {
+        "id": "IN-UT",
+        "value": 632
+    },
+    {
+        "id": "IN-UP",
+        "value": 458
+    },
+    {
+        "id": "IN-WB",
+        "value": 895
+    },
+    {
+        "id": "IN-AN",
+        "value": 4
+    },
+    {
+        "id": "IN-CH",
+        "value": 50
+    },
+    {
+        "id": "IN-DN",
+        "value": 100
+    },
+    {
+        "id": "IN-DD",
+        "value": 632
+    },
+    {
+        "id": "IN-DL",
+        "value": 565
+    },
+    {
+        "id": "IN-JK",
+        "value": 531
+    },
+    {
+        "id": "IN-LA",
+        "value": 430
+    },
+    {
+        "id": "IN-LD",
+        "value": 983
+    },
+    {
+        "id": "IN-PY",
+        "value": 800
+    }
+]
