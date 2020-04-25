@@ -88,17 +88,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 case url.match(/\/deletePatient\/\d+$/) && method === 'DELETE':
                     return deletePatient();
 
-                case url.endsWith('updates/getAllUpdates') && method === 'GET':
-                    return getAllUpdates();
-                case url.match(/\/getUpdatesById\/\d+$/) && method === 'GET':
-                    return getPatient();
-                case url.endsWith('updates/createUpdates') && method === 'POST':
-                    return createUpdates();
-                case url.endsWith('updates/EditUpdates') && method === 'PUT':
-                    return editUpdates();
-                case url.match(/\/DeleteUpdates\/\d+$/) && method === 'DELETE':
-                    return deleteUpdates();
-
                 case url.endsWith('organisation/getAllOrganisations') && method === 'GET':
                     return getAllOrganisations();
                 case url.match(/\/getOrganisationById\/\d+$/) && method === 'GET':

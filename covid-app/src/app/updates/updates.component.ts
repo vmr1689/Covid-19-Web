@@ -5,7 +5,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 
-import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sortable.directive';
+import * as Helpers from '../shared/helpers';
 
 import { UpdatesService, SpinnerService } from '../shared/services';
 import { Updatedto, ngBootstrapTable } from '../shared/models';
@@ -34,7 +34,6 @@ export class UpdatesComponent implements OnInit, AfterViewChecked, OnDestroy {
   public model: Updatedto = {} as Updatedto;
   public updates: Updatedto[] = [];
   public updatesTable: ngBootstrapTable;
-  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
   constructor(
     private spinnerService: SpinnerService,
@@ -42,7 +41,7 @@ export class UpdatesComponent implements OnInit, AfterViewChecked, OnDestroy {
     private updatesService: UpdatesService) { }
 
   ngOnInit(): void {
-    this.getAllBanners();
+    this.getAllUpdates();
   }
 
   ngAfterViewChecked() {
@@ -55,14 +54,14 @@ export class UpdatesComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
   }
 
-  getAllBanners() {
+  getAllUpdates() {
     this.spinnerService.show();
     this.updatesService.getAllUpdates().subscribe((response: Updatedto[]) => {
       this.updates = [];
       if (response && response.length > 0) {
         this.updates = response;
-        this.rerender();
       }
+      this.rerender();
     }).add(() => {
       this.spinnerService.hide();
     });
@@ -80,36 +79,17 @@ export class UpdatesComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
   }
 
-  onSort({ column, direction }: SortEvent) {
-
-    // resetting other headers
-    this.headers.forEach(header => {
-      if (header.sortable !== column) {
-        header.direction = '';
-      }
-    });
-
-    // sorting countries
-    const updates = [...this.updates];
-    if (direction === '' || column === '') {
-      this.updates = updates;
-    } else {
-      this.updates = [...updates].sort((a, b) => {
-        const res = compare(`${a[column]}`, `${b[column]}`);
-        return direction === 'asc' ? res : -res;
-      });
-    }
-  }
-
-
   openCreateUpdates() {
     this.model = {} as Updatedto;
+    this.currentDate = new Date();
+    this.model.date = new Date();
     this.addForm.resetForm({ ...this.model });
     $('#addUpdates').modal('toggle');
   }
 
   openEditUpdates(data: Updatedto) {
     this.model = { ...data };
+    this.model.date = data.date;
     this.editForm.resetForm({ ...this.model });
     $('#editUpdates').modal('toggle');
   }
@@ -120,18 +100,26 @@ export class UpdatesComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   addUpdates(form: NgForm) {
-    //this.spinnerService.show();
+    this.model.date = this.currentDate;
+    this.model.timestamp = Helpers.getTimeStampFromDate(new Date(this.model.date));
+    this.spinnerService.show();
     this.updatesService.createUpdates(this.model).subscribe((response: any) => {
-      $('#addBanner').modal('toggle');
+      $('#addUpdates').modal('toggle');
+    }).add(() => {
+      this.spinnerService.hide();
+      this.getAllUpdates();
     });
   }
 
   editUpdates(form: NgForm) {
+    this.model.date = this.currentDate;
+    this.model.timestamp = Helpers.getTimeStampFromDate(new Date(this.model.date));
     this.spinnerService.show();
     this.updatesService.editUpdates(this.model).subscribe((response: any) => {
       $('#editUpdates').modal('toggle');
     }).add(() => {
       this.spinnerService.hide();
+      this.getAllUpdates();
     });
   }
 
@@ -141,15 +129,11 @@ export class UpdatesComponent implements OnInit, AfterViewChecked, OnDestroy {
       $('#deleteUpdates').modal('toggle');
     }).add(() => {
       this.spinnerService.hide();
+      this.getAllUpdates();
     });
   }
 
   calTrig() {
-    $("#bsDatepickerEdit").click();
+    $('#bsDatepickerEdit').click();
   }
-
-  ShowDeletedRecords() {
-
-  }
-
 }

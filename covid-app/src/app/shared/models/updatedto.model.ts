@@ -1,5 +1,6 @@
 export interface Updatedto {
-    id: string;
-    date: string;
+    id: number;
+    date: Date;
     update: string;
+    timestamp?: string;
 }

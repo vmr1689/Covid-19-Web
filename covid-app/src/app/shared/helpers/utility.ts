@@ -51,3 +51,8 @@ export const dtOptions: DataTables.Settings = {
 export function convertDate(date: Date) {
     return moment(date).format('DD/MM/YYYY HH:mm:ss');
 }
+
+export function getTimeStampFromDate(date: Date) {
+    return moment(date).format('X');
+}
+

@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: ''
+  apiUrl: 'http://52.66.244.249:8080/covid19'
 };
 
 export const Countries = {

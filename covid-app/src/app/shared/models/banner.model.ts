@@ -1,5 +1,5 @@
 export interface Banner {
-    id: string;
+    id: number;
     date: string;
     content: string;
     deleted?: boolean;

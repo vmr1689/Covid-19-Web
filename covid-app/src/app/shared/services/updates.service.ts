@@ -19,36 +19,36 @@ export class UpdatesService {
     }
 
     getAllBanners = () => {
-        return this.http.get<Banner[]>(`${environment.apiUrl}/covid19/covid/bannerList`);
+        return this.http.get<Banner[]>(`${environment.apiUrl}/covid/bannerList`);
     }
 
     createBanner = (model: Banner) => {
-        return this.http.post(`${environment.apiUrl}/covid19/covid/addBanner`, model, this.httpOptions);
+        return this.http.post(`${environment.apiUrl}/covid/addBanner`, model, this.httpOptions);
     }
 
     editBanner = (model: Banner) => {
-        return this.http.put(`${environment.apiUrl}/covid19/covid/editCovidBanner`, model, this.httpOptions);
+        return this.http.put(`${environment.apiUrl}/covid/editCovidBanner`, model, this.httpOptions);
     }
 
-    deleteBanner = (bannerId: string) => {
+    deleteBanner = (bannerId: number) => {
         const model = { id: bannerId, deleted: true };
-        return this.http.put(`${environment.apiUrl}/covid19/covid/editCovidBanner`, model, this.httpOptions);
+        return this.http.put(`${environment.apiUrl}/covid/editCovidBanner`, model, this.httpOptions);
     }
 
     getAllUpdates = () => {
-        return this.http.get<Updatedto[]>(`${environment.apiUrl}/covid19/covid/covidUpdateList`);
+        return this.http.get<Updatedto[]>(`${environment.apiUrl}/covid/covidUpdateList`);
     }
 
     createUpdates = (model: Updatedto) => {
-        return this.http.post(`${environment.apiUrl}/covid19/covid/addCovidUpdate`, model, this.httpOptions);
+        return this.http.post(`${environment.apiUrl}/covid/addCovidUpdate`, model, this.httpOptions);
     }
 
     editUpdates = (model: Updatedto) => {
-        return this.http.put(`${environment.apiUrl}/covid19/covid/editCovidUpdate`, model, this.httpOptions);
+        return this.http.put(`${environment.apiUrl}/covid/editCovidUpdate`, model, this.httpOptions);
     }
 
-    DeleteUpdates = (updateId: string) => {
+    DeleteUpdates = (updateId: number) => {
         const model = { id: updateId, deleted: true };
-        return this.http.put(`${environment.apiUrl}/covid19/covid/editCovidUpdate`, model, this.httpOptions);
+        return this.http.put(`${environment.apiUrl}/covid/editCovidUpdate`, model, this.httpOptions);
     }
 }

@@ -23,9 +23,9 @@
                                 <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th sortable="placeName" (sort)="onSort($event)">#</th>
-                                            <th scope="col" sortable="root" (sort)="onSort($event)">Date</th>
-                                            <th scope="col" sortable="latitude" (sort)="onSort($event)">Update</th>
+                                            <th>#</th>
+                                            <th>Date</th>
+                                            <th>Update</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -103,7 +103,7 @@
     
                                     <div class="col-md-1 col-sm-1">
     
-                                        <timepicker id="currentDate" name="currentDate"
+                                        <timepicker id="currentDate" name="date"
                                             [ngModelOptions]="{standalone: true}" #mytime="ngModel"
                                             [(ngModel)]="currentDate"></timepicker>
     
