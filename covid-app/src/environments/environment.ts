@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: '',
+  apiUrl: 'http://52.66.244.249:8080',
 };
 
 export const Countries = {

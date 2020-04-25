@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 declare var $;
 
 export function renderTable(self, tableId, tableColumns, tableData, childTable = false) {
@@ -46,3 +47,7 @@ export const dtOptions: DataTables.Settings = {
     dom: '<"pull-left"f><"pull-right"l>tip',
     order: ['9']
 };
+
+export function convertDate(date: Date) {
+    return moment(date).format('DD/MM/YYYY HH:mm:ss');
+}

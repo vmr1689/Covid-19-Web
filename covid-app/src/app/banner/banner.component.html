@@ -22,15 +22,15 @@
                                 <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th sortable="placeName" (sort)="onSort($event)">#</th>
-                                            <th scope="col" sortable="root" (sort)="onSort($event)">Date</th>
-                                            <th scope="col" sortable="latitude" (sort)="onSort($event)">Content</th>
+                                            <th>ID</th>
+                                            <th>Date</th>
+                                            <th>Content</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let data of banners; let i = index">
-                                            <td>{{i+1}}</td>
+                                            <td>{{data.id}}</td>
                                             <td>{{data.date}}</td>
                                             <td>{{data.content}}</td>
                                             <td>

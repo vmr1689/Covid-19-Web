@@ -1,11 +1,9 @@
 import { Component, OnInit, EventEmitter, Input, Output, QueryList, ViewChildren, ViewChild, OnDestroy, AfterViewChecked } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 
-import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sortable.directive';
-
+import * as Helpers from '../shared/helpers';
 import { UpdatesService, SpinnerService } from '../shared/services';
 import { Banner, ngBootstrapTable } from '../shared/models';
 
@@ -32,11 +30,9 @@ export class BannerComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   public banners: Banner[] = [];
   public bannerTable: ngBootstrapTable;
-  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
   constructor(
     private spinnerService: SpinnerService,
-    private router: Router,
     private updatesService: UpdatesService) { }
 
   ngOnInit(): void {
@@ -57,9 +53,9 @@ export class BannerComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.updatesService.getAllBanners().subscribe((response: Banner[]) => {
       this.banners = [];
       if (response && response.length > 0) {
-        this.banners = response;
-        this.rerender();
+        this.banners = response.filter(x => x.deleted === false);
       }
+      this.rerender();
     }).add(() => {
       this.spinnerService.hide();
     });
@@ -76,28 +72,6 @@ export class BannerComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.dtTrigger.next();
     }
   }
-
-  onSort({ column, direction }: SortEvent) {
-
-    // resetting other headers
-    this.headers.forEach(header => {
-      if (header.sortable !== column) {
-        header.direction = '';
-      }
-    });
-
-    // sorting countries
-    const banners = [...this.banners];
-    if (direction === '' || column === '') {
-      this.banners = banners;
-    } else {
-      this.banners = [...banners].sort((a, b) => {
-        const res = compare(`${a[column]}`, `${b[column]}`);
-        return direction === 'asc' ? res : -res;
-      });
-    }
-  }
-
 
   openCreateBanner() {
     this.model = {} as Banner;
@@ -117,20 +91,24 @@ export class BannerComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   addBanner(form: NgForm) {
+    this.model.date = Helpers.convertDate(new Date());
     this.spinnerService.show();
     this.updatesService.createBanner(this.model).subscribe((response: any) => {
       $('#addBanner').modal('toggle');
     }).add(() => {
       this.spinnerService.hide();
+      this.getAllBanners();
     });
   }
 
   editBanner(form: NgForm) {
+    this.model.date = Helpers.convertDate(new Date());
     this.spinnerService.show();
     this.updatesService.editBanner(this.model).subscribe((response: any) => {
       $('#editBanner').modal('toggle');
     }).add(() => {
       this.spinnerService.hide();
+      this.getAllBanners();
     });
   }
 
@@ -140,11 +118,7 @@ export class BannerComponent implements OnInit, AfterViewChecked, OnDestroy {
       $('#deleteBanner').modal('toggle');
     }).add(() => {
       this.spinnerService.hide();
+      this.getAllBanners();
     });
   }
-
-  ShowDeletedRecords() {
-
-  }
-
 }
