@@ -9,6 +9,7 @@ export * from './organisation.model';
 export * from './helplinks.model';
 export * from './guidelines.model';
 export * from './helpLinkTypes.model';
+export * from './guidelinesTypes.model';
 
 export * from './sample_data.model';
 export * from './sample_state-district-wise.model';

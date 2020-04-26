@@ -6,4 +6,7 @@ export interface Guidelines {
     type: string;
     image: any;
     description: string;
+    data?: any;
+    fileName?: string;
+    fileType?: string;
 }

@@ -1,13 +1,12 @@
-import { Component, OnInit, QueryList, ViewChildren, ViewChild, OnDestroy, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewChecked } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
+import * as fileSaver from 'file-saver';
 
-import { NgbdSortableHeader} from '../shared/directives/sortable.directive';
-
+import { GUIDELINES_TYPES } from '.././seedConfig';
 import { GuidelinesService, SpinnerService } from '../shared/services';
-import { Guidelines, ngBootstrapTable } from '../shared/models';
+import { Guidelines, GuideLinesTypes } from '../shared/models';
 
 declare var $;
 
@@ -18,11 +17,8 @@ declare var $;
 })
 export class GuidelinesComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild(DataTableDirective, { static: false }) dtElement: DataTableDirective;
-  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   @ViewChild('fileInput') fileInput;
   @ViewChild('importForm') importForm: NgForm;
-  @ViewChild('editfileInput') editfileInput;
-  @ViewChild('addForm') addForm: NgForm;
   public dtOptions: DataTables.Settings = {
     autoWidth: false,
     jQueryUI: true,
@@ -32,17 +28,12 @@ export class GuidelinesComponent implements OnInit, AfterViewChecked, OnDestroy 
   public isDtInitialized = false;
   public model: Guidelines = {} as Guidelines;
   public guidelines: Guidelines[] = [];
-  public categories: any[] = [
-    { id: 1, text: 'Link' },
-    { id: 2, text: 'Content' },
-  ];
-  public defaultCategory = 1;
   public submitted = false;
   public importMessage: string;
+  public types: GuideLinesTypes[] = GUIDELINES_TYPES;
 
   constructor(
     private spinnerService: SpinnerService,
-    private router: Router,
     private guidelinesService: GuidelinesService) { }
 
   ngOnInit(): void {
@@ -65,8 +56,18 @@ export class GuidelinesComponent implements OnInit, AfterViewChecked, OnDestroy 
       this.guidelines = [];
       if (response && response.length > 0) {
         this.guidelines = response;
-        this.rerender();
       }
+      this.rerender();
+    }).add(() => {
+      this.spinnerService.hide();
+    });
+  }
+
+  openImageLink(data: Guidelines) {
+    this.spinnerService.show();
+    this.guidelinesService.downloadFile(data.id).subscribe(response => {
+      const blob: any = new Blob([response], { type: response.type });
+      fileSaver.saveAs(blob, data.fileName);
     }).add(() => {
       this.spinnerService.hide();
     });
@@ -87,19 +88,27 @@ export class GuidelinesComponent implements OnInit, AfterViewChecked, OnDestroy 
   openImportGuidelines() {
     this.importForm.reset();
     this.fileInput.nativeElement.value = '';
+    this.model = {} as Guidelines;
+    this.model.type = `DO'S`;
+    this.importForm.resetForm({ ...this.model });
     $('#importGuidelines').modal('toggle');
   }
 
   importGuidelines(form: NgForm) {
+    const model = { ...this.model };
     debugger;
-    const formData = new FormData();
-    formData.append('upload', this.fileInput.nativeElement.files[0]);
+    if (this.fileInput && this.fileInput.nativeElement.files.length > 0) {
+      const formData = new FormData();
+      formData.append('file', this.fileInput.nativeElement.files[0]);
+      formData.append('description', model.description);
+      formData.append('type', model.type);
 
-    this.guidelinesService.importExcel(formData).subscribe(result => {
-      $('#importGuidelines').modal('toggle');
-      this.importMessage = result.toString();
-      this.getAllGuidelines();
-    });
+      this.guidelinesService.importExcel(formData).subscribe(result => {
+        $('#importGuidelines').modal('toggle');
+        this.importMessage = result.toString();
+        this.getAllGuidelines();
+      });
+    }
   }
 
   openDeleteGuidelines(data: Guidelines) {
@@ -113,45 +122,6 @@ export class GuidelinesComponent implements OnInit, AfterViewChecked, OnDestroy 
       $('#deleteGuidelines').modal('toggle');
     }).add(() => {
       this.spinnerService.hide();
-    });
-  }
-
-  openCreateGuidelines() {
-    this.model = {} as Guidelines;
-    this.model.categoryId = 1;
-    this.addForm.resetForm({ ...this.model });
-    $('#addGuidelines').modal('toggle');
-  }
-
-  openEditHelpLink(data) {
-    this.model = { ...data };
-    if (this.editfileInput) {
-      this.editfileInput.nativeElement.value = '';
-    }
-    $('#editGuidelines').modal('toggle');
-  }
-
-  onChangeCategory(newValue) {
-    this.model.content = '';
-    if (this.fileInput) {
-      this.fileInput.nativeElement.value = '';
-    }
-  }
-
-  addGuidelines(form: NgForm) {
-    debugger;
-    const model = { ...this.model };
-    this.guidelinesService.create(model).subscribe(result => {
-      $('#addGuidelines').modal('toggle');
-      this.getAllGuidelines();
-    });
-  }
-
-  editGuidelines(form: NgForm) {
-    const model = { ...this.model };
-    this.guidelinesService.edit(model).subscribe(result => {
-      $('#editGuidelines').modal('toggle');
-      this.getAllGuidelines();
     });
   }
 }

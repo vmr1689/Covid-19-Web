@@ -3,4 +3,5 @@ export interface Updatedto {
     date: Date;
     update: string;
     timestamp?: string;
+    dateStr?: string;
 }

@@ -32,7 +32,7 @@
                                     <tbody>
                                         <tr *ngFor="let data of updates; let i = index">
                                             <td>{{i+1}}</td>
-                                            <td>{{data.date}}</td>
+                                            <td>{{data.dateStr}}</td>
                                             <td>{{data.update}}</td>
                                             <td>
 
@@ -88,7 +88,7 @@
     
                                             <input class="form-control" [ngModelOptions]="{standalone: true}"
                                                 #datepickerFull="bsDatepicker" bsDatepicker [(ngModel)]="currentDate"
-                                                [bsConfig]="{ dateInputFormat: 'MM/DD/YYYY' }" id="bsDatepickerEdit">
+                                                [bsConfig]="{ dateInputFormat: 'MM/DD/YYYY' }" id="bsDatepickerAdd">
     
                                             <div class="input-group-addon" (click)='calTrig()'>
                                                 <i class="fa fa-calendar"></i>
@@ -164,7 +164,7 @@
                                             #datepickerFull="bsDatepicker" bsDatepicker [(ngModel)]="currentDate"
                                             [bsConfig]="{ dateInputFormat: 'MM/DD/YYYY' }" id="bsDatepickerEdit">
 
-                                        <div class="input-group-addon" (click)='calTrig()'>
+                                        <div class="input-group-addon" (click)='calTrig1()'>
                                             <i class="fa fa-calendar"></i>
                                         </div>
 

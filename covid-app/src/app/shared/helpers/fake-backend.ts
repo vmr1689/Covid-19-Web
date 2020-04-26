@@ -99,28 +99,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 case url.match(/\/organisation\/\d+$/) && method === 'DELETE':
                     return deleteOrganisation();
 
-                case url.endsWith('helplinks/getAllHelpLinks') && method === 'GET':
-                    return getAllHelpLinks();
-                case url.match(/\/getHelpLinksById\/\d+$/) && method === 'GET':
-                    return getHelpLinks();
-                case url.endsWith('helplinks/createHelpLink') && method === 'POST':
-                    return createHelpLinks();
-                case url.endsWith('helplinks/editHelpLink') && method === 'PUT':
-                    return editHelpLinks();
-                case url.match(/\/helplinks\/\d+$/) && method === 'DELETE':
-                    return deleteHelpLinks();
-
-                case url.endsWith('guidelines/getAllGuidelines') && method === 'GET':
-                    return getAllGuidelines();
-                case url.match(/\/getGuidelinesById\/\d+$/) && method === 'GET':
-                    return getGuidelines();
-                case url.endsWith('guidelines/createGuidelines') && method === 'POST':
-                    return createGuidelines();
-                case url.endsWith('guidelines/editGuidelines') && method === 'PUT':
-                    return editGuidelines();
-                case url.match(/\/guidelines\/\d+$/) && method === 'DELETE':
-                    return deleteGuidelines();
-
                 default:
                     // pass through any requests not handled above
                     return next.handle(request);

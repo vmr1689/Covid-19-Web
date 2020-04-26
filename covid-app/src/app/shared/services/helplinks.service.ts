@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { HelpLink } from '../models';
-import {Observable} from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class HelplinkService {
@@ -23,17 +23,9 @@ export class HelplinkService {
         return this.http.get<HelpLink[]>(`${environment.apiUrl}/covid/covidLinksList`);
     }
 
-    // getById = (placeId: number) => {
-    //     return this.http.get<HelpLink>(`${environment.apiUrl}/helplinks/getHelpLinksById/` + placeId);
-    // }
-
     create = (model: HelpLink) => {
         return this.http.post(`${environment.apiUrl}/covid/addCovidLink`, model);
     }
-
-    // edit = (model: HelpLink) => {
-    //     return this.http.put(`${environment.apiUrl}/helplinks/editHelpLink`, { model });
-    // }
 
     delete(id: number) {
         return this.http.delete(`${environment.apiUrl}/helplinks/${id}`);
@@ -49,6 +41,6 @@ export class HelplinkService {
     }
 
     downloadFile(id: number): Observable<any> {
-        return this.http.get(`${environment.apiUrl}/covid/downloadFile/${id}`, { responseType: 'blob' as 'blob'});
+        return this.http.get(`${environment.apiUrl}/covid/downloadFile/${id}`, { responseType: 'blob' as 'blob' });
     }
 }

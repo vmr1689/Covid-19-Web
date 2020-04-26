@@ -56,3 +56,7 @@ export function getTimeStampFromDate(date: Date) {
     return moment(date).format('X');
 }
 
+export function getDateFromTimeStamp(timestamp: any) {
+    return moment(timestamp, 'X').format('DD/MM/YYYY HH:mm:ss');
+}
+

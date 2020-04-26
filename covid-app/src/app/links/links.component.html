@@ -1,4 +1,4 @@
-<section class="content" >
+<section class="content">
     <div class="row">
         <div class="col-md-12">
 
@@ -9,7 +9,13 @@
                         <h3 class="timeline-header no-border" style="font-weight: bold;">{{data.header}}</h3>
 
                         <div class="timeline-body" style="font-weight: bold;">
-                            <a style="word-wrap: break-word;" href="javascript:void(0)" (click)="openHelpLink(data.content)">{{data.content}}</a>
+
+                            <a href="javascript:void(0)" *ngIf="!(data.type)"
+                                (click)="openHelpLink(data)">{{data.link}}</a>
+
+                            <a href="javascript:void(0)" *ngIf="data.type === 'document'"
+                                (click)="openHelpDocument(data)">{{data.fileName}}</a>
+
                         </div>
 
                     </div>

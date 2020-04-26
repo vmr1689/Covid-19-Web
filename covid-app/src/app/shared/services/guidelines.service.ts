@@ -1,28 +1,26 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { Guidelines } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class GuidelinesService {
-    constructor(private http: HttpClient) { }
+    public headers: HttpHeaders;
+    public httpOptions: {};
+
+    constructor(private http: HttpClient) {
+        this.headers = new HttpHeaders({
+            'Content-Type': 'application/json'
+        });
+        this.httpOptions = {
+            headers: this.headers
+        };
+    }
 
     getAllGuidelines = () => {
-        return this.http.get<Guidelines[]>(`${environment.apiUrl}/guidelines/getAllGuidelines`);
-    }
-
-    getById = (placeId: number) => {
-        return this.http.get<Guidelines>(`${environment.apiUrl}/guidelines/getGuidelinesById/` + placeId);
-    }
-
-    create = (model: Guidelines) => {
-        return this.http.post(`${environment.apiUrl}/guidelines/createGuidelines`, { model });
-    }
-
-    edit = (model: Guidelines) => {
-        return this.http.put(`${environment.apiUrl}/guidelines/editGuidelines`, { model });
+        return this.http.get<Guidelines[]>(`${environment.apiUrl}/covid/covidDoAndDonotList`);
     }
 
     delete(id: number) {
@@ -35,6 +33,10 @@ export class GuidelinesService {
         headers.append('Accept', 'application/json');
         const httpOptions = { headers };
 
-        return this.http.post(`${environment.apiUrl}/guidelines/UploadExcel`, formData, httpOptions);
+        return this.http.post(`${environment.apiUrl}/covid/uploadCovidDoAndDonotFile`, formData, httpOptions);
+    }
+
+    downloadFile(id: number): Observable<any> {
+        return this.http.get(`${environment.apiUrl}/covid/downloadDoFile/${id}`, { responseType: 'blob' as 'blob' });
     }
 }

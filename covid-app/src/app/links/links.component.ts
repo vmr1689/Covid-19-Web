@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import * as fileSaver from 'file-saver';
 
 import { HelplinkService, SpinnerService } from '../shared/services';
 import { HelpLink } from '../shared/models';
@@ -34,8 +35,20 @@ export class LinksComponent implements OnInit {
     });
   }
 
-  openHelpLink(link: any) {
+  openHelpLink(data: HelpLink) {
+    const link = data.link;
     window.open(link, '_blank');
   }
 
+  openHelpDocument(data: any) {
+    this.spinnerService.show();
+    this.helplinkService.downloadFile(data.covidLinkId).subscribe(response => {
+      const blob: any = new Blob([response], { type: response.type });
+      //const url = window.URL.createObjectURL(blob);
+      //window.open(url);
+      fileSaver.saveAs(blob, data.fileName);
+    }).add(() => {
+      this.spinnerService.hide();
+    });
+  }
 }

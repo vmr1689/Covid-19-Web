@@ -60,6 +60,12 @@ export class UpdatesComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.updates = [];
       if (response && response.length > 0) {
         this.updates = response;
+        this.updates.map(x => {
+          if (x.timestamp) {
+            x.dateStr = Helpers.getDateFromTimeStamp(x.timestamp);
+            x.date = new Date(Number(x.timestamp) * 1000);
+          }
+        });
       }
       this.rerender();
     }).add(() => {
@@ -90,6 +96,7 @@ export class UpdatesComponent implements OnInit, AfterViewChecked, OnDestroy {
   openEditUpdates(data: Updatedto) {
     this.model = { ...data };
     this.model.date = data.date;
+    this.currentDate = data.date;
     this.editForm.resetForm({ ...this.model });
     $('#editUpdates').modal('toggle');
   }
@@ -112,6 +119,7 @@ export class UpdatesComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   editUpdates(form: NgForm) {
+    debugger;
     this.model.date = this.currentDate;
     this.model.timestamp = Helpers.getTimeStampFromDate(new Date(this.model.date));
     this.spinnerService.show();
@@ -134,6 +142,10 @@ export class UpdatesComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   calTrig() {
+    $('#bsDatepickerAdd').click();
+  }
+
+  calTrig1() {
     $('#bsDatepickerEdit').click();
   }
 }
