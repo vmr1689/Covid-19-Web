@@ -8,7 +8,7 @@ import * as moment from 'moment';
 
 import { Countries, Continents } from '../../environments/environment';
 import { renderTable, createChild, destroyChild } from '../shared/helpers';
-import { DashboardService, SpinnerService, GuidelinesService } from '../shared/services';
+import { DashboardService, SpinnerService, GuidelinesService, UpdatesService } from '../shared/services';
 import {
   Updates,
   SampleData,
@@ -17,7 +17,9 @@ import {
   SampleWebData,
   CasesTimeSeries,
   StateWise,
-  Guidelines
+  Guidelines,
+  Banner,
+  Updatedto
 } from '../shared/models';
 
 import SampleMapDataJson from '.././mapdata.json';
@@ -30,7 +32,7 @@ declare var $;
 })
 export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
 
-  public bannerList: SampleWebData;
+  public bannerList: Banner[];
   public infoIndex = 0;
   public info: string;
 
@@ -54,6 +56,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
 
   constructor(
     private zone: NgZone,
+    private updatesService: UpdatesService,
     private spinnerService: SpinnerService,
     private dashboardService: DashboardService,
     private guidelinesService: GuidelinesService) { }
@@ -83,9 +86,9 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
     this.guidelinesService.getAllGuidelines().subscribe((response: Guidelines[]) => {
       if (response) {
         this.guidelinesList = response;
-        this.symptomsList = response.filter(x => x.type === 'SYMPTOMS');
-        this.dontsList = response.filter(x => x.type === "DONT'S");
-        this.dosList = response.filter(x => x.type === "DO'S");
+        this.symptomsList = response.filter(x => x.type === `SYMPTOMS`);
+        this.dontsList = response.filter(x => x.type === `DONT'S`);
+        this.dosList = response.filter(x => x.type === `DO'S`);
       }
     });
   }
@@ -114,7 +117,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
   }
 
   public getBannerData() {
-    this.dashboardService.getBanner().subscribe((response: SampleWebData) => {
+    this.updatesService.getAllBanners().subscribe((response: Banner[]) => {
       if (response) {
         this.bannerList = response;
         this.setIntervalBannerData();
@@ -123,20 +126,20 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
   }
 
   public setIntervalBannerData() {
-    const factoids = this.bannerList.factoids;
-    this.info = factoids[0].banner;
+    const bannerList = this.bannerList;
+    this.info = bannerList[0].content;
     setInterval(() => {
-      if (this.infoIndex < (this.bannerList.factoids.length - 1)) {
+      if (this.infoIndex < (this.bannerList.length - 1)) {
         this.infoIndex++;
       } else {
         this.infoIndex = 0;
       }
-      this.info = this.bannerList.factoids[this.infoIndex].banner;
+      this.info = this.bannerList[this.infoIndex].content;
     }, 5000);
   }
 
   public getUpdatesData() {
-    this.dashboardService.getUpdates().subscribe((response: SampleUpdatesData[]) => {
+    this.updatesService.getAllUpdates().subscribe((response: Updatedto[]) => {
       let updates = [];
       this.updatesList = [];
       if (response && response.length > 0) {
@@ -149,7 +152,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
           }
         });
         const groupedUpdates = this.groupBy(updates, 'hours');
-        const groupedUpdatesArray = Object.keys(groupedUpdates).map(function (hourKey) {
+        const groupedUpdatesArray = Object.keys(groupedUpdates).map((hourKey) => {
           const update: Updates = {
             hour: hourKey,
             updates: groupedUpdates[hourKey]
@@ -162,7 +165,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
   }
 
   public groupBy(xs, key) {
-    return xs.reduce(function (rv, x) {
+    return xs.reduce((rv, x) => {
       (rv[x[key]] = rv[x[key]] || []).push(x);
       return rv;
     }, {});
@@ -170,12 +173,12 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
 
   ngAfterViewInit() {
     $('#dataTable').DataTable({
-      'paging': true,
-      'lengthChange': false,
-      'searching': true,
-      'ordering': true,
-      'info': true,
-      'autoWidth': true,
+      paging: true,
+      lengthChange: false,
+      searching: true,
+      ordering: true,
+      info: true,
+      autoWidth: true,
     });
 
     this.zone.runOutsideAngular(() => {
@@ -511,7 +514,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
               confirmed: districtData[key].confirmed,
               deltaConfirmed: districtData[key].delta.confirmed,
               lastupdatedtime: districtData[key].lastupdatedtime
-            }
+            };
             arr.push(ss);
           }
         }
@@ -524,7 +527,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
   public addClickHandler(tableRef, columns, data, isChildTable) {
     const self = this;
 
-    tableRef.on('click', 'td.details-control', function () {
+    tableRef.on('click', 'td.details-control', function() {
       const tr = $(this).closest('tr');
       const row = tableRef.row(tr);
       const rowData = tableRef.row($(this).closest('tr')).data();

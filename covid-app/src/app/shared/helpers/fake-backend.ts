@@ -5,35 +5,21 @@ import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 
 import SampleDataJson from '../../sample_data.json';
 import StateDistrictWiseDataJson from '../../sample_state-district-wise.json';
-import SampleBannerJson from '../../sample_web_data.json';
-import SampleUpdatesJson from '../../sample_updates.json';
 import SampleLocationsJson from '../../locations.json';
 import SamplePatientsJson from '../../patients.json';
 import SampleUsersJson from '../../users.json';
-import SampleBannerJson1 from '../../banner.json';
-import SampleUpdatedDtoJson from '../../updatedto.json';
 import SampleOrganisationJson from '../../organisation.json';
-import SampleHelpLinksJson from '../../helplinks.json';
-import SampleGuidelinesJson from '../../guidelines.json';
 
 import {
     SampleData,
     SampleStateDistrictWiseData,
-    SampleUpdatesData,
-    SampleWebData,
     Location,
     Patient,
-    Banner,
-    Updates,
-    Updatedto,
     Organisation,
-    HelpLink,
-    Guidelines
 } from '../models';
 
 // array in local storage for registered users
 let users = SampleUsersJson;
-//let users = JSON.parse(localStorage.getItem('users')) || [];
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -61,14 +47,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return getUser();
                 case url.match(/\/users\/\d+$/) && method === 'PUT':
                     return updateUser();
+
                 case url.endsWith('/dashboard/getDetails') && method === 'GET':
                     return dashboardData();
                 case url.endsWith('dashboard/getStateDistrictData') && method === 'GET':
                     return stateDistrictData();
-                case url.endsWith('dashboard/getBanner') && method === 'GET':
-                    return bannerData();
-                case url.endsWith('dashboard/getUpdates') && method === 'GET':
-                    return updatesData();
+
                 case url.endsWith('location/getAllLocations') && method === 'GET':
                     return getAllLocations();
                 case url.match(/\/getLocationById\/\d+$/) && method === 'GET':
@@ -77,6 +61,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return createLocation();
                 case url.endsWith('location/editLocation') && method === 'PUT':
                     return editLocation();
+
                 case url.endsWith('patient/getAllPatients') && method === 'GET':
                     return getAllPatients();
                 case url.match(/\/getPatientById\/\d+$/) && method === 'GET':
@@ -218,18 +203,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             return ok(castObject);
         }
 
-        function bannerData() {
-            const mainData = SampleBannerJson;
-            const castObject = mainData as SampleWebData;
-            return ok(castObject);
-        }
-
-        function updatesData() {
-            const mainData = SampleUpdatesJson;
-            const castObject = mainData as SampleUpdatesData;
-            return ok(castObject);
-        }
-
         function getAllLocations() {
             const mainData = SampleLocationsJson;
             const castObject = mainData as Location[];
@@ -281,64 +254,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             return ok(aa);
         }
 
-        function getAllBanners() {
-            const mainData = SampleBannerJson1;
-            const castObject = mainData as Banner[];
-            return ok(castObject);
-        }
-
-        function createBanner() {
-            const user = body;
-            return ok(true);
-        }
-
-        function editBanner() {
-            const user = body;
-            return ok(true);
-        }
-
-        function deleteBanner() {
-            const user = body;
-            return ok(true);
-        }
-
-        function getBanner() {
-            const mainData = SamplePatientsJson;
-            const castObject = mainData as Banner[];
-            const aa = castObject[2];
-            return ok(aa);
-        }
-
-
-        function getAllUpdates() {
-            const mainData = SampleUpdatedDtoJson;
-            const castObject = mainData as Updatedto[];
-            return ok(castObject);
-        }
-
-        function createUpdates() {
-            const user = body;
-            return ok(true);
-        }
-
-        function editUpdates() {
-            const user = body;
-            return ok(true);
-        }
-
-        function deleteUpdates() {
-            const user = body;
-            return ok(true);
-        }
-
-        function getUpdates() {
-            const mainData = SampleUpdatedDtoJson;
-            const castObject = mainData as Updatedto[];
-            const aa = castObject[2];
-            return ok(aa);
-        }
-
-
         function getAllOrganisations() {
             const mainData = SampleOrganisationJson;
             const castObject = mainData as Organisation[];
@@ -366,67 +281,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             const user = body;
             return ok(true);
         }
-
-
-        function getAllHelpLinks() {
-            const mainData = SampleHelpLinksJson;
-            const castObject = mainData as HelpLink[];
-            return ok(castObject);
-        }
-
-        function getHelpLinks() {
-            const mainData = SampleOrganisationJson;
-            const castObject = mainData as HelpLink[];
-            const aa = castObject[0];
-            return ok(aa);
-        }
-
-        function createHelpLinks() {
-            const user = body;
-            return ok(true);
-        }
-
-        function editHelpLinks() {
-            const user = body;
-            return ok(true);
-        }
-
-        function deleteHelpLinks() {
-            const user = body;
-            return ok(true);
-        }
-
-
-
-
-        function getAllGuidelines() {
-            const mainData = SampleGuidelinesJson;
-            const castObject = mainData as Guidelines[];
-            return ok(castObject);
-        }
-
-        function getGuidelines() {
-            const mainData = SampleGuidelinesJson;
-            const castObject = mainData as Guidelines[];
-            const aa = castObject[0];
-            return ok(aa);
-        }
-
-        function createGuidelines() {
-            const user = body;
-            return ok(true);
-        }
-
-        function editGuidelines() {
-            const user = body;
-            return ok(true);
-        }
-
-        function deleteGuidelines() {
-            const user = body;
-            return ok(true);
-        }
-
     }
 }
 

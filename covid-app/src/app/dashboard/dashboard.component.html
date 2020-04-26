@@ -219,7 +219,7 @@
               <br>
               <div class="col-md-4" *ngFor="let data of symptomsList">
                 <div class="img-with-text">
-                  <img src="{{data.image}}" alt="symptoms" width="50" height="50" />
+                  <img src="data:{{data.fileType}};base64,{{data.data}}" alt="symptoms" width="50" height="50" />
                   <p style="text-align: center;">{{data.description}}</p>
                 </div>
   
@@ -235,7 +235,7 @@
   
                 <div class="col-md-4" *ngFor="let data of dosList">
                   <div class="img-with-text">
-                    <img src="{{data.image}}" alt="symptoms" width="50" height="50" />
+                    <img src="data:{{data.fileType}};base64,{{data.data}}" alt="symptoms" width="50" height="50" />
                     <p style="text-align: center;">{{data.description}}</p>
                   </div>
                 </div>
@@ -250,7 +250,7 @@
   
                 <div class="col-md-4" *ngFor="let data of dontsList">
                   <div class="img-with-text">
-                    <img src="{{data.image}}" alt="symptoms" width="50" height="50" />
+                    <img src="data:{{data.fileType}};base64,{{data.data}}" alt="symptoms" width="50" height="50" />
                     <p style="text-align: center;">{{data.description}}</p>
                   </div>
                 </div>
