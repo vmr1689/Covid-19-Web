@@ -1,8 +1,12 @@
 export interface HelpLink {
-    id: number;
+    covidLinkId: number;
+    data?: any;
+    fileName?: string;
+    fileType?: string;
     category: string;
-    categoryId: number;
     header: string;
     content: any;
     file?: any;
+    link: string;
+    type?: string;
 }

@@ -1,13 +1,13 @@
-import { Component, OnInit, EventEmitter, Input, Output, QueryList, ViewChildren, ViewChild, OnDestroy, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import * as fileSaver from 'file-saver';
 import { DataTableDirective } from 'angular-datatables';
 
-import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sortable.directive';
-
+import { HELP_LINK_TYPES } from '.././seedConfig';
 import { HelplinkService, SpinnerService } from '../shared/services';
-import { HelpLink, ngBootstrapTable } from '../shared/models';
+import { HelpLink, HelpLinkTypes } from '../shared/models';
 
 declare var $;
 
@@ -18,7 +18,6 @@ declare var $;
 })
 export class HelpLinkComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild(DataTableDirective, { static: false }) dtElement: DataTableDirective;
-  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   @ViewChild('fileInput') fileInput;
   @ViewChild('editfileInput') editfileInput;
   @ViewChild('addForm') addForm: NgForm;
@@ -32,12 +31,10 @@ export class HelpLinkComponent implements OnInit, AfterViewChecked, OnDestroy {
   public isDtInitialized = false;
   public model: HelpLink = {} as HelpLink;
   public helpLinks: HelpLink[] = [];
-  public categories: any[] = [
-    { id: 1, text: 'Link' },
-    { id: 2, text: 'Document' },
-  ];
+  public categories: HelpLinkTypes[] = HELP_LINK_TYPES;
   public defaultCategory = 1;
   public submitted = false;
+
   constructor(
     private cd: ChangeDetectorRef,
     private spinnerService: SpinnerService,
@@ -58,8 +55,21 @@ export class HelpLinkComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
   }
 
-  openHelpLink(link: any) {
+  openHelpLink(data: HelpLink) {
+    const link = data.link;
     window.open(link, '_blank');
+  }
+
+  openHelpDocument(data: any) {
+    this.spinnerService.show();
+    this.helplinkService.downloadFile(data.covidLinkId).subscribe(response => {
+      const blob: any = new Blob([response], { type: response.type });
+      //const url = window.URL.createObjectURL(blob);
+      //window.open(url);
+      fileSaver.saveAs(blob, data.fileName);
+    }).add(() => {
+      this.spinnerService.hide();
+    });
   }
 
   getAllHelpLinks() {
@@ -68,8 +78,8 @@ export class HelpLinkComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.helpLinks = [];
       if (response && response.length > 0) {
         this.helpLinks = response;
-        this.rerender();
       }
+      this.rerender();
     }).add(() => {
       this.spinnerService.hide();
     });
@@ -94,7 +104,7 @@ export class HelpLinkComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   deleteHelpLink(data: HelpLink) {
     this.spinnerService.show();
-    this.helplinkService.delete(data.id).subscribe((response: any) => {
+    this.helplinkService.delete(data.covidLinkId).subscribe((response: any) => {
       $('#deleteHelpLink').modal('toggle');
     }).add(() => {
       this.spinnerService.hide();
@@ -107,14 +117,14 @@ export class HelpLinkComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.fileInput.nativeElement.value = '';
     }
     this.model = {} as HelpLink;
-    this.model.categoryId = 1;
+    this.model.category = 'link';
     this.addForm.resetForm({ ...this.model });
     $('#addHelpLink').modal('toggle');
   }
 
   openEditHelpLink(data) {
     this.model = { ...data };
-    if (this.model.categoryId == 2 && this.model.content) {
+    if (this.model.category === 'document' && this.model.content) {
       this.model.content = '';
     }
     if (this.editfileInput) {
@@ -122,7 +132,6 @@ export class HelpLinkComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
     $('#editHelpLink').modal('toggle');
   }
-
 
   onChangeCategory(newValue) {
     this.model.content = '';
@@ -132,27 +141,39 @@ export class HelpLinkComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   addHelpLink(form: NgForm) {
-    debugger;
     const model = { ...this.model };
-    if (this.fileInput && this.fileInput.nativeElement.files.length > 0) {
-      model.content = this.fileInput.nativeElement.files[0];
-    }
 
-    this.helplinkService.create(model).subscribe(result => {
-      $('#addHelpLink').modal('toggle');
-      this.getAllHelpLinks();
-    });
+    if (this.model.category === HELP_LINK_TYPES[1].id) {
+      if (this.fileInput && this.fileInput.nativeElement.files.length > 0) {
+        // model.link = this.fileInput.nativeElement.files[0];
+
+        const formData = new FormData();
+        formData.append('file', this.fileInput.nativeElement.files[0]);
+        formData.append('header', model.header);
+        formData.append('type', HELP_LINK_TYPES[1].id);
+
+        this.helplinkService.UploadContent(formData).subscribe(result => {
+          $('#addHelpLink').modal('toggle');
+          this.getAllHelpLinks();
+        });
+      }
+    } else {
+      this.helplinkService.create(model).subscribe(result => {
+        $('#addHelpLink').modal('toggle');
+        this.getAllHelpLinks();
+      });
+    }
   }
 
   editHelpLink(form: NgForm) {
-    const model = { ...this.model };
-    if (this.editfileInput && this.editfileInput.nativeElement.files.length > 0) {
-      model.content = this.editfileInput.nativeElement.files[0];
-    }
+    // const model = { ...this.model };
+    // if (this.editfileInput && this.editfileInput.nativeElement.files.length > 0) {
+    //   model.content = this.editfileInput.nativeElement.files[0];
+    // }
 
-    this.helplinkService.edit(model).subscribe(result => {
-      $('#editHelpLink').modal('toggle');
-      this.getAllHelpLinks();
-    });
+    // this.helplinkService.edit(model).subscribe(result => {
+    //   $('#editHelpLink').modal('toggle');
+    //   this.getAllHelpLinks();
+    // });
   }
 }
