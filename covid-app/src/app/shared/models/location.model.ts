@@ -6,4 +6,17 @@ export interface Location {
     istarget?: boolean;
     rootId?: number;
     root?: Location;
+    type?: string;
+    severity?: string;
+    covidInfo?: CovidInfo;
+    subordinates?: Location[];
+    name?: string;
+}
+
+export interface CovidInfo {
+    confirmed: number;
+    active: number;
+    recovered: number;
+    deceased: number;
+    conFirmedToday: number;
 }

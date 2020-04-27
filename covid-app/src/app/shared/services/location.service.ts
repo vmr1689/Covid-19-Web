@@ -1,26 +1,65 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment';
 import { Location } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class LocationService {
-    constructor(private http: HttpClient) { }
+    public headers: HttpHeaders;
+    public httpOptions: {};
 
-    getAllLocations = () => {
-        return this.http.get<Location[]>(`${environment.apiUrl}/location/getAllLocations`);
+    constructor(private http: HttpClient) {
+        this.headers = new HttpHeaders({
+            'Content-Type': 'application/json'
+        });
+        this.httpOptions = {
+            headers: this.headers
+        };
+    }
+
+    getAllLocationsDuplicate = (target?: any) => {
+        return this.http.get<Location>(`${environment.apiUrl}/covid/covidInfoByName/` + target);
+    }
+
+    getAllLocations = (target?: any) => {
+        return this.http.get<Location[]>(`${environment.apiUrl}/covid/covidInfoByName/` + target);
     }
 
     getLocationById = (placeId: number) => {
         return this.http.get<Location>(`${environment.apiUrl}/location/getLocationById/` + placeId);
     }
 
-    createLocation = (model: Location) => {
-        return this.http.post(`${environment.apiUrl}/location/createLocation`, { model });
+    createLocation = (model: Location, rootName?: string) => {
+        let requestModel = null;
+
+        if (rootName) {
+            requestModel = {
+                name: rootName,
+                placeInfo: {
+                    latitude: model.latitude,
+                    longitude: model.longitude,
+                    severity: 'Low',
+                    type: model.type,
+                    placeName: model.placeName
+                }
+            };
+        } else {
+            requestModel = {
+                placeInfo: {
+                    latitude: model.latitude,
+                    longitude: model.longitude,
+                    severity: 'Low',
+                    type: model.type,
+                    placeName: model.placeName
+                }
+            };
+        }
+
+        return this.http.post(`${environment.apiUrl}/covid/addNewPlace`, requestModel, this.httpOptions);
     }
 
     EditLocation = (model: Location) => {
-        return this.http.put(`${environment.apiUrl}/location/editLocation`, { model });
+        return this.http.put(`${environment.apiUrl}/location/editLocation`, model, this.httpOptions);
     }
 }

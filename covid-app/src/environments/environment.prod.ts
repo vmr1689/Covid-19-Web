@@ -1,6 +1,7 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://52.66.244.249:8080/covid19'
+  apiUrl: 'http://52.66.244.249:8080/covid19',
+  targetLocation: 'India'
 };
 
 export const Countries = {

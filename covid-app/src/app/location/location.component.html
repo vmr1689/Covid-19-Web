@@ -23,33 +23,31 @@
                                     class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th sortable="placeName" (sort)="onSort($event)">Place</th>
-                                            <th scope="col" sortable="root" (sort)="onSort($event)">Root</th>
-                                            <th scope="col" sortable="latitude" (sort)="onSort($event)">Latitude</th>
-                                            <th scope="col" sortable="longitude" (sort)="onSort($event)">Longitude</th>
-                                            <th scope="col" sortable="longitude" (sort)="onSort($event)">Total</th>
-                                            <th scope="col" sortable="longitude" (sort)="onSort($event)">Confirmed</th>
-                                            <th scope="col" sortable="longitude" (sort)="onSort($event)">Active</th>
-                                            <th scope="col" sortable="longitude" (sort)="onSort($event)">Recovered</th>
-                                            <th scope="col" sortable="longitude" (sort)="onSort($event)">Deceased</th>
-                                            <th scope="col" sortable="istarget" (sort)="onSort($event)">Is Target</th>
+                                            <th>Place</th>
+                                            <th>Root</th>
+                                            <th>Latitude</th>
+                                            <th>Longitude</th>
+                                            <th>Confirmed</th>
+                                            <th>Active</th>
+                                            <th>Recovered</th>
+                                            <th>Deceased</th>
+                                            <th>Is Target</th>
 
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let data of locations; let i = index">
+                                        <tr *ngFor="let data of tableLocations;">
                                             <td [style.fontWeight]="data.istarget ? 'bold': 'inherit'">
                                                 {{data.placeName}}</td>
                                             <td>{{data.root ? (data.root.placeName ? data.root.placeName : ''): ''}}
                                             </td>
                                             <td>{{data.latitude}}</td>
                                             <td>{{data.longitude}}</td>
-                                            <td>{{ (i+1) * (i +10)}}</td>
-                                            <td>{{ (i+1) * (i +8)}}</td>
-                                            <td>{{ (i+1) * (i +6)}}</td>
-                                            <td>{{ (i+1) * (i +4)}}</td>
-                                            <td>{{ (i+1) * (i +2)}}</td>
+                                            <td>{{data.covidInfo.confirmed}}</td>
+                                            <td>{{data.covidInfo.active}}</td>
+                                            <td>{{data.covidInfo.recovered}}</td>
+                                            <td>{{data.covidInfo.deceased}}</td>
                                             <td>{{data.istarget ? 'Yes' : 'No'}}</td>
                                             <td>
 
@@ -135,6 +133,26 @@
                                 </div>
                             </div>
 
+                            <div class="form-group ">
+                                <div class="col-sm-2">
+                                    <label for="type" class="control-label">Type:</label>
+                                </div>
+
+                                <div class="col-sm-10">
+
+                                    <select name="type" #type="ngModel" [(ngModel)]="model.type" id="type"
+                                        class="form-control" required>
+                                        <option *ngFor="let type of types; let i = index" value={{type.id}}>
+                                            {{type.text}}
+                                        </option>
+                                    </select>
+
+                                    <div *ngIf="addForm.submitted && !type.valid" class="text-danger">Type is
+                                        required
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <div class="col-sm-2">
                                     <label for="latitude" class="control-label">Latitude:</label>
@@ -185,7 +203,7 @@
                                 <div class="col-sm-10">
                                     <select name="rootId" #rootId="ngModel" [(ngModel)]="model.rootId" id="rootId"
                                         class="form-control" [required]="model.istarget ? true : null">
-                                        <option *ngFor="let location of locations; let i = index"
+                                        <option *ngFor="let location of rootLocations; let i = index"
                                             value={{location.placeId}}>
                                             {{location.placeName}}
                                         </option>
@@ -247,6 +265,26 @@
                                 </div>
                             </div>
 
+                            <div class="form-group ">
+                                <div class="col-sm-2">
+                                    <label for="editForm" class="control-label">Type:</label>
+                                </div>
+
+                                <div class="col-sm-10">
+
+                                    <select name="type" #type="ngModel" [(ngModel)]="model.type" id="type"
+                                        class="form-control" required>
+                                        <option *ngFor="let type of types; let i = index" value={{type.id}}>
+                                            {{type.text}}
+                                        </option>
+                                    </select>
+
+                                    <div *ngIf="editForm.submitted && !type.valid" class="text-danger">Type is
+                                        required
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <div class="col-sm-2">
                                     <label for="latitude" class="control-label">Latitude:</label>
@@ -297,7 +335,7 @@
                                 <div class="col-sm-10">
                                     <select name="rootId" #rootId="ngModel" [(ngModel)]="model.rootId" id="rootId"
                                         class="form-control" [required]="model.istarget ? true : null">
-                                        <option *ngFor="let location of locations; let i = index"
+                                        <option *ngFor="let location of rootLocations; let i = index"
                                             value={{location.placeId}}>
                                             {{location.placeName}}
                                         </option>
@@ -344,9 +382,7 @@
                 <button (click)="deleteLocation(model)" class="btn btn-info btn-flat">Yes</button>
             </div>
         </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
 </div>
 
 <div class="modal fade" data-backdrop="static" id="addPatient">
@@ -475,8 +511,8 @@
 
                                 <div class="col-sm-9">
 
-                                    <select name="gender" #gender="ngModel" [(ngModel)]="patientModel.gender" id="gender"
-                                        class="form-control" required>
+                                    <select name="gender" #gender="ngModel" [(ngModel)]="patientModel.gender"
+                                        id="gender" class="form-control" required>
                                         <option value="male">Male</option>
                                         <option value="female">Female</option>
                                         <option value="unknown">Unknown</option>
@@ -552,23 +588,7 @@
                                 </div>
 
                             </div>
-
-                            <!-- <div class="form-group">
-                                <label for="severity" class="col-sm-3 control-label">Severity:</label>
-
-                                <div class="col-sm-9">
-                                    <input id="severity" type="text" autocomplete="off" class="form-control"
-                                        name="severity" [(ngModel)]="patientModel.severity" #severity="ngModel"
-                                        placeholder="Severity" required>
-
-                                    <div *ngIf="addPatientForm.submitted && !severity.valid" class="text-danger">
-                                        Severity is required
-                                    </div>
-                                </div>
-                            </div> -->
-
                         </div>
-
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -698,8 +718,8 @@
 
                                 <div class="col-sm-9">
 
-                                    <select name="gender" #gender="ngModel" [(ngModel)]="patientModel.gender" id="gender"
-                                        class="form-control" required>
+                                    <select name="gender" #gender="ngModel" [(ngModel)]="patientModel.gender"
+                                        id="gender" class="form-control" required>
                                         <option value="male">Male</option>
                                         <option value="female">Female</option>
                                         <option value="unknown">Unknown</option>

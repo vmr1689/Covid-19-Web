@@ -23,3 +23,33 @@ export const GUIDELINES_TYPES = [
         text: `SYMPTOMS`,
     }
 ];
+
+export const LOCATION_TYPES = [
+    {
+        id: 'Country',
+        text: 'Country'
+    },
+    {
+        id: 'State',
+        text: 'State'
+    },
+    {
+        id: 'City',
+        text: 'City'
+    }
+];
+
+export const SEVERITY_TYPES = [
+    {
+        id: 'Low',
+        text: 'Low'
+    },
+    {
+        id: 'Medium',
+        text: 'Medium'
+    },
+    {
+        id: 'High',
+        text: 'High'
+    }
+];
