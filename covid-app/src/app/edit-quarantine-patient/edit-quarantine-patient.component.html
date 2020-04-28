@@ -29,14 +29,15 @@
                                 <div class="col-md-6">
 
                                     <div class="form-group">
-                                        <input name="patientId" maxlength="50" formControlName="patientId"
-                                            id="patientId" type="hidden" class="form-control" />
+                                        <input name="quaratinedId" maxlength="50" formControlName="quaratinedId"
+                                            id="quaratinedId" type="hidden" class="form-control" />
 
                                         <label for="firstName" class="col-sm-3 control-label">First Name</label>
 
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" formControlName="firstName"
-                                                id="firstName" name="firstName" placeholder="First Name" [readonly]="isReadOnly">
+                                                id="firstName" name="firstName" placeholder="First Name"
+                                                [readonly]="isReadOnly">
 
                                             <small
                                                 *ngIf="(submitted || firstName.dirty || firstName.touched) && firstName.hasError('required')"
@@ -49,7 +50,8 @@
 
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" formControlName="lastName"
-                                                id="lastName" name="lastName" placeholder="Last Name" [readonly]="isReadOnly">
+                                                id="lastName" name="lastName" placeholder="Last Name"
+                                                [readonly]="isReadOnly">
 
                                             <small
                                                 *ngIf="(submitted || lastName.dirty || lastName.touched) && lastName.hasError('required')"
@@ -76,34 +78,54 @@
                                         <div class="col-sm-9">
 
                                             <select name="gender" formControlName="gender" id="gender"
-                                                class="form-control" required [disabled]="isReadOnly">
-                                                <option value="male">Male</option>
-                                                <option value="female">Female</option>
-                                                <option value="unknown">Unknown</option>
+                                                class="form-control" required>
+                                                <option *ngFor="let type of genderTypes; let i = index"
+                                                    [value]="type.id">
+                                                    {{type.text}}
+                                                </option>
                                             </select>
 
                                             <small
-                                                *ngIf="(submitted || phone.dirty || phone.touched) && phone.hasError('required')"
+                                                *ngIf="(submitted || gender.dirty || gender.touched) && gender.hasError('required')"
                                                 class="text-danger">Phone is required</small>
                                         </div>
                                     </div>
 
-                                    
+                                    <div class="form-group">
+                                        <label for="quaratinedDate" class="col-sm-3 control-label">Date</label>
 
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <input class="form-control" formControlName="quaratinedDate"
+                                                    name="quaratinedDate" #datepickerFull="bsDatepicker" bsDatepicker
+                                                    [bsConfig]="{ dateInputFormat: 'MM/DD/YYYY' }" id="bsDatepickerAdd">
+
+                                                <div class="input-group-addon" (click)='calTrig()'>
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+
+                                                <small
+                                                    *ngIf="(submitted || quaratinedDate.dirty || quaratinedDate.touched) && quaratinedDate.hasError('required')"
+                                                    class="text-danger">Date is required</small>
+                                            </div>
+
+                                        </div>
+                                    </div>
 
                                 </div>
 
                                 <div class="col-md-6">
 
                                     <div class="form-group">
-                                        <label for="phone" class="col-sm-3 control-label">Phone Number</label>
+                                        <label for="phoneNumber" class="col-sm-3 control-label">Phone Number</label>
 
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" formControlName="phone" id="phone"
-                                                name="phone" placeholder="Phone Number" [readonly]="isReadOnly">
+                                            <input type="text" class="form-control" formControlName="phoneNumber"
+                                                id="phoneNumber" name="phoneNumber" placeholder="Phone Number"
+                                                [readonly]="isReadOnly">
 
                                             <small
-                                                *ngIf="(submitted || phone.dirty || phone.touched) && phone.hasError('required')"
+                                                *ngIf="(submitted || phoneNumber.dirty || phoneNumber.touched) && phoneNumber.hasError('required')"
                                                 class="text-danger">Phone is required</small>
                                         </div>
                                     </div>
@@ -122,94 +144,45 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="address1" class="col-sm-3 control-label">Address</label>
+                                        <label for="city" class="col-sm-3 control-label">City</label>
 
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" formControlName="address1"
-                                                id="address1" name="address1" placeholder="Address">
+                                            <select name="city" formControlName="city" id="city" class="form-control"
+                                                required>
+                                                <option *ngFor="let location of cities; let i = index"
+                                                    value={{location.placeName}}>
+                                                    {{location.placeName}}
+                                                </option>
+                                            </select>
 
                                             <small
-                                                *ngIf="(submitted || address1.dirty || address1.touched) && address1.hasError('required')"
+                                                *ngIf="(submitted || city.dirty || city.touched) && city.hasError('required')"
+                                                class="text-danger">City is required</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="address" class="col-sm-3 control-label">Address</label>
+
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" formControlName="address"
+                                                id="address" name="address" placeholder="Address">
+
+                                            <small
+                                                *ngIf="(submitted || address.dirty || address.touched) && address.hasError('required')"
                                                 class="text-danger">Address is required</small>
                                         </div>
                                     </div>
 
-
-                                    <!-- <div class="form-group ">
-                                        <label for="address2" class="col-sm-3 control-label">Address 1</label>
-
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" formControlName="address2"
-                                                id="address2" name="address2" placeholder="Address 2">
-
-                                            <small
-                                                *ngIf="(submitted || address2.dirty || address2.touched) && address2.hasError('required')"
-                                                class="text-danger">Address 2 is required</small>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="address3" class="col-sm-3 control-label">Address 3</label>
-
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" formControlName="address3"
-                                                id="address3" name="address3" placeholder="Address 2">
-
-                                            <small
-                                                *ngIf="(submitted || address3.dirty || address3.touched) && address3.hasError('required')"
-                                                class="text-danger">Address 3 is required</small>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="form-group">
-                                        <label for="address4" class="col-sm-3 control-label">Address 4</label>
-
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" formControlName="address4"
-                                                id="address4" name="address4" placeholder="Address 4">
-
-                                            <small
-                                                *ngIf="(submitted || address4.dirty || address4.touched) && address4.hasError('required')"
-                                                class="text-danger">Address 4 is required</small>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="address5" class="col-sm-3 control-label">Address 5</label>
-
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" formControlName="address5"
-                                                id="address4" name="address5" placeholder="Address 5">
-
-                                            <small
-                                                *ngIf="(submitted || address5.dirty || address5.touched) && address5.hasError('required')"
-                                                class="text-danger">Address 5 is required</small>
-                                        </div>
-                                    </div> -->
-
-
-                                    <div class="form-group">
-                                        <label for="zipcode" class="col-sm-3 control-label">ZipCode</label>
-
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" formControlName="zipcode"
-                                                id="zipcode" name="zipcode" placeholder="Zipcode">
-
-                                            <small
-                                                *ngIf="(submitted || zipcode.dirty || zipcode.touched) && zipcode.hasError('required')"
-                                                class="text-danger">Zipcode is required</small>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="row text-left">
                                     <div class="col-md-12">
 
                                         <button *ngIf="isReadOnly" type="button" (click)="editInfo()"
-                                        class="pad_ex btn btn-info btn-flat next-step">Edit</button>
+                                            class="pad_ex btn btn-info btn-flat next-step">Edit</button>
 
                                         <button *ngIf="!isReadOnly" type="button" (click)="editInfo()"
-                                        class="pad_ex btn btn-info btn-flat next-step">View</button>
+                                            class="pad_ex btn btn-info btn-flat next-step">View</button>
 
                                     </div>
                                 </div>
@@ -240,18 +213,10 @@
                                     <table datatable [dtOptions]="dtOptions" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th sortable="referenceId" (sort)="onReferenceSort($event)">Location
-                                                </th>
-                                                <th scope="col" sortable="patient" (sort)="onReferenceSort($event)">
-                                                    patient</th>
-                                                <!-- <th scope="col" sortable="status" (sort)="onReferenceSort($event)">
-                                                    Status</th> -->
-                                                <th scope="col" sortable="placeName" (sort)="onReferenceSort($event)">
-                                                    Place</th>
-                                                <!-- <th scope="col" sortable="severity" (sort)="onReferenceSort($event)">
-                                                    Severity</th> -->
-                                                <th scope="col" sortable="date" (sort)="onReferenceSort($event)">Date
-                                                </th>
+                                                <th>Location</th>
+                                                <th>patient</th>
+                                                <th>Place</th>
+                                                <th>Date</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -259,9 +224,7 @@
                                             <tr *ngFor="let data of references">
                                                 <td>{{data.referenceId}}</td>
                                                 <td>{{data.patient}}</td>
-                                                <!-- <td>{{data.status}}</td> -->
                                                 <td>{{data.placeName}}</td>
-                                                <!-- <td>{{data.severity}}</td> -->
                                                 <td>{{data.date}}</td>
                                                 <td>
                                                     <button style="margin-right:5px" title="Edit Location"
@@ -294,7 +257,7 @@
                                         <button type="button" (click)="nextTab()"
                                             class="pad_ex btn btn-info btn-flat next-step">Next</button>
 
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -312,8 +275,8 @@
                                         <div class="col-sm-8">
                                             <div class="checkbox">
                                                 <label>
-                                                    <input id="quarantined" formControlName="quarantined" name="quarantined"
-                                                        type="checkbox">
+                                                    <input id="quarantined" formControlName="quarantined"
+                                                        name="quarantined" type="checkbox">
                                                 </label>
                                             </div>
                                         </div>
@@ -331,7 +294,7 @@
                                             <div class="checkbox">
                                                 <label>
                                                     <input formControlName="confirmed" id="confirmed" name="confirmed"
-                                                        type="checkbox" disabled="true">
+                                                        type="checkbox">
                                                 </label>
                                             </div>
                                         </div>
@@ -373,12 +336,12 @@
 
                                     </div>
 
-                                   
 
-                                    
+
+
                                 </div>
                                 <div class="row">
-                                    
+
 
                                     <div class="col-md-3">
 
@@ -422,12 +385,12 @@
                                     <div class="col-md-12">
                                         <button type="button" (click)="BackToList()" class="btn btn-default"
                                             style="margin-right:5px">Cancel</button>
-                                            
+
                                         <button type="button" (click)="previousTab()"
                                             class="pad_ex btn btn-default btn-flat prev-step"
                                             style="margin-right:5px">Previous</button>
 
-                                        <button  *ngIf="!isReadOnly" type="submit" id="btnSubmit"
+                                        <button *ngIf="!isReadOnly" type="submit" id="btnSubmit"
                                             class="pad_ex btn btn-info btn-flat next-step">Save and Exit</button>
 
                                     </div>
@@ -541,6 +504,20 @@
                                         [(ngModel)]="referenceModel.date" #date="ngModel" placeholder="Date" required>
 
                                     <div *ngIf="f.submitted && !date.valid" class="text-danger">Date is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label for="reason" class="control-label">Reason:</label>
+                                </div>
+
+                                <div class="col-sm-10">
+                                    <input id="reason" type="text" autocomplete="off" class="form-control" name="reason"
+                                        [(ngModel)]="referenceModel.reason" #reason="ngModel" placeholder="Reason" required>
+
+                                    <div *ngIf="f.submitted && !reason.valid" class="text-danger">Reason is required
                                     </div>
                                 </div>
                             </div>
@@ -659,6 +636,21 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label for="reason" class="control-label">Reason:</label>
+                                </div>
+
+                                <div class="col-sm-10">
+                                    <input id="reason" type="text" autocomplete="off" class="form-control" name="reason"
+                                        [(ngModel)]="referenceModel.reason" #reason="ngModel" placeholder="Reason" required>
+
+                                    <div *ngIf="f.submitted && !reason.valid" class="text-danger">Reason is required
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
 

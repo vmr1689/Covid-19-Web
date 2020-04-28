@@ -62,6 +62,10 @@ export function getDateFromTimeStamp(timestamp: any) {
     return moment(timestamp, 'X').format('DD/MM/YYYY HH:mm:ss');
 }
 
+export function getDateFromDateStr(dateStr: any) {
+    return moment(dateStr, 'DD/MM/YYYY HH:mm:ss').toDate();
+}
+
 export function restructureData(response: Location) {
     const resCopy = { ...response };
     let result: Location[] = [];

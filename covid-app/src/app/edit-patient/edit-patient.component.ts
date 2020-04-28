@@ -2,13 +2,13 @@ import { Component, OnInit, ViewChild, AfterViewChecked, OnDestroy } from '@angu
 import { FormBuilder, FormGroup, Validators, AbstractControl, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DataTableDirective } from 'angular-datatables';
+import { Subject, Observable, forkJoin } from 'rxjs';
 
 import * as Helpers from '../shared/helpers';
 import { STATUS_TYPES, GENDER_TYPES } from '.././seedConfig';
 import { environment } from '../../environments/environment';
 import { Patient, Location, GenderTypes, PatientDeviceInfo, PatientLocationInfo } from '../shared/models';
 import { PatientService, LocationService, SpinnerService } from '../shared/services';
-import { Subject, Observable, forkJoin } from 'rxjs';
 
 declare var $;
 
