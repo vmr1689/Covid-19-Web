@@ -8,7 +8,6 @@ import StateDistrictWiseDataJson from '../../sample_state-district-wise.json';
 import SampleLocationsJson from '../../locations.json';
 import SamplePatientsJson from '../../patients.json';
 import SampleUsersJson from '../../users.json';
-import SampleOrganisationJson from '../../organisation.json';
 
 import {
     SampleData,
@@ -71,16 +70,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 case url.match(/\/deletePatient\/\d+$/) && method === 'DELETE':
                     return deletePatient();
 
-                case url.endsWith('organisation/getAllOrganisations') && method === 'GET':
-                    return getAllOrganisations();
-                case url.match(/\/getOrganisationById\/\d+$/) && method === 'GET':
-                    return getOrganisation();
-                case url.endsWith('organisation/createOrganisation') && method === 'POST':
-                    return createOrganisation();
-                case url.endsWith('organisation/editOrganisation') && method === 'PUT':
-                    return editOrganisation();
-                case url.match(/\/organisation\/\d+$/) && method === 'DELETE':
-                    return deleteOrganisation();
 
                 default:
                     // pass through any requests not handled above
@@ -252,18 +241,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             return ok(aa);
         }
 
-        function getAllOrganisations() {
-            const mainData = SampleOrganisationJson;
-            const castObject = mainData as Organisation[];
-            return ok(castObject);
-        }
-
-        function getOrganisation() {
-            const mainData = SampleOrganisationJson;
-            const castObject = mainData as Organisation[];
-            const aa = castObject[2];
-            return ok(aa);
-        }
 
         function createOrganisation() {
             const user = body;

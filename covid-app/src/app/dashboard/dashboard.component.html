@@ -23,8 +23,8 @@
           </span>
           <div class="info-box-content">
             <span class="info-box-text">Active</span>
-            <span class="info-box-text">[+71]</span>
-            <span class="info-box-number">757,078 </span>
+            <span class="info-box-text">[+{{covidInfo.activeToday ? covidInfo.activeToday : 0  }}]</span>
+            <span class="info-box-number">{{covidInfo.active}}</span>
           </div>
         </div>
       </div>
@@ -36,8 +36,8 @@
           </span>
           <div class="info-box-content">
             <span class="info-box-text">Confirmed</span>
-            <span class="info-box-text">[0]</span>
-            <span class="info-box-number">1,004,410</span>
+            <span class="info-box-text">[+{{covidInfo.conFirmedToday ? covidInfo.conFirmedToday : 0 }}]</span>
+            <span class="info-box-number">{{covidInfo.confirmed}}</span>
           </div>
         </div>
       </div>
@@ -51,8 +51,8 @@
           </span>
           <div class="info-box-content">
             <span class="info-box-text">Deceased</span>
-            <span class="info-box-text">[+1]</span>
-            <span class="info-box-number">52,948</span>
+            <span class="info-box-text">[+{{covidInfo.deceasedToday ? covidInfo.deceasedToday : 0 }}]</span>
+            <span class="info-box-number">{{covidInfo.deceased}}</span>
           </div>
         </div>
       </div>
@@ -64,8 +64,8 @@
           </span>
           <div class="info-box-content">
             <span class="info-box-text">Recovered</span>
-            <span class="info-box-text">[+0]</span>
-            <span class="info-box-number">216,342</span>
+            <span class="info-box-text">[+{{covidInfo.recoveredToday ? covidInfo.recoveredToday : 0 }}]</span>
+            <span class="info-box-number">{{covidInfo.recovered}}</span>
           </div>
         </div>
       </div>
@@ -91,29 +91,10 @@
           </div>
           <div class="box-body">
             <div class="table-responsive">
-              <table id="statewise" class="table table-bordered table-hover">
+              <table id="locationTable" class="table table-bordered table-hover">
               </table>
 
-              <!-- <table id="dataTable" class="table table-bordered table-hover">
-                <thead>
-                  <tr>
-                    <th>Place</th>
-                    <th>Active</th>
-                    <th>Confirmed</th>
-                    <th>Deceased</th>
-                    <th>Recovered</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let data of stateList">
-                    <td>{{data.state}}</td>
-                    <td>{{data.active}}</td>
-                    <td>{{data.confirmed}}</td>
-                    <td>{{data.deaths}}</td>
-                    <td>{{data.recovered}}</td>
-                  </tr>
-                </tbody>
-              </table> -->
+             
             </div>
           </div>
         </div>

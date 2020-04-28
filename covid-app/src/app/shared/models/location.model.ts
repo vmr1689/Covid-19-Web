@@ -3,12 +3,12 @@ export interface Location {
     placeName: string;
     latitude: number;
     longitude: number;
-    istarget?: boolean;
-    rootId?: number;
-    root?: Location;
     type?: string;
     severity?: string;
     covidInfo?: CovidInfo;
+    istarget?: boolean;
+    rootId?: number;
+    root?: Location;
     subordinates?: Location[];
     name?: string;
 }
@@ -19,4 +19,10 @@ export interface CovidInfo {
     recovered: number;
     deceased: number;
     conFirmedToday: number;
+    activeToday: number;
+    recoveredToday: number;
+    deceasedToday: number;
+    maleCount: number;
+    femaleCount: number;
+    othersCount: number;
 }

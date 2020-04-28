@@ -5,8 +5,9 @@ import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import * as am4maps from '@amcharts/amcharts4/maps';
 import am4geodata_indiaLow from '@amcharts/amcharts4-geodata/indiaLow';
 import * as moment from 'moment';
+import { Subject, Observable, forkJoin } from 'rxjs';
 
-import { Countries, Continents } from '../../environments/environment';
+import { Countries, Continents, environment } from '../../environments/environment';
 import { renderTable, createChild, destroyChild } from '../shared/helpers';
 import { DashboardService, SpinnerService, GuidelinesService, UpdatesService } from '../shared/services';
 import {
@@ -19,10 +20,18 @@ import {
   StateWise,
   Guidelines,
   Banner,
-  Updatedto
+  Updatedto,
+  AgeChart,
+  Location,
+  CovidInfo,
+  CountryDivision,
+  MapData
 } from '../shared/models';
 
 import SampleMapDataJson from '.././mapdata.json';
+
+import IndiaDivisions from '.././IndiaDivisions.json';
+
 declare var $;
 
 @Component({
@@ -43,7 +52,10 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
   public dosList: Guidelines[] = [];
   public dontsList: Guidelines[] = [];
   public symptomsList: Guidelines[] = [];
-  public mapDataList: any[] = [];
+  public ageChartList: AgeChart[] = [];
+  public mapDataList: MapData[] = [];
+  public covidInfoPlace: Location = {} as Location;
+  public covidInfo: CovidInfo = {} as CovidInfo;
 
   public dailySpreadList: CasesTimeSeries[] = [];
 
@@ -54,6 +66,8 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
   public patientGenderChart: am4charts.PieChart;
   public patientAgeChart: am4charts.XYChart;
 
+  public countryDivisions: CountryDivision = IndiaDivisions;
+
   constructor(
     private zone: NgZone,
     private updatesService: UpdatesService,
@@ -62,67 +76,144 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
     private guidelinesService: GuidelinesService) { }
 
   ngOnInit(): void {
-    this.getMapData();
-    this.getStateDistrictData();
-    this.getGuidelines();
-    this.getBannerData();
-    this.getUpdatesData();
-    this.getDetails();
+    this.getAllAPIValues();
   }
 
   ngAfterViewChecked() {
     $('.dataTables_filter input, .dataTables_length select').addClass('form-control');
   }
 
-  public getMapData() {
-    this.mapDataList = SampleMapDataJson;
+  public getMapData(response: Location) {
+    const subOrdinates = response.subordinates ? response.subordinates : [];
+    this.mapDataList = [];
+    subOrdinates.forEach(item => {
+      const mapData = {} as MapData;
+      mapData.name = item.placeName;
+      mapData.value = item.covidInfo ? item.covidInfo.confirmed : 0;
+      const division = this.countryDivisions.divisions.find(x => x.name.trim().toLowerCase() == item.placeName.trim().toLowerCase());
+      if (division) {
+        mapData.id = 'IN-' + division.code;
+      }
+      this.mapDataList.push(mapData);
+    });
+    this.destroyMaps();
+    this.renderMapChart();
   }
 
-  public getGuidelines() {
+  public getAllAPIValues() {
+
+    const getAllGuidelines = this.guidelinesService.getAllGuidelines();
+    const getAllBanners = this.updatesService.getAllBanners();
+    const getAllUpdates = this.updatesService.getAllUpdates();
+    const getAllAgeChartData = this.dashboardService.getAllAgeChartData(environment.targetLocation);
+    const getCovidInfoByPlace = this.dashboardService.getCovidInfoByPlace(environment.targetLocation);
+    const getDailyCountData = this.dashboardService.getDetails();
+
+    this.spinnerService.show();
+
+    forkJoin([
+      getAllGuidelines,
+      getAllBanners,
+      getAllUpdates,
+      getAllAgeChartData,
+      getCovidInfoByPlace,
+      getDailyCountData]).subscribe(results => {
+
+        const guidelinesResult = results[0];
+        const BannerResult = results[1];
+        const updatesResult = results[2];
+        const ageChartResult = results[3];
+        const covidInfoResult = results[4];
+        const getDailyCountResult = results[5];
+
+        if (guidelinesResult && guidelinesResult.length > 0) {
+          this.getGuidelines(guidelinesResult);
+        }
+
+        if (BannerResult && BannerResult.length > 0) {
+          this.getBannerData(BannerResult);
+        }
+
+        if (updatesResult && updatesResult.length > 0) {
+          this.getUpdatesData(updatesResult);
+        }
+
+        if (ageChartResult && ageChartResult.length > 0) {
+          this.getAgeChartData(ageChartResult);
+        }
+
+        if (covidInfoResult) {
+          this.getCovidInfoByPlace(covidInfoResult);
+
+          this.getMapData(covidInfoResult);
+        }
+
+        if (getDailyCountResult) {
+          this.getDetails(getDailyCountResult);
+        }
+
+      }).add(() => {
+        this.spinnerService.hide();
+      });
+  }
+
+  public getCovidInfoByPlace(response: Location) {
+    this.covidInfoPlace = {} as Location;
+    this.covidInfo = {} as CovidInfo;
+
+    if (response) {
+      this.covidInfoPlace = response;
+      this.covidInfo = response.covidInfo;
+      if (this.patientGenderChart) {
+        this.patientGenderChart.dispose();
+      }
+      this.renderPatientGenderChart();
+      this.renderMainData('locationTable', true);
+    }
+
+  }
+
+  public getAgeChartData(response: AgeChart[]) {
+    this.ageChartList = [];
+    if (response) {
+      this.ageChartList = response;
+      if (this.patientAgeChart) {
+        this.patientAgeChart.dispose();
+      }
+      this.renderPatientAgeChart();
+    }
+  }
+
+  public getGuidelines(response: Guidelines[]) {
     this.guidelinesList = [];
     this.dosList = [];
     this.dontsList = [];
     this.symptomsList = [];
-    this.guidelinesService.getAllGuidelines().subscribe((response: Guidelines[]) => {
-      if (response) {
-        this.guidelinesList = response;
-        this.symptomsList = response.filter(x => x.type === `SYMPTOMS`);
-        this.dontsList = response.filter(x => x.type === `DONT'S`);
-        this.dosList = response.filter(x => x.type === `DO'S`);
-      }
-    });
+
+    if (response) {
+      this.guidelinesList = response;
+      this.symptomsList = response.filter(x => x.type === `SYMPTOMS`);
+      this.dontsList = response.filter(x => x.type === `DONT'S`);
+      this.dosList = response.filter(x => x.type === `DO'S`);
+    }
   }
 
-  public getStateDistrictData() {
-    this.dashboardService.getStateDistrictData().subscribe((response: SampleStateDistrictWiseData) => {
-      if (response) {
-        this.sampleStateDistrictData = response;
-      }
-    });
+  public getDetails(response: SampleData) {
+    if (response) {
+      this.sampleData = response;
+    }
+    if (response && response.casestimeseries.length > 0) {
+      this.dailySpreadList = response.casestimeseries.slice(-14);
+      this.destroyCharts();
+      this.renderDailyCharts();
+    }
   }
 
-  public getDetails() {
-    this.dashboardService.getDetails().subscribe((response: SampleData) => {
-      if (response) {
-        this.sampleData = response;
-        this.renderMainData('statewise', true);
-      }
-      if (response && response.casestimeseries.length > 0) {
-        this.dailySpreadList = response.casestimeseries.slice(-14);
-        console.log(this.dailySpreadList);
-        this.destroyCharts();
-        this.renderDailyCharts();
-      }
-    });
-  }
-
-  public getBannerData() {
-    this.updatesService.getAllBanners().subscribe((response: Banner[]) => {
-      if (response) {
-        this.bannerList = response;
-        this.setIntervalBannerData();
-      }
-    });
+  public getBannerData(response: Banner[]) {
+    if (response) {
+      this.bannerList = response;
+      this.setIntervalBannerData();
+    }
   }
 
   public setIntervalBannerData() {
@@ -138,30 +229,30 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
     }, 5000);
   }
 
-  public getUpdatesData() {
-    this.updatesService.getAllUpdates().subscribe((response: Updatedto[]) => {
-      let updates = [];
-      this.updatesList = [];
-      if (response && response.length > 0) {
-        updates = response;
-        updates.forEach(element => {
-          if (element.timestamp) {
-            const currentDate = moment(new Date());
-            const updateDate = moment(new Date(element.timestamp * 1000));
-            element.hours = currentDate.diff(updateDate, 'hours');
-          }
-        });
-        const groupedUpdates = this.groupBy(updates, 'hours');
-        const groupedUpdatesArray = Object.keys(groupedUpdates).map((hourKey) => {
-          const update: Updates = {
-            hour: hourKey,
-            updates: groupedUpdates[hourKey]
-          };
-          return update;
-        });
-        this.updatesList = groupedUpdatesArray.slice(0, 5);
-      }
-    });
+  public getUpdatesData(response: Updatedto[]) {
+
+    let updates = [];
+    this.updatesList = [];
+    if (response && response.length > 0) {
+      updates = response;
+      updates.forEach(element => {
+        if (element.timestamp) {
+          const currentDate = moment(new Date());
+          const updateDate = moment(new Date(element.timestamp * 1000));
+          element.hours = currentDate.diff(updateDate, 'hours');
+        }
+      });
+      const groupedUpdates = this.groupBy(updates, 'hours');
+      const groupedUpdatesArray = Object.keys(groupedUpdates).map((hourKey) => {
+        const update: Updates = {
+          hour: hourKey,
+          updates: groupedUpdates[hourKey]
+        };
+        return update;
+      });
+      this.updatesList = groupedUpdatesArray.slice(0, 5);
+    }
+
   }
 
   public groupBy(xs, key) {
@@ -172,75 +263,64 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
   }
 
   ngAfterViewInit() {
-    $('#dataTable').DataTable({
-      paging: true,
-      lengthChange: false,
-      searching: true,
-      ordering: true,
-      info: true,
-      autoWidth: true,
-    });
-
-    this.zone.runOutsideAngular(() => {
-      am4core.useTheme(am4themes_animated);
-
-      const mapchart = am4core.create('chartdiv', am4maps.MapChart);
-      mapchart.responsive.enabled = true;
-      mapchart.projection = new am4maps.projections.Miller();
-
-      const polygonSeries = mapchart.series.push(new am4maps.MapPolygonSeries());
-      polygonSeries.useGeodata = true;
-      polygonSeries.geodata = am4geodata_indiaLow;
-
-
-      // Configure series
-      const polygonTemplate = polygonSeries.mapPolygons.template;
-      polygonTemplate.tooltipText = '{name}:{value}';
-      polygonTemplate.fill = am4core.color('#999');
-
-      // Create hover state and set alternative fill color
-      const hs = polygonTemplate.states.create('hover');
-      hs.properties.fill = am4core.color('#367B25');
-
-      // Add heat rule
-      polygonSeries.heatRules.push({
-        property: 'fill',
-        target: polygonSeries.mapPolygons.template,
-        min: am4core.color('#ffcccc'),
-        max: am4core.color('#990000')
-      });
-
-      const heatLegend = mapchart.createChild(am4maps.HeatLegend);
-      heatLegend.id = 'heatLegend';
-      heatLegend.series = polygonSeries;
-      heatLegend.align = 'right';
-      heatLegend.valign = 'bottom';
-      heatLegend.width = am4core.percent(50);
-      heatLegend.marginRight = am4core.percent(4);
-      heatLegend.background.fill = am4core.color('#000');
-      heatLegend.background.fillOpacity = 0.05;
-      heatLegend.padding(5, 5, 5, 5);
-
-      polygonSeries.data = this.mapDataList;
-
-      polygonSeries.mapPolygons.template.events.on('over', (ev) => {
-        if (!isNaN(ev.target.dataItem.value)) {
-          heatLegend.valueAxis.showTooltipAt(ev.target.dataItem.value);
-        }
-        else {
-          heatLegend.valueAxis.hideTooltip();
-        }
-      });
-
-      polygonSeries.mapPolygons.template.events.on('out', (ev) => {
-        heatLegend.valueAxis.hideTooltip();
-      });
-
-      this.mapchart = mapchart;
-      this.renderDailyCharts();
-    });
   }
 
+  public renderMapChart() {
+    am4core.useTheme(am4themes_animated);
+    const mapchart = am4core.create('chartdiv', am4maps.MapChart);
+    mapchart.responsive.enabled = true;
+    mapchart.projection = new am4maps.projections.Miller();
+
+    const polygonSeries = mapchart.series.push(new am4maps.MapPolygonSeries());
+    polygonSeries.useGeodata = true;
+    polygonSeries.geodata = am4geodata_indiaLow;
+
+
+    // Configure series
+    const polygonTemplate = polygonSeries.mapPolygons.template;
+    polygonTemplate.tooltipText = '{name}:{value}';
+    polygonTemplate.fill = am4core.color('#999');
+
+    // Create hover state and set alternative fill color
+    const hs = polygonTemplate.states.create('hover');
+    hs.properties.fill = am4core.color('#367B25');
+
+    // Add heat rule
+    polygonSeries.heatRules.push({
+      property: 'fill',
+      target: polygonSeries.mapPolygons.template,
+      min: am4core.color('#ffcccc'),
+      max: am4core.color('#990000')
+    });
+
+    const heatLegend = mapchart.createChild(am4maps.HeatLegend);
+    heatLegend.id = 'heatLegend';
+    heatLegend.series = polygonSeries;
+    heatLegend.align = 'right';
+    heatLegend.valign = 'bottom';
+    heatLegend.width = am4core.percent(50);
+    heatLegend.marginRight = am4core.percent(4);
+    heatLegend.background.fill = am4core.color('#000');
+    heatLegend.background.fillOpacity = 0.05;
+    heatLegend.padding(5, 5, 5, 5);
+
+    polygonSeries.data = this.mapDataList;
+
+    polygonSeries.mapPolygons.template.events.on('over', (ev) => {
+      if (!isNaN(ev.target.dataItem.value)) {
+        heatLegend.valueAxis.showTooltipAt(ev.target.dataItem.value);
+      }
+      else {
+        heatLegend.valueAxis.hideTooltip();
+      }
+    });
+
+    polygonSeries.mapPolygons.template.events.on('out', (ev) => {
+      heatLegend.valueAxis.hideTooltip();
+    });
+
+    this.mapchart = mapchart;
+  }
   public renderDailyCharts() {
     this.destroyCharts();
     this.renderConfirmedChart();
@@ -416,18 +496,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
   public renderPatientAgeChart() {
     const chart = am4core.create('patientAgeChart', am4charts.XYChart);
 
-    chart.data = [
-      { age: '0-10', count: 61 },
-      { age: '11-20', count: 130 },
-      { age: '21-30', count: 334 },
-      { age: '31-40', count: 382 },
-      { age: '41-50', count: 267 },
-      { age: '51-60', count: 226 },
-      { age: '61-70', count: 153 },
-      { age: '71-80', count: 47 },
-      { age: '81-90', count: 7 },
-      { age: '91-100', count: 2 },
-    ];
+    chart.data = this.ageChartList;
 
     const categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
     categoryAxis.dataFields.category = 'age';
@@ -456,13 +525,13 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
     columnTemplate.strokeWidth = 2;
     columnTemplate.strokeOpacity = 1;
 
-    chart.legend = new am4charts.Legend();
-    chart.legend.itemContainers.template.clickable = false;
-    chart.legend.itemContainers.template.focusable = false;
-    chart.legend.itemContainers.template.cursorOverStyle = am4core.MouseCursorStyle.default;
-    chart.legend.data = [{
-      name: 'Awaiting details for 11396',
-    }];
+    // chart.legend = new am4charts.Legend();
+    // chart.legend.itemContainers.template.clickable = false;
+    // chart.legend.itemContainers.template.focusable = false;
+    // chart.legend.itemContainers.template.cursorOverStyle = am4core.MouseCursorStyle.default;
+    // chart.legend.data = [{
+    //   name: 'Awaiting details for 11396',
+    // }];
     this.patientAgeChart = chart;
   }
 
@@ -470,9 +539,9 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
     const chart = am4core.create('patientGenderChart', am4charts.PieChart);
 
     chart.data = [
-      { gender: 'Male', count: 1951, color: am4core.color('blue') },
-      { gender: 'Female', count: 872, color: am4core.color('#FFB6C1') },
-      { gender: 'Awaiting Details', count: 11916, color: am4core.color('#778899') }
+      { gender: 'Male', count: this.covidInfo.maleCount ? this.covidInfo.maleCount : 0, color: am4core.color('blue') },
+      { gender: 'Female', count: this.covidInfo.femaleCount ? this.covidInfo.femaleCount : 0, color: am4core.color('#FFB6C1') },
+      { gender: 'Others', count: this.covidInfo.othersCount ? this.covidInfo.othersCount : 0, color: am4core.color('#778899') }
     ];
 
     const pieSeries = chart.series.push(new am4charts.PieSeries());
@@ -501,33 +570,32 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
     this.patientGenderChart = chart;
   }
 
-  public getData(parentData: StateWise, childData: any) {
-    const arr = [];
-    if (parentData.state) {
-      const objChild = childData[parentData.state];
-      if (objChild) {
-        const districtData = objChild.districtData;
-        for (const key in districtData) {
-          if (districtData.hasOwnProperty(key)) {
-            const ss = {
-              district: key,
-              confirmed: districtData[key].confirmed,
-              deltaConfirmed: districtData[key].delta.confirmed,
-              lastupdatedtime: districtData[key].lastupdatedtime
-            };
-            arr.push(ss);
-          }
-        }
-        console.log(arr);
-      }
+  public getSelfData(childData: Location[]) {
+    const arr: any[] = [];
+    if (childData && childData.length > 0) {
+      childData.forEach(item => {
+        const data = {
+          placeName: item.placeName,
+          active: item.covidInfo.active,
+          confirmed: item.covidInfo.confirmed,
+          deceased: item.covidInfo.deceased,
+          recovered: item.covidInfo.recovered,
+          conFirmedToday: item.covidInfo.conFirmedToday,
+          activeToday: item.covidInfo.activeToday,
+          deceasedToday: item.covidInfo.deceasedToday,
+          recoveredToday: item.covidInfo.recoveredToday,
+          subordinates: item.subordinates ? item.subordinates : []
+        };
+        arr.push(data);
+      });
     }
     return arr;
   }
 
-  public addClickHandler(tableRef, columns, data, isChildTable) {
+  public addClickHandler(tableRef, columns, data) {
     const self = this;
 
-    tableRef.on('click', 'td.details-control', function() {
+    tableRef.on('click', 'td.details-control', function () {
       const tr = $(this).closest('tr');
       const row = tableRef.row(tr);
       const rowData = tableRef.row($(this).closest('tr')).data();
@@ -539,49 +607,52 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
         $(this).css({ 'text-align': 'center', cursor: 'pointer' });
       }
       else {
-        const childData = self.getData(rowData, data);
-        const childTableRef = createChild(row, columns, childData, rowData.lastupdatedtime, isChildTable);
-        tr.addClass('shown');
-        $(this).html('<i class = "glyphicon glyphicon-minus-sign" style="text-align: center;cursor: pointer"> </i>');
-        $(this).css({ 'text-align': 'center', cursor: 'pointer' });
+        if (rowData) {
+          if (!rowData.subordinates) {
+            rowData.subordinates = [];
+          }
+          const childData = self.getSelfData(rowData.subordinates);
+          const childTableRef = createChild(row, columns, childData, rowData.lastupdatedtime, true);
+          tr.addClass('shown');
+          $(this).html('<i class = "glyphicon glyphicon-minus-sign" style="text-align: center;cursor: pointer"> </i>');
+          $(this).css({ 'text-align': 'center', cursor: 'pointer' });
 
-        if (isChildTable) {
-          self.addClickHandler(childTableRef, columns, data, true);
+          self.addClickHandler(childTableRef, columns, data);
         }
       }
     });
   }
 
   public renderMainData(tableId, childTable) {
-    let tableColumns = [
+    const tableColumns = [
       {
         title: '',
         className: 'details-control',
         createdCell: (td, cellData, rowData, row, col) => {
-          if (rowData.state !== 'Total') {
+          if (rowData.placeName !== 'INDIA') {
             $(td).css({ 'text-align': 'center', cursor: 'pointer' });
             return '<i class = "glyphicon glyphicon-plus-sign"> </i>';
           }
         },
         data: null,
         render: (data, type, full, meta) => {
-          if (full.state !== 'Total') {
+          if (full.placeName !== 'INDIA') {
             return '<i class = "glyphicon glyphicon-plus-sign" style="text-align: center;cursor: pointer"> </i>';
           } else {
             return '';
           }
         }
       },
-      { title: 'Place', data: 'state' },
+      { title: 'Place', data: 'placeName' },
       { title: 'Active', data: 'active' },
       {
         title: 'Confirmed',
         data: 'confirmed',
         render: (data, type, full, meta) => {
           let html = '<div style="text-align: right;">';
-          if (full.deltaconfirmed && full.deltaconfirmed > 0) {
+          if (full.conFirmedToday && full.conFirmedToday > 0) {
             html += '<span style="color: red;">';
-            html += '<i class="fa fa-arrow-circle-up">' + full.deltaconfirmed + '</i>';
+            html += '<i class="fa fa-arrow-circle-up">' + full.conFirmedToday + '</i>';
             html += ' </span><span>' + ' ' + full.confirmed + '</span>';
             html += '</span>';
           } else {
@@ -593,16 +664,16 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
       },
       {
         title: 'Deceased',
-        data: 'deaths',
+        data: 'deceased',
         render: (data, type, full, meta) => {
           let html = '<div style="text-align: right;">';
-          if (full.deltadeaths && full.deltadeaths > 0) {
+          if (full.deceasedToday && full.deceasedToday > 0) {
             html += '<span>';
-            html += '<i class="fa fa-arrow-circle-up">' + full.deltadeaths + '</i>';
-            html += ' </span><span>' + ' ' + full.deaths + '</span>';
+            html += '<i class="fa fa-arrow-circle-up">' + full.deceasedToday + '</i>';
+            html += ' </span><span>' + ' ' + full.deceased + '</span>';
             html += '</span>';
           } else {
-            html += '<span>' + full.deaths + '</span>';
+            html += '<span>' + full.deceased + '</span>';
           }
           html += '</div>';
           return html;
@@ -613,9 +684,9 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
         data: 'recovered',
         render: (data, type, full, meta) => {
           let html = '<div style="text-align: right;">';
-          if (full.deltarecovered && full.deltarecovered > 0) {
+          if (full.recoveredToday && full.recoveredToday > 0) {
             html += '<span style="color: green;">';
-            html += '<i class="fa fa-arrow-circle-up">' + full.deltarecovered + '</i>';
+            html += '<i class="fa fa-arrow-circle-up">' + full.recoveredToday + '</i>';
             html += ' </span><span>' + ' ' + full.recovered + '</span>';
             html += '</span>';
           } else {
@@ -627,49 +698,29 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
       }
     ];
 
-    if (!childTable) {
-      tableColumns = [
-        { title: 'Place', data: 'state' },
-        { title: 'Active', data: 'active' },
-        { title: 'Confirmed', data: 'confirmed' },
-        { title: 'Deceased', data: 'deaths' },
-        { title: 'Recovered', data: 'recovered' }
-      ];
+    let data = [{
+      placeName: this.covidInfoPlace.placeName,
+      active: this.covidInfoPlace.covidInfo.active,
+      confirmed: this.covidInfoPlace.covidInfo.confirmed,
+      deceased: this.covidInfoPlace.covidInfo.deceased,
+      recovered: this.covidInfoPlace.covidInfo.recovered,
+      conFirmedToday: this.covidInfoPlace.covidInfo.conFirmedToday,
+      activeToday: this.covidInfoPlace.covidInfo.activeToday,
+      deceasedToday: this.covidInfoPlace.covidInfo.deceasedToday,
+      recoveredToday: this.covidInfoPlace.covidInfo.recoveredToday,
+      subordinates: this.covidInfoPlace.subordinates ? this.covidInfoPlace.subordinates : []
+    }];
+    const subordinates = this.covidInfoPlace.subordinates ? this.covidInfoPlace.subordinates : [];
+    if (subordinates) {
+      const result = this.getSelfData(subordinates);
+      data = [...data, ...result];
     }
-    else {
 
-    }
-    const statewiseData = this.sampleData.statewise;
-    const tableRef = renderTable(this, tableId, tableColumns, statewiseData, childTable);
+    const tableRef = renderTable(this, tableId, tableColumns, data, false);
 
     if (childTable) {
-      const districtTableColumns = [
-        {
-          title: 'District',
-          data: 'district',
-          width: '25px !important',
-        },
-        {
-          title: 'Confirmed',
-          data: 'confirmed',
-          width: '25px !important',
-          render: (data, type, full, meta) => {
-            let html = '<div style="text-align: right;">';
-            if (full.deltaConfirmed && full.deltaConfirmed > 0) {
-              html += '<span style="color: red;">';
-              html += '<i class="fa fa-arrow-circle-up">' + full.deltaConfirmed + '</i>';
-              html += ' </span><span>' + ' ' + full.confirmed + '</span>';
-              html += '</span>';
-            } else {
-              html += '<span>' + full.confirmed + '</span>';
-            }
-            html += '</div>';
-            return html;
-          }
-        }
-      ];
-      const districtWiseData = { ...this.sampleStateDistrictData };
-      this.addClickHandler(tableRef, [...districtTableColumns], districtWiseData, false);
+      const childTableColumns = [...tableColumns];
+      this.addClickHandler(tableRef, [...childTableColumns], data);
     }
   }
 }
