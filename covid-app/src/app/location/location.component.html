@@ -24,6 +24,7 @@
                                     <thead>
                                         <tr>
                                             <th>Place</th>
+                                            <th>Type</th>
                                             <th>Root</th>
                                             <th>Latitude</th>
                                             <th>Longitude</th>
@@ -31,8 +32,6 @@
                                             <th>Active</th>
                                             <th>Recovered</th>
                                             <th>Deceased</th>
-                                            <th>Is Target</th>
-
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -40,6 +39,7 @@
                                         <tr *ngFor="let data of tableLocations;">
                                             <td [style.fontWeight]="data.istarget ? 'bold': 'inherit'">
                                                 {{data.placeName}}</td>
+                                            <td>{{data.type}}</td>
                                             <td>{{data.root ? (data.root.placeName ? data.root.placeName : ''): ''}}
                                             </td>
                                             <td>{{data.latitude}}</td>
@@ -48,7 +48,6 @@
                                             <td>{{data.covidInfo.active}}</td>
                                             <td>{{data.covidInfo.recovered}}</td>
                                             <td>{{data.covidInfo.deceased}}</td>
-                                            <td>{{data.istarget ? 'Yes' : 'No'}}</td>
                                             <td>
 
                                                 <button style="margin-right:5px" title="Patients"
@@ -63,19 +62,21 @@
                                                     <i class="btn-icon-only fa fa-pencil"> </i>
                                                 </button>
 
-                                                <button style="margin-right:5px" title="Delete Location"
+                                                <!-- <button style="margin-right:5px" title="Delete Location"
                                                     (click)="openDeleteLocation(data)"
                                                     class="btn btn-small btn-flat btn-danger">
                                                     <i class="btn-icon-only fa fa-trash"> </i>
-                                                </button>
+                                                </button> -->
 
-                                                <button style="margin-right:5px" title="Add Patient"
+                                                <button [disabled]="data.subordinates && data.subordinates.length > 0"
+                                                    style="margin-right:5px" title="Add Patient"
                                                     (click)="openAddPatient(data)"
                                                     class="btn btn-small btn-flat btn-default">
                                                     <i class="btn-icon-only fa  fa-user"> </i>
                                                 </button>
 
-                                                <button style="margin-right:5px" title="Add Quarantine Person"
+                                                <button [disabled]="data.subordinates && data.subordinates.length > 0"
+                                                    style="margin-right:5px" title="Add Quarantine Person"
                                                     (click)="openQuarantinePerson(data)"
                                                     class="btn btn-small btn-flat btn-default">
                                                     <i class="btn-icon-only fa  fa-user-plus"> </i>

@@ -76,6 +76,7 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.locations = [...result];
         this.rootLocations = [...result];
         this.tableLocations = [...result];
+        debugger;
         this.rootLocations = this.rootLocations.sort((a, b) => a.placeName < b.placeName ? -1 : a.placeName > b.placeName ? 1 : 0);
       }
       this.rerender();

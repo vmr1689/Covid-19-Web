@@ -73,7 +73,7 @@ export function restructureData(response: Location) {
     result.push(resCopy);
 
     if (Array.isArray(response.subordinates)) {
-      result = result.concat(this.flatData(response.subordinates, response));
+        result = result.concat(this.flatData(response.subordinates, response));
     }
     let locations = [...result];
     locations = locations.sort((a, b) => a.placeName < b.placeName ? -1 : a.placeName > b.placeName ? 1 : 0);
@@ -85,14 +85,37 @@ export function flatData(subordinates: Location[], root: Location) {
 
     const subor = [...subordinates];
     subor.forEach((sub) => {
-      const subCopy = { ...sub };
-      subCopy.root = root;
-      subCopy.rootId = root.placeId;
-      result.push(subCopy);
-      if (Array.isArray(sub.subordinates)) {
-        result = result.concat(this.flatData(sub.subordinates, sub));
-      }
+        const subCopy = { ...sub };
+        subCopy.root = root;
+        subCopy.rootId = root.placeId;
+        result.push(subCopy);
+        if (Array.isArray(sub.subordinates)) {
+            result = result.concat(this.flatData(sub.subordinates, sub));
+        }
     });
 
     return result;
+}
+
+export function searchTree(element: Location, placeId: number) {
+    if (element.placeId == placeId) {
+        return element;
+    } else if (element.subordinates && element.subordinates.length > 0) {
+        let i;
+        let result = null;
+        for (i = 0; result == null && i < element.subordinates.length; i++) {
+            result = searchTree(element.subordinates[i], placeId);
+        }
+        return result;
+    }
+    return null;
+}
+
+export function getPlaceLocations(element: Location, placeId: number) {
+    const result = this.searchTree(element, placeId);
+    if (result) {
+        const response = this.restructureData(result);
+        return response;
+    }
+    return null;
 }

@@ -132,7 +132,7 @@
                             <label>Assign To</label>
                             <select class="form-control" name="city" [(ngModel)]="model.city" #city="ngModel"
                                 required>
-                                <option *ngFor="let location of locations; let i = index" value={{location.placeName}}>
+                                <option *ngFor="let location of cities; let i = index" value={{location.placeName}}>
                                     {{location.placeName}}
                                 </option>
                             </select>

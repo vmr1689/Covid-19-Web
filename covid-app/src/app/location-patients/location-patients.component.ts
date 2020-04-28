@@ -69,18 +69,30 @@ export class LocationPatientsComponent implements OnInit, AfterViewChecked, OnDe
     forkJoin([getAllLocations, getAllPatients]).subscribe(results => {
       const locationsResult = results[0];
       const patientsResult = results[1];
+      let placeNames = [];
 
       if (locationsResult) {
-        const locations = Helpers.restructureData(locationsResult);
-        this.cities = locations;
-        this.locations = locations;
+        const cities = Helpers.restructureData(locationsResult);
+        if (cities) {
+          this.cities = cities;
+        }
+        const locations = Helpers.getPlaceLocations(locationsResult, this.locationId);
+        if (locations) {
+          this.locations = locations;
 
-        locationModel = locations.find(p => p.placeId == this.locationId);
-        this.location = locationModel;
+          locationModel = locations.find(p => p.placeId == this.locationId);
+          this.location = locationModel;
+
+          placeNames = this.locations.map(l => l.placeName);
+        }
       }
 
       if (patientsResult && patientsResult.length > 0) {
-        const patients = patientsResult.filter(p => p.city == locationModel.placeName);
+        debugger;
+        //const patients = patientsResult.filter(p => p.city == locationModel.placeName);
+        const patients = patientsResult.filter(item => {
+          return placeNames.includes(item.city);
+        });
         this.patients = patients;
       }
     }).add(() => {
