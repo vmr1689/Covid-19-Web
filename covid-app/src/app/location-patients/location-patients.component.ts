@@ -1,11 +1,12 @@
-import { Component, OnInit, QueryList, ViewChildren, ViewChild , OnDestroy, AfterViewChecked } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, NgForm } from '@angular/forms';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewChecked } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, Observable, forkJoin } from 'rxjs';
+import { DataTableDirective } from 'angular-datatables';
 
-import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sortable.directive';
-
-import { PatientService, LocationService } from '../shared/services';
+import * as Helpers from '../shared/helpers';
+import { environment } from '../../environments/environment';
+import { PatientService, LocationService, SpinnerService } from '../shared/services';
 import { Patient, ngBootstrapTable, Location } from '../shared/models';
 
 declare var $;
@@ -16,6 +17,9 @@ declare var $;
   styleUrls: ['./location-patients.component.css']
 })
 export class LocationPatientsComponent implements OnInit, AfterViewChecked, OnDestroy {
+  @ViewChild(DataTableDirective, { static: false }) dtElement: DataTableDirective;
+  public isDtInitialized = false;
+
   public dtOptions: DataTables.Settings = {
     autoWidth: false,
     jQueryUI: true,
@@ -28,12 +32,11 @@ export class LocationPatientsComponent implements OnInit, AfterViewChecked, OnDe
   public patients: Patient[] = [];
   publiclocationTable: ngBootstrapTable;
   public model: any = {};
-
-  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
+  public cities: Location[] = [];
 
   constructor(
-    private fb: FormBuilder,
     private router: Router,
+    private spinnerService: SpinnerService,
     private locationService: LocationService,
     private patientService: PatientService,
     private activatedRoute: ActivatedRoute) { }
@@ -41,8 +44,7 @@ export class LocationPatientsComponent implements OnInit, AfterViewChecked, OnDe
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
       this.locationId = Number.parseInt(params.get('locationId'));
-      this.getAllPatients();
-      this.getAllLocations();
+      this.getAllAPIValues();
     });
   }
 
@@ -56,49 +58,53 @@ export class LocationPatientsComponent implements OnInit, AfterViewChecked, OnDe
     }
   }
 
-  getAllLocations() {
-    this.locationService.getAllLocations().subscribe((response: Location[]) => {
-      this.locations = [];
-      if (response && response.length > 0) {
-        this.locations = response;
-        this.location = response.find(x => x.placeId === this.locationId);
+  public getAllAPIValues() {
+    const getAllPatients = this.patientService.getAllPatients();
+    const getAllLocations = this.locationService.getAllLocationsDuplicate(environment.targetLocation);
+
+    this.cities = [];
+    let locationModel = {} as Location;
+
+    this.spinnerService.show();
+    forkJoin([getAllLocations, getAllPatients]).subscribe(results => {
+      const locationsResult = results[0];
+      const patientsResult = results[1];
+
+      if (locationsResult) {
+        const locations = Helpers.restructureData(locationsResult);
+        this.cities = locations;
+        this.locations = locations;
+
+        locationModel = locations.find(p => p.placeId == this.locationId);
+        this.location = locationModel;
       }
+
+      if (patientsResult && patientsResult.length > 0) {
+        const patients = patientsResult.filter(p => p.city == locationModel.placeName);
+        this.patients = patients;
+      }
+    }).add(() => {
+      this.rerender();
+      this.spinnerService.hide();
     });
   }
 
-  getAllPatients() {
-    this.patientService.getAllPatients().subscribe((response: Patient[]) => {
-      this.patients = [];
-      if (response && response.length > 0) {
-        this.patients = response;
-        this.dtTrigger.next();
-      }
-    });
-  }
-
-  onSort({ column, direction }: SortEvent) {
-
-    // resetting other headers
-    this.headers.forEach(header => {
-      if (header.sortable !== column) {
-        header.direction = '';
-      }
-    });
-
-    // sorting countries
-    const patients = [...this.patients];
-    if (direction === '' || column === '') {
-      this.patients = patients;
-    } else {
-      this.patients = [...patients].sort((a, b) => {
-        const res = compare(`${a[column]}`, `${b[column]}`);
-        return direction === 'asc' ? res : -res;
+  rerender(): void {
+    if (this.isDtInitialized) {
+      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.destroy();
+        setTimeout(() => {
+          this.dtTrigger.next();
+        });
       });
+    } else {
+      this.isDtInitialized = true;
+      this.dtTrigger.next();
     }
   }
 
   public reAssignLocation(data: Patient) {
-    this.model = {...data};
+    this.model = { ...data };
     $('#reassignLocation').modal('toggle');
   }
 
@@ -107,6 +113,14 @@ export class LocationPatientsComponent implements OnInit, AfterViewChecked, OnDe
   }
 
   assignLocation(form: NgForm) {
+    if (form.valid) {
+      this.spinnerService.show();
+      this.patientService.editPatient(this.model).subscribe((response: Patient[]) => {
+      }).add(() => {
+        $('#reassignLocation').modal('toggle');
+        this.spinnerService.hide();
+        this.getAllAPIValues();
+      });
+    }
   }
-
 }
