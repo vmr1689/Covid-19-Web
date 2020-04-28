@@ -95,3 +95,14 @@ export const STATUS_TYPES = [
         text: 'Released'
     }
 ];
+
+export const ORGANISATION_TYPES = [
+    {
+        id: 'Hospital',
+        text: 'Hospital'
+    },
+    {
+        id: 'Lab',
+        text: 'Lab'
+    }
+];

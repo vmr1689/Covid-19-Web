@@ -25,7 +25,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <div class="form-group">
                                 <label for="district" class="col-sm-3 control-label">District:</label>
 
@@ -39,7 +39,7 @@
                                 </div>
 
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="col-md-3">
                             <div class="form-group">
@@ -102,29 +102,27 @@
                                             <th>Category</th>
                                             <th>Organisation</th>
                                             <th>City</th>
-                                            <th>District</th>
                                             <th>State</th>
                                             <th>Country</th>
                                             <th>Phone Number</th>
-                                            <!-- <th>Action</th> -->
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let data of organisations; let i = index">
                                             <td>{{data.category}}</td>
-                                            <td>{{data.name}}</td>
+                                            <td>{{data.organizationName}}</td>
                                             <td>{{data.city}}</td>
-                                            <td>{{data.district}}</td>
                                             <td>{{data.state}}</td>
                                             <td>{{data.country}}</td>
                                             <td>{{data.phoneNumber}}</td>
-                                            <!-- <td>
+                                            <td>
                                                 <button style="margin-right:5px" title="View Map"
                                                     (click)="openMapOrganisation(data)"
                                                     class="btn btn-small btn-flat btn-warning">
                                                     <i class="btn-icon-only fa fa-eye"> </i>
                                                 </button>
-                                            </td> -->
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -137,7 +135,7 @@
     </div>
 </section>
 
-<section class="content container-fluid">
+<section class="content container-fluid" *ngIf="viewMap">
     <div class="row">
         <div class="col-md-12">
             <div class="box box-info">
@@ -145,7 +143,7 @@
                     <h3 class="box-title">Maps</h3>
 
                     <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"  (click)="closeMap()"><i
                                 class="fa fa-minus"></i>
                         </button>
                         <button type="button" class="btn btn-box-tool" data-widget="remove"><i

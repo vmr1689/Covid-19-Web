@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 
-import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sortable.directive';
 
 import { OrganisationService, SpinnerService } from '../shared/services';
 import { Organisation, ngBootstrapTable } from '../shared/models';
@@ -18,7 +17,6 @@ declare var $;
 })
 export class OrganisationComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild(DataTableDirective, { static: false }) dtElement: DataTableDirective;
-  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   @ViewChild('importForm') importForm: NgForm;
   @ViewChild('fileInput') fileInput;
   public importMessage: string;
@@ -56,14 +54,14 @@ export class OrganisationComponent implements OnInit, AfterViewChecked, OnDestro
 
   getAllOrganisations() {
     this.spinnerService.show();
+    this.organisations = [];
     this.organisationService.getAllOrganisations().subscribe((response: Organisation[]) => {
-      this.organisations = [];
       if (response && response.length > 0) {
         this.organisations = response;
-        this.rerender();
       }
     }).add(() => {
       this.spinnerService.hide();
+      this.rerender();
     });
   }
 
@@ -71,7 +69,9 @@ export class OrganisationComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.isDtInitialized) {
       this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
         dtInstance.destroy();
-        this.dtTrigger.next();
+        setTimeout(() => {
+          this.dtTrigger.next();
+        });
       });
     } else {
       this.isDtInitialized = true;
@@ -84,7 +84,7 @@ export class OrganisationComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   openEditOrganisation(data: Organisation) {
-    this.router.navigate(['/editorganisation/' + data.id]);
+    this.router.navigate(['/editorganisation/' + data.covidOrganizationId]);
   }
 
   openDeleteOrganisation(data: Organisation) {
@@ -100,7 +100,7 @@ export class OrganisationComponent implements OnInit, AfterViewChecked, OnDestro
 
   deleteOrganisation(data: Organisation) {
     this.spinnerService.show();
-    this.organisationService.delete(data.id).subscribe((response: any) => {
+    this.organisationService.delete(data.covidOrganizationId).subscribe((response: any) => {
       $('#deleteOrganisation').modal('toggle');
     }).add(() => {
       this.spinnerService.hide();
@@ -108,13 +108,17 @@ export class OrganisationComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   importOrganisation(form: NgForm) {
-    const formData = new FormData();
-    formData.append('upload', this.fileInput.nativeElement.files[0]);
 
-    this.organisationService.importExcel(formData).subscribe(result => {
-      $('#importOrganisation').modal('toggle');
-      this.importMessage = result.toString();
-      this.getAllOrganisations();
-    });
+    debugger;
+    if (this.fileInput && this.fileInput.nativeElement.files.length > 0) {
+      const formData = new FormData();
+      formData.append('file', this.fileInput.nativeElement.files[0]);
+
+      this.organisationService.importExcel(formData).subscribe(result => {
+        $('#importOrganisation').modal('toggle');
+        this.importMessage = result.toString();
+        this.getAllOrganisations();
+      });
+    }
   }
 }

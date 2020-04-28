@@ -17,6 +17,7 @@ export * from './genderTypes.model';
 export * from './quarantinedPerson.model';
 export * from './locationInfo.model';
 export * from './patientDeviceInfo.model';
+export * from './organisationTypes.model';
 
 export * from './sample_data.model';
 export * from './sample_state-district-wise.model';

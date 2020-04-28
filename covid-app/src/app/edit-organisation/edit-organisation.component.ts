@@ -2,8 +2,9 @@ import { Component, OnInit, EventEmitter, Input, Output, QueryList, ViewChildren
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
+import { ORGANISATION_TYPES } from '.././seedConfig';
 import { OrganisationService, SpinnerService } from '../shared/services';
-import { Organisation, ngBootstrapTable } from '../shared/models';
+import { Organisation, OrganisationTypes } from '../shared/models';
 
 declare var $;
 
@@ -18,10 +19,7 @@ export class EditOrganisationComponent implements OnInit {
   public model: Organisation = {} as Organisation;
   public isFileValid = false;
   public image: any;
-  public categories: any[] = [
-    { id: '1', text: 'Hospital' },
-    { id: '2', text: 'Covid 19 Testing Lab' },
-  ];
+  public categories: OrganisationTypes[] = ORGANISATION_TYPES;
   public organisationId: number;
 
   constructor(
@@ -33,7 +31,19 @@ export class EditOrganisationComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
       this.organisationId = Number.parseInt(params.get('organisationId'));
-      this.getOrganisation();
+      this.getAllOrganisations();
+    });
+  }
+
+  getAllOrganisations() {
+    this.spinnerService.show();
+    this.organisationService.getAllOrganisations().subscribe((response: Organisation[]) => {
+      if (response && response.length > 0) {
+        debugger;
+        this.model = response.find(x=> x.covidOrganizationId == this.organisationId);
+      }
+    }).add(() => {
+      this.spinnerService.hide();
     });
   }
 

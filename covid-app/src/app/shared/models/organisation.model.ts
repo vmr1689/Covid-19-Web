@@ -1,11 +1,11 @@
 export interface Organisation {
-    id: number;
+    covidOrganizationId: number;
     category: string;
     categoryId: number;
-    name: string;
+    organizationName: string;
     latitude: number;
     longitude: number;
-    contact?: string;
+    contactUrl?: string;
     phoneNumber: string[];
     state: string;
     district: string;

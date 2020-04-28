@@ -7,10 +7,20 @@ import { Organisation } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class OrganisationService {
-    constructor(private http: HttpClient) { }
+    public headers: HttpHeaders;
+    public httpOptions: {};
+
+    constructor(private http: HttpClient) {
+        this.headers = new HttpHeaders({
+            'Content-Type': 'application/json'
+        });
+        this.httpOptions = {
+            headers: this.headers
+        };
+    }
 
     getAllOrganisations = () => {
-        return this.http.get<Organisation[]>(`${environment.apiUrl}/organisation/getAllOrganisations`);
+        return this.http.get<Organisation[]>(`${environment.apiUrl}/covid/getAllOrganizationList`);
     }
 
     getById = (placeId: number) => {
@@ -18,7 +28,7 @@ export class OrganisationService {
     }
 
     create = (model: Organisation) => {
-        return this.http.post(`${environment.apiUrl}/organisation/createOrganisation`, { model });
+        return this.http.post(`${environment.apiUrl}/covid/addOrganization`, model, this.httpOptions);
     }
 
     edit = (model: Organisation) => {
@@ -35,6 +45,6 @@ export class OrganisationService {
         headers.append('Accept', 'application/json');
         const httpOptions = { headers };
 
-        return this.http.post(`${environment.apiUrl}/organisation/UploadExcel`, formData, httpOptions);
+        return this.http.post(`${environment.apiUrl}/covid/uploadOrganizationExcel`, formData, httpOptions);
     }
 }

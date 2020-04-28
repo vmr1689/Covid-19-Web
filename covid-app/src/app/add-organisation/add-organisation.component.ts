@@ -1,9 +1,10 @@
-import { Component, OnInit, EventEmitter, Input, Output, QueryList, ViewChildren, ViewChild, OnDestroy, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { ORGANISATION_TYPES } from '.././seedConfig';
 import { OrganisationService, SpinnerService } from '../shared/services';
-import { Organisation, ngBootstrapTable } from '../shared/models';
+import { Organisation, OrganisationTypes } from '../shared/models';
 
 declare var $;
 
@@ -17,10 +18,7 @@ export class AddOrganisationComponent implements OnInit {
   public model: Organisation = {} as Organisation;
   public isFileValid = false;
   public image: any;
-  public categories: any[] = [
-    { id: '1', text: 'Hospital' },
-    { id: '2', text: 'Covid 19 Testing Lab' },
-  ];
+  public categories: OrganisationTypes[] = ORGANISATION_TYPES;
 
   constructor(
     private spinnerService: SpinnerService,

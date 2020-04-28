@@ -32,7 +32,6 @@
                                             <th>Category</th>
                                             <th>Organisation</th>
                                             <th>City</th>
-                                            <th>District</th>
                                             <th>State</th>
                                             <th>Country</th>
                                             <th>Phone Number</th>
@@ -41,11 +40,10 @@
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let data of organisations; let i = index">
-                                            <td>{{data.id}}</td>
+                                            <td>{{data.covidOrganizationId}}</td>
                                             <td>{{data.category}}</td>
-                                            <td>{{data.name}}</td>
+                                            <td>{{data.organizationName}}</td>
                                             <td>{{data.city}}</td>
-                                            <td>{{data.district}}</td>
                                             <td>{{data.state}}</td>
                                             <td>{{data.country}}</td>
                                             <td>{{data.phoneNumber}}</td>

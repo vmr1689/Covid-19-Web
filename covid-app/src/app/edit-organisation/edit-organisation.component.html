@@ -21,7 +21,7 @@
                                 </div>
 
                                 <div class="col-sm-9">
-                                    <input name="id" id="id" [(ngModel)]="model.id" #id="ngModel"
+                                    <input name="covidOrganizationId" id="covidOrganizationId" [(ngModel)]="model.covidOrganizationId" #covidOrganizationId="ngModel"
                                     type="hidden" class="form-control" />
 
 
@@ -40,15 +40,15 @@
 
                             <div class="form-group">
                                 <div class="col-sm-3">
-                                    <label for="name" class="control-label">Name:</label>
+                                    <label for="organizationName" class="control-label">Name:</label>
                                 </div>
 
                                 <div class="col-sm-9">
-                                    <input id="name" type="text" autocomplete="off" class="form-control"
-                                        name="name" [(ngModel)]="model.name" #name="ngModel"
+                                    <input id="organizationName" type="text" autocomplete="off" class="form-control"
+                                        name="organizationName" [(ngModel)]="model.organizationName" #name="ngModel"
                                         placeholder="Name" required>
 
-                                    <div *ngIf="editForm.submitted && !name.valid" class="text-danger">Name is required
+                                    <div *ngIf="editForm.submitted && !organizationName.valid" class="text-danger">Name is required
                                     </div>
                                 </div>
                             </div>
@@ -100,6 +100,21 @@
 
                             <div class="form-group">
                                 <div class="col-sm-3">
+                                    <label for="contactUrl" class="control-label">Contact Url:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+                                    <input id="contactUrl" type="text" autocomplete="off" class="form-control"
+                                        name="contactUrl" [(ngModel)]="model.contactUrl" #contactUrl="ngModel"
+                                        placeholder="Contact Url" required>
+
+                                    <div *ngIf="editForm.submitted && !contactUrl.valid" class="text-danger">Contact Url is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-3">
                                     <label for="city" class="control-label">City:</label>
                                 </div>
 
@@ -113,7 +128,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <div class="col-sm-3">
                                     <label for="district" class="control-label">District:</label>
                                 </div>
@@ -126,7 +141,7 @@
                                     <div *ngIf="editForm.submitted && !district.valid" class="text-danger">District is required
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <div class="form-group">
                                 <div class="col-sm-3">
@@ -158,9 +173,24 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="description" class="control-label">Description:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+                                    <input id="description" type="text" autocomplete="off" class="form-control"
+                                        name="description" [(ngModel)]="model.description" #description="ngModel"
+                                        placeholder="Description" required>
+
+                                    <div *ngIf="editForm.submitted && !editForm.valid" class="text-danger">Description is required
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <div class="form-group">
                                 <div class="col-sm-3">
                                     <label for="profilePic" class="control-label">Profile:</label>
@@ -179,7 +209,7 @@
                                    
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="box-footer">
                         <button type="button" class="btn btn-default" style="margin-right: 15px;"

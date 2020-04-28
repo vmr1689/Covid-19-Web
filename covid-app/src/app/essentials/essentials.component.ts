@@ -45,6 +45,7 @@ export class EssentialsComponent implements OnInit, AfterViewChecked, OnDestroy 
   marlatitude = 20.5937;
   marongitude = 78.9629;
   mapType = 'satellite';
+  viewMap = false;
 
   constructor(
     private spinnerService: SpinnerService,
@@ -89,10 +90,10 @@ export class EssentialsComponent implements OnInit, AfterViewChecked, OnDestroy 
       states = [...uniqueStates];
       states.unshift('All States');
 
-      let districts = organisations.map(o => o.district);
-      const uniqueDistricts = new Set(districts);
-      districts = [...uniqueDistricts];
-      districts.unshift('All Districts');
+      // let districts = organisations.map(o => o.district);
+      // const uniqueDistricts = new Set(districts);
+      // districts = [...uniqueDistricts];
+      // districts.unshift('All Districts');
 
       let cities = organisations.map(o => o.city);
       const uniqueCities = new Set(cities);
@@ -100,11 +101,11 @@ export class EssentialsComponent implements OnInit, AfterViewChecked, OnDestroy 
       cities.unshift('All Cities');
 
       this.states = states;
-      this.districts = districts;
+      //this.districts = districts;
       this.cities = cities;
 
       this.model.state = 'All States';
-      this.model.district = 'All Districts';
+      //this.model.district = 'All Districts';
       this.model.city = 'All Cities';
       this.model.categoryId = 0;
     }
@@ -126,7 +127,7 @@ export class EssentialsComponent implements OnInit, AfterViewChecked, OnDestroy 
     this.model = {} as Organisation;
     this.organisations = [...this.organisationsCopy];
     this.model.state = 'All States';
-    this.model.district = 'All Districts';
+    //this.model.district = 'All Districts';
     this.model.city = 'All Cities';
     this.model.categoryId = 0;
 
@@ -136,7 +137,7 @@ export class EssentialsComponent implements OnInit, AfterViewChecked, OnDestroy 
   searchOrganisation() {
     debugger;
     let selectedState = this.model.state;
-    let selectedDistrict = this.model.district;
+    //let selectedDistrict = this.model.district;
     let selectedCity = this.model.city;
     let selectedCategoryId = this.model.categoryId;
 
@@ -148,9 +149,9 @@ export class EssentialsComponent implements OnInit, AfterViewChecked, OnDestroy 
     if (selectedState == 'All States') {
       includeState = false;
     }
-    if (selectedDistrict == 'All Districts') {
-      includeDistrict = false;
-    }
+    // if (selectedDistrict == 'All Districts') {
+    //   includeDistrict = false;
+    // }
     if (selectedCity == 'All Cities') {
       includeCity = false;
     }
@@ -162,9 +163,9 @@ export class EssentialsComponent implements OnInit, AfterViewChecked, OnDestroy 
       if (includeState && selectedState != x.state) {
         return false;
       }
-      if (includeDistrict && selectedDistrict != x.district) {
-        return false;
-      }
+      // if (includeDistrict && selectedDistrict != x.district) {
+      //   return false;
+      // }
       if (includeCity && selectedCity != x.city) {
         return false;
       }
@@ -178,7 +179,15 @@ export class EssentialsComponent implements OnInit, AfterViewChecked, OnDestroy 
     this.rerender();
   }
 
+  closeMap() {
+    this.viewMap = false;
+  }
   openMapOrganisation(data) {
+    this.viewMap = true;
 
+    this.latitude = Number(data.latitude);
+    this.longitude = Number(data.longitude);
+    this.marlatitude = Number(data.latitude);
+    this.marongitude = Number(data.longitude);
   }
 }
