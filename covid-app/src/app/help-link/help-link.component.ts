@@ -77,7 +77,15 @@ export class HelpLinkComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.helplinkService.getAllHelpLinks().subscribe((response: HelpLink[]) => {
       this.helpLinks = [];
       if (response && response.length > 0) {
-        this.helpLinks = response;
+        response.forEach(e => {
+          if (e.type == 'document' && e.fileName) {
+            this.helpLinks.push(e);
+          } else {
+            if (e.link) {
+              this.helpLinks.push(e);
+            }
+          }
+        });
       }
       this.rerender();
     }).add(() => {

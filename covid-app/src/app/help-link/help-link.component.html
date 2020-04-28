@@ -34,14 +34,14 @@
                                     <tbody>
                                         <tr *ngFor="let helpLink of helpLinks; let i = index">
                                             <td>{{helpLink.covidLinkId}}</td>
-                                            <td>{{helpLink.type ? 'document': 'link'}}</td>
+                                            <td>{{((!helpLink.type) || helpLink.type == 'link')  ? 'link': 'document'}}</td>
                                             <td>{{helpLink.header}}</td>
                                             <td>
 
-                                                <a href="javascript:void(0)" *ngIf="!(helpLink.type)"
+                                                <a href="javascript:void(0)" *ngIf="((!helpLink.type) || helpLink.type == 'link')"
                                                     (click)="openHelpLink(helpLink)">{{helpLink.link}}</a>
 
-                                                <a href="javascript:void(0)" *ngIf="helpLink.type === 'document'"
+                                                <a href="javascript:void(0)" *ngIf="helpLink.type == 'document'"
                                                     (click)="openHelpDocument(helpLink)">{{helpLink.fileName}}</a>
 
                                             <td>
