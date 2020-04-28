@@ -11,6 +11,9 @@ export * from './guidelines.model';
 export * from './helpLinkTypes.model';
 export * from './guidelinesTypes.model';
 export * from './locationTypes.model';
+export * from './location.patient.model';
+export * from './location.quarantine.model';
+export * from './genderTypes.model';
 
 export * from './sample_data.model';
 export * from './sample_state-district-wise.model';

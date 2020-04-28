@@ -53,3 +53,18 @@ export const SEVERITY_TYPES = [
         text: 'High'
     }
 ];
+
+export const GENDER_TYPES = [
+    {
+        id: 'Male',
+        text: 'Male'
+    },
+    {
+        id: 'Female',
+        text: 'Female'
+    },
+    {
+        id: 'Others',
+        text: 'Others'
+    }
+];

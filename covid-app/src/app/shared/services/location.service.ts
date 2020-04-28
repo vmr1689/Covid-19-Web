@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment';
-import { Location } from '../models';
+import { Location, LocationPatient, LocationQuarantine } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class LocationService {
@@ -61,5 +61,36 @@ export class LocationService {
 
     EditLocation = (model: Location) => {
         return this.http.put(`${environment.apiUrl}/location/editLocation`, model, this.httpOptions);
+    }
+
+    createPatient = (model: LocationPatient) => {
+        const request = {
+            firstName: model.firstName,
+            lastName: model.lastName,
+            email: model.email,
+            phoneNumber: model.phoneNumber,
+            gender: model.gender,
+            city: model.placeName,
+            age: model.age,
+            address: model.address
+        };
+        return this.http.post(`${environment.apiUrl}/covid/addNewPatient`, request, this.httpOptions);
+    }
+
+    createQurarantine = (model: LocationQuarantine) => {
+        const request = {
+            firstName: model.firstName,
+            lastName: model.lastName,
+            email: model.email,
+            phoneNumber: model.phoneNumber,
+            gender: model.gender,
+            city: model.city,
+            age: model.age,
+            address: model.address,
+            quaratinedDate: model.quaratinedDateStr
+        };
+        console.log("Quarantine");
+        console.log(request);
+        return this.http.post(`${environment.apiUrl}/patient/createPatient`, request, this.httpOptions);
     }
 }

@@ -1,13 +1,13 @@
-import { Component, OnInit, OnDestroy, QueryList, ViewChildren, AfterViewChecked, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewChecked, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 
-import { LOCATION_TYPES } from '.././seedConfig';
+import { LOCATION_TYPES, GENDER_TYPES } from '.././seedConfig';
 import { environment } from '../../environments/environment';
 import { LocationService, SpinnerService } from '../shared/services';
-import { Location, ngBootstrapTable, LocationTypes } from '../shared/models';
+import { Location, LocationTypes, LocationPatient, LocationQuarantine, GenderTypes } from '../shared/models';
 
 declare var $;
 
@@ -33,13 +33,13 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
   public dtTrigger = new Subject();
 
   public model: Location = {} as Location;
-  public patientModel: any = {};
+  public patientModel: LocationPatient = {} as LocationPatient;
 
   public tableLocations: Location[] = [];
   public locations: Location[] = [];
   public rootLocations: Location[] = [];
   public types: LocationTypes[] = LOCATION_TYPES;
-  public locationTable: ngBootstrapTable;
+  public genderTypes: GenderTypes[] = GENDER_TYPES;
 
   constructor(
     private spinnerService: SpinnerService,
@@ -63,7 +63,7 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
   getAllLocations() {
     this.spinnerService.show();
 
-    
+
     this.locationService.getAllLocationsDuplicate(environment.targetLocation).subscribe((response: Location) => {
       this.locations = [];
       this.tableLocations = [];
@@ -82,7 +82,6 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   restructureData(response: Location) {
-    debugger;
     const resCopy = { ...response };
     let result: Location[] = [];
     resCopy.istarget = resCopy.type == 'Country';
@@ -126,7 +125,8 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   openAddPatient(data) {
-    this.patientModel = {};
+    debugger;
+    this.patientModel = {} as LocationPatient;
     this.patientModel.placeId = data.placeId;
     this.patientModel.confirmed = true;
     this.patientModel.active = true;
@@ -136,7 +136,7 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   openQuarantinePerson(data) {
-    this.patientModel = {};
+    this.patientModel = {} as LocationPatient;
     this.patientModel.placeId = data.placeId;
     this.patientModel.quarantined = true;
     this.patientModel.placeName = data.placeName;
@@ -170,7 +170,6 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
   addLocation(form: NgForm) {
     const model = { ...this.model };
     let rootName = '';
-    debugger;
     if (model.rootId) {
       const root = this.rootLocations.find(x => x.placeId == model.rootId);
       if (root) {
@@ -196,7 +195,15 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   addPatient(form: NgForm) {
-    $('#addPatient').modal('hide');
+    const patientModel = { ...this.patientModel };
+    this.spinnerService.show();
+
+    this.locationService.createPatient(patientModel).subscribe((response: any) => {
+    }).add(() => {
+      $('#addPatient').modal('toggle');
+      this.spinnerService.hide();
+      this.getAllLocations();
+    });
   }
 
 
