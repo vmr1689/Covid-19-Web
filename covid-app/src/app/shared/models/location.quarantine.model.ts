@@ -13,4 +13,11 @@ export interface LocationQuarantine {
     gender: string;
     quaratinedDateStr: string;
     quaratinedDate: Date;
+    placeId?: number;
+    placeName?: string;
+    confirmed?: boolean;
+    active?: boolean;
+    recovered?: boolean;
+    deceased?: boolean;
+    quarantined?: boolean;
 }

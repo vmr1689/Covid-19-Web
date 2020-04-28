@@ -84,13 +84,12 @@ export class LocationService {
             email: model.email,
             phoneNumber: model.phoneNumber,
             gender: model.gender,
-            city: model.city,
+            city: model.placeName,
             age: model.age,
             address: model.address,
             quaratinedDate: model.quaratinedDateStr
         };
-        console.log("Quarantine");
         console.log(request);
-        return this.http.post(`${environment.apiUrl}/patient/createPatient`, request, this.httpOptions);
+        return this.http.post(`${environment.apiUrl}/covid/addQuaratinedPerson`, request, this.httpOptions);
     }
 }

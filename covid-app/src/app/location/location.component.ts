@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 
+import * as Helpers from '../shared/helpers';
 import { LOCATION_TYPES, GENDER_TYPES } from '.././seedConfig';
 import { environment } from '../../environments/environment';
 import { LocationService, SpinnerService } from '../shared/services';
@@ -34,6 +35,7 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   public model: Location = {} as Location;
   public patientModel: LocationPatient = {} as LocationPatient;
+  public quarantinePersonModel: LocationQuarantine = {} as LocationQuarantine;
 
   public tableLocations: Location[] = [];
   public locations: Location[] = [];
@@ -47,6 +49,7 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
     private locationService: LocationService) { }
 
   ngOnInit(): void {
+    this.quarantinePersonModel.quaratinedDate = new Date();
     this.getAllLocations();
   }
 
@@ -69,7 +72,7 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.tableLocations = [];
       this.rootLocations = [];
       if (response) {
-        let result = this.restructureData(response);
+        const result = this.restructureData(response);
         this.locations = [...result];
         this.rootLocations = [...result];
         this.tableLocations = [...result];
@@ -125,7 +128,6 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   openAddPatient(data) {
-    debugger;
     this.patientModel = {} as LocationPatient;
     this.patientModel.placeId = data.placeId;
     this.patientModel.confirmed = true;
@@ -136,11 +138,12 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   openQuarantinePerson(data) {
-    this.patientModel = {} as LocationPatient;
-    this.patientModel.placeId = data.placeId;
-    this.patientModel.quarantined = true;
-    this.patientModel.placeName = data.placeName;
-    this.addQuarantineForm.resetForm({ ...this.patientModel });
+    this.quarantinePersonModel = {} as LocationQuarantine;
+    this.quarantinePersonModel.placeId = data.placeId;
+    this.quarantinePersonModel.quarantined = true;
+    this.quarantinePersonModel.placeName = data.placeName;
+    this.quarantinePersonModel.quaratinedDate = new Date();
+    this.addQuarantineForm.resetForm({ ...this.quarantinePersonModel });
     $('#addQuarantinePerson').modal('toggle');
   }
 
@@ -208,8 +211,21 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
 
 
   addQuarantinePerson(form: NgForm) {
-    $('#addQuarantinePerson').modal('hide');
+    debugger;
+    const quarantinedModel = { ...this.quarantinePersonModel };
+    quarantinedModel.quaratinedDateStr = Helpers.convertDate(quarantinedModel.quaratinedDate);
+
+    this.spinnerService.show();
+
+    this.locationService.createQurarantine(quarantinedModel).subscribe((response: any) => {
+    }).add(() => {
+      $('#addQuarantinePerson').modal('toggle');
+      this.spinnerService.hide();
+      this.getAllLocations();
+    });
   }
 
+  calTrig() {
+    $('#bsDatepickerAdd').click();
+  }
 }
-

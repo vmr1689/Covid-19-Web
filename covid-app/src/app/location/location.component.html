@@ -530,11 +530,12 @@
                                 <label for="phoneNumber" class="col-sm-3 control-label">Phone:</label>
 
                                 <div class="col-sm-9">
-                                    <input id="phoneNumber" type="text" autocomplete="off" class="form-control" name="phoneNumber"
-                                        [(ngModel)]="patientModel.phoneNumber" #phoneNumber="ngModel" placeholder="Phone Number"
-                                        required>
+                                    <input id="phoneNumber" type="text" autocomplete="off" class="form-control"
+                                        name="phoneNumber" [(ngModel)]="patientModel.phoneNumber" #phoneNumber="ngModel"
+                                        placeholder="Phone Number" required>
 
-                                    <div *ngIf="addPatientForm.submitted && !phoneNumber.valid" class="text-danger">Phone
+                                    <div *ngIf="addPatientForm.submitted && !phoneNumber.valid" class="text-danger">
+                                        Phone
                                         Number is
                                         required
                                     </div>
@@ -572,22 +573,6 @@
                                 </div>
 
                             </div>
-
-
-                            <!-- <div class="form-group">
-                                <label for="zipcode" class="col-sm-3 control-label">ZipCode:</label>
-
-                                <div class="col-sm-9">
-                                    <input id="zipcode" type="text" autocomplete="off" class="form-control"
-                                        name="zipcode" [(ngModel)]="patientModel.zipcode" #zipcode="ngModel"
-                                        placeholder="ZipCode" required>
-
-                                    <div *ngIf="addPatientForm.submitted && !zipcode.valid" class="text-danger">ZipCode
-                                        is required
-                                    </div>
-                                </div>
-
-                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -600,7 +585,8 @@
     </div>
 </div>
 
-<!-- <div class="modal fade" data-backdrop="static" id="addQuarantinePerson">
+
+<div class="modal fade" data-backdrop="static" id="addQuarantinePerson">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -617,23 +603,23 @@
                     <div class="row">
                         <div class="col-md-6 col-xs-12">
                             <div class="form-group">
-                                <input name="patientId" id="patientId" [(ngModel)]="patientModel.patientId"
+                                <input name="patientId" id="patientId" [(ngModel)]="quarantinePersonModel.patientId"
                                     #patientId="ngModel" type="hidden" class="form-control" />
 
-                                <input name="placeId" id="placeId" [(ngModel)]="patientModel.placeId" #placeId="ngModel"
-                                    type="hidden" class="form-control" />
+                                <input name="placeId" id="placeId" [(ngModel)]="quarantinePersonModel.placeId"
+                                    #placeId="ngModel" type="hidden" class="form-control" />
 
                                 <label for="placeName" class="col-sm-3 control-label">Location:</label>
 
                                 <div class="col-sm-9">
-                                    <input id="placeName" type="text" autocomplete="off" class="form-control"
-                                        name="placeName" [(ngModel)]="patientModel.placeName" #placeName="ngModel"
-                                        placeholder="Location" required readonly="true">
+                                    <input id="qplaceName" type="text" autocomplete="off" class="form-control"
+                                        name="placeName" [(ngModel)]="quarantinePersonModel.placeName"
+                                        #placeName="ngModel" placeholder="Location" readonly="true">
 
-                                    <div *ngIf="addQuarantineForm.submitted && !placeName.valid" class="text-danger">
+                                    <!-- <div *ngIf="addQuarantineForm.submitted && !placeName.valid" class="text-danger">
                                         Location is
                                         required
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
 
@@ -642,8 +628,8 @@
 
                                 <div class="col-sm-9">
                                     <input id="firstName" type="text" autocomplete="off" class="form-control"
-                                        name="firstName" [(ngModel)]="patientModel.firstName" #firstName="ngModel"
-                                        placeholder="First Name" required>
+                                        name="firstName" [(ngModel)]="quarantinePersonModel.firstName"
+                                        #firstName="ngModel" placeholder="First Name" required>
 
                                     <div *ngIf="addQuarantineForm.submitted && !firstName.valid" class="text-danger">
                                         First
@@ -659,7 +645,7 @@
 
                                 <div class="col-sm-9">
                                     <input id="lastName" type="text" autocomplete="off" class="form-control"
-                                        name="lastName" [(ngModel)]="patientModel.lastName" #lastName="ngModel"
+                                        name="lastName" [(ngModel)]="quarantinePersonModel.lastName" #lastName="ngModel"
                                         placeholder="Last Name" required>
 
                                     <div *ngIf="addQuarantineForm.submitted && !lastName.valid" class="text-danger">
@@ -675,8 +661,9 @@
                                 <label for="age" class="col-sm-3 control-label">Age:</label>
 
                                 <div class="col-sm-9">
-                                    <input id="age" type="text" autocomplete="off" class="form-control" name="age"
-                                        [(ngModel)]="patientModel.age" #age="ngModel" placeholder="Age" required>
+                                    <input id="age" type="number" autocomplete="off" class="form-control" name="age"
+                                        [(ngModel)]="quarantinePersonModel.age" #age="ngModel" placeholder="Age"
+                                        required>
 
                                     <div *ngIf="addQuarantineForm.submitted && !age.valid" class="text-danger">Age
                                         is
@@ -692,16 +679,16 @@
                                 <div class="col-sm-9">
                                     <div class="row" style="padding-left: 15px;">
                                         <label class=" checkbox-inline">
-                                            <input [(ngModel)]="patientModel.quarantined" id="quarantined"
-                                                #quarantined="ngModel" name="quarantined" type="checkbox"
-                                                checked="true"> Quarantined
+                                            <input [(ngModel)]="quarantinePersonModel.quarantined" id="quarantined"
+                                                #quarantined="ngModel" name="quarantined" type="checkbox" checked="true"
+                                                disabled="true"> Quarantined
                                         </label>
                                     </div>
 
                                     <div class="row" style="padding-left: 15px;">
                                         <label class=" checkbox-inline">
-                                            <input [(ngModel)]="patientModel.released" id="released" #released="ngModel"
-                                                name="released" type="checkbox"> Released
+                                            <input [(ngModel)]="quarantinePersonModel.released" id="released"
+                                                #released="ngModel" name="released" type="checkbox"> Released
                                         </label>
                                     </div>
 
@@ -718,14 +705,14 @@
 
                                 <div class="col-sm-9">
 
-                                    <select name="gender" #gender="ngModel" [(ngModel)]="patientModel.gender"
+                                    <select name="gender" #gender="ngModel" [(ngModel)]="quarantinePersonModel.gender"
                                         id="gender" class="form-control" required>
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                        <option value="unknown">Unknown</option>
+                                        <option *ngFor="let type of genderTypes; let i = index" [value]="type.id">
+                                            {{type.text}}
+                                        </option>
                                     </select>
 
-                                    <div *ngIf="addPatientForm.submitted && !gender.valid" class="text-danger">Gender
+                                    <div *ngIf="addQuarantineForm.submitted && !gender.valid" class="text-danger">Gender
                                         is
                                         required
                                     </div>
@@ -734,14 +721,14 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="phone" class="col-sm-3 control-label">Phone:</label>
+                                <label for="phoneNumber" class="col-sm-3 control-label">Phone:</label>
 
                                 <div class="col-sm-9">
-                                    <input id="phone" type="text" autocomplete="off" class="form-control" name="phone"
-                                        [(ngModel)]="patientModel.phone" #phone="ngModel" placeholder="Phone Number"
-                                        required>
+                                    <input id="phoneNumber" type="text" autocomplete="off" class="form-control"
+                                        name="phoneNumber" [(ngModel)]="quarantinePersonModel.phoneNumber"
+                                        #phoneNumber="ngModel" placeholder="Phone Number" required>
 
-                                    <div *ngIf="addQuarantineForm.submitted && !phone.valid" class="text-danger">
+                                    <div *ngIf="addQuarantineForm.submitted && !phoneNumber.valid" class="text-danger">
                                         Phone
                                         Number is
                                         required
@@ -755,8 +742,9 @@
                                 <label for="email" class="col-sm-3 control-label">Email:</label>
 
                                 <div class="col-sm-9">
-                                    <input id="email" type="text" autocomplete="off" class="form-control" name="email"
-                                        [(ngModel)]="patientModel.email" #email="ngModel" placeholder="Email" required>
+                                    <input id="email" type="email" autocomplete="off" class="form-control" name="email"
+                                        [(ngModel)]="quarantinePersonModel.email" #email="ngModel" placeholder="Email"
+                                        required>
 
                                     <div *ngIf="addQuarantineForm.submitted && !email.valid" class="text-danger">
                                         Email is
@@ -767,14 +755,14 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="address1" class="col-sm-3 control-label">Address:</label>
+                                <label for="address" class="col-sm-3 control-label">Address:</label>
 
                                 <div class="col-sm-9">
-                                    <input id="address1" type="text" autocomplete="off" class="form-control"
-                                        name="address1" [(ngModel)]="patientModel.address1" #address1="ngModel"
+                                    <input id="address" type="text" autocomplete="off" class="form-control"
+                                        name="address" [(ngModel)]="quarantinePersonModel.address" #address="ngModel"
                                         placeholder="Address" required>
 
-                                    <div *ngIf="addQuarantineForm.submitted && !address1.valid" class="text-danger">
+                                    <div *ngIf="addQuarantineForm.submitted && !address.valid" class="text-danger">
                                         Address
                                         is
                                         required
@@ -782,6 +770,33 @@
                                 </div>
 
                             </div>
+
+                            <div class="form-group">
+                                <label for="quaratinedDate" class="col-sm-3 control-label">Date:</label>
+
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <input class="form-control" [ngModelOptions]="{standalone: true}"
+                                            #quaratinedDate="ngModel" name="quaratinedDate"
+                                            #datepickerFull="bsDatepicker" bsDatepicker
+                                            [(ngModel)]="quarantinePersonModel.quaratinedDate"
+                                            [bsConfig]="{ dateInputFormat: 'MM/DD/YYYY' }" id="bsDatepickerAdd">
+
+                                        <div class="input-group-addon" (click)='calTrig()'>
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+
+                                        <div *ngIf="addQuarantineForm.submitted && !quaratinedDate.valid"
+                                            class="text-danger">Update is required
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+
+                            </div>
+
                         </div>
 
                     </div>
@@ -793,4 +808,4 @@
             </form>
         </div>
     </div>
-</div> -->
+</div>
