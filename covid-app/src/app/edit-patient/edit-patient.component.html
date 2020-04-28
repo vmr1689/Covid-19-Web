@@ -79,34 +79,33 @@
                                         <div class="col-sm-9">
 
                                             <select name="gender" formControlName="gender" id="gender"
-                                                class="form-control" required [disabled]="isReadOnly">
-                                                <option value="male">Male</option>
-                                                <option value="female">Female</option>
-                                                <option value="unknown">Unknown</option>
+                                                class="form-control" required>
+                                                <option *ngFor="let type of genderTypes; let i = index"
+                                                    [value]="type.id">
+                                                    {{type.text}}
+                                                </option>
                                             </select>
 
                                             <small
-                                                *ngIf="(submitted || phone.dirty || phone.touched) && phone.hasError('required')"
+                                                *ngIf="(submitted || gender.dirty || gender.touched) && gender.hasError('required')"
                                                 class="text-danger">Phone is required</small>
                                         </div>
                                     </div>
-
-
-
 
                                 </div>
 
                                 <div class="col-md-6">
 
                                     <div class="form-group">
-                                        <label for="phone" class="col-sm-3 control-label">Phone Number</label>
+                                        <label for="phoneNumber" class="col-sm-3 control-label">Phone Number</label>
 
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" formControlName="phone" id="phone"
-                                                name="phone" placeholder="Phone Number" [readonly]="isReadOnly">
+                                            <input type="text" class="form-control" formControlName="phoneNumber"
+                                                id="phoneNumber" name="phoneNumber" placeholder="Phone Number"
+                                                [readonly]="isReadOnly">
 
                                             <small
-                                                *ngIf="(submitted || phone.dirty || phone.touched) && phone.hasError('required')"
+                                                *ngIf="(submitted || phoneNumber.dirty || phoneNumber.touched) && phoneNumber.hasError('required')"
                                                 class="text-danger">Phone is required</small>
                                         </div>
                                     </div>
@@ -125,87 +124,38 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="address1" class="col-sm-3 control-label">Address </label>
+                                        <label for="city" class="col-sm-3 control-label">City</label>
 
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" formControlName="address1"
-                                                id="address1" name="address1" placeholder="Address"
+                                            <select name="city" formControlName="city" id="city"
+                                                class="form-control" required>
+                                                <option *ngFor="let location of cities; let i = index"
+                                                    value={{location.placeName}}>
+                                                    {{location.placeName}}
+                                                </option>
+                                            </select>
+
+                                            <small
+                                                *ngIf="(submitted || city.dirty || city.touched) && city.hasError('required')"
+                                                class="text-danger">City is required</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="address" class="col-sm-3 control-label">Address </label>
+
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" formControlName="address"
+                                                id="address" name="address" placeholder="Address"
                                                 [readonly]="isReadOnly">
 
                                             <small
-                                                *ngIf="(submitted || address1.dirty || address1.touched) && address1.hasError('required')"
+                                                *ngIf="(submitted || address.dirty || address.touched) && address.hasError('required')"
                                                 class="text-danger">Address is required</small>
                                         </div>
                                     </div>
 
 
-                                    <!-- <div class="form-group ">
-                                        <label for="address2" class="col-sm-3 control-label">Address 1</label>
-
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" formControlName="address2"
-                                                id="address2" name="address2" placeholder="Address 2">
-
-                                            <small
-                                                *ngIf="(submitted || address2.dirty || address2.touched) && address2.hasError('required')"
-                                                class="text-danger">Address 2 is required</small>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="address3" class="col-sm-3 control-label">Address 3</label>
-
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" formControlName="address3"
-                                                id="address3" name="address3" placeholder="Address 2">
-
-                                            <small
-                                                *ngIf="(submitted || address3.dirty || address3.touched) && address3.hasError('required')"
-                                                class="text-danger">Address 3 is required</small>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="form-group">
-                                        <label for="address4" class="col-sm-3 control-label">Address 4</label>
-
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" formControlName="address4"
-                                                id="address4" name="address4" placeholder="Address 4">
-
-                                            <small
-                                                *ngIf="(submitted || address4.dirty || address4.touched) && address4.hasError('required')"
-                                                class="text-danger">Address 4 is required</small>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="address5" class="col-sm-3 control-label">Address 5</label>
-
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" formControlName="address5"
-                                                id="address4" name="address5" placeholder="Address 5">
-
-                                            <small
-                                                *ngIf="(submitted || address5.dirty || address5.touched) && address5.hasError('required')"
-                                                class="text-danger">Address 5 is required</small>
-                                        </div>
-                                    </div> -->
-
-
-                                    <div class="form-group">
-                                        <label for="zipcode" class="col-sm-3 control-label">ZipCode</label>
-
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" formControlName="zipcode"
-                                                id="zipcode" name="zipcode" placeholder="Zipcode"
-                                                [readonly]="isReadOnly">
-
-                                            <small
-                                                *ngIf="(submitted || zipcode.dirty || zipcode.touched) && zipcode.hasError('required')"
-                                                class="text-danger">Zipcode is required</small>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="row text-left">
                                     <div class="col-md-12">
@@ -234,59 +184,21 @@
                             </div>
 
                             <div class="tab-pane" id="tab_2">
-                                <!-- <div class="row">
-                                    <div class="col-md-12" style="padding-bottom: 10px">
-                                        <button type="button" (click)="CreateLocationPopup($event)"
-                                            class="btn btn-info btn-flat pull-right" data-toggle="modal">
-                                            <b>
-                                                <span class="fa fa-user-plus"></span>
-                                            </b> Add Location
-                                        </button>
-                                    </div>
-                                </div> -->
                                 <div class="table-responsive">
 
-                                    <table datatable [dtOptions]="dtOptions" class="table table-bordered table-hover">
+                                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th sortable="placeName" (sort)="onLocationSort($event)">Location</th>
-                                                <th scope="col" sortable="root" (sort)="onLocationSort($event)">Latitude
-                                                </th>
-                                                <th scope="col" sortable="latitude" (sort)="onLocationSort($event)">
-                                                    Longitude</th>
-                                                <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">
-                                                    Place</th>
-                                                <!-- <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">
-                                                    Severity</th>
-                                                <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">
-                                                    Status</th> -->
-                                                <th scope="col" sortable="longitude" (sort)="onLocationSort($event)">
-                                                    Date</th>
-                                                <!-- <th>Actions</th> -->
+                                                <th>Location</th>
+                                                <th>Latitude</th>
+                                                <th>Longitude</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let data of locations">
-                                                <td>{{data.locationId}}</td>
+                                            <tr *ngFor="let data of locations;index as i">
+                                                <td>{{i+1}}</td>
                                                 <td>{{data.latitude}}</td>
                                                 <td>{{data.longitude}}</td>
-                                                <td>{{data.place}}</td>
-                                                <!-- <td>{{data.severity}}</td>
-                                                <td>{{data.status}}</td> -->
-                                                <td>{{data.date}}</td>
-                                                <!-- <td>
-                                                    <button style="margin-right:5px" title="Edit Location"
-                                                        (click)="openEditLocationPopup($event, data)"
-                                                        class="btn btn-small btn-flat btn-warning">
-                                                        <i class="btn-icon-only fa fa-pencil"> </i>
-                                                    </button>
-
-                                                    <button style="margin-right:5px" title="Delete Location"
-                                                        (click)="openDeleteLocationPopup($event, data)"
-                                                        class="btn btn-small btn-flat btn-danger">
-                                                        <i class="btn-icon-only fa fa-trash"> </i>
-                                                    </button>
-                                                </td> -->
                                             </tr>
                                         </tbody>
                                     </table>
@@ -308,56 +220,21 @@
                             </div>
 
                             <div class="tab-pane" id="tab_3">
-                                <!-- <div class="row">
-                                    <div class="col-md-12" style="padding-bottom: 10px">
-                                        <button type="button" (click)="CreateDevicePopup($event)"
-                                            class="btn btn-info btn-flat pull-right" data-toggle="modal">
-                                            <b>
-                                                <span class="fa fa-user-plus"></span>
-                                            </b> Add Device
-                                        </button>
-                                    </div>
-                                </div> -->
                                 <div class="table-responsive">
 
-                                    <table datatable [dtOptions]="dtOptions" class="table table-bordered table-hover">
+                                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th sortable="deviceId" (sort)="onDeviceSort($event)">Bluetooth Device
-                                                    Id</th>
-                                                <th scope="col" sortable="deviceName" (sort)="onDeviceSort($event)">
-                                                    Bluetooth Device Name</th>
-                                                <!-- <th scope="col" sortable="PhoneNumber" (sort)="onDeviceSort($event)">
-                                                    Phone Number</th>
-                                                <th scope="col" sortable="PhoneNumber" (sort)="onDeviceSort($event)">
-                                                    Location</th> -->
-                                                <th scope="col" sortable="deviceAddress" (sort)="onDeviceSort($event)">
-                                                    Bluetooth Address</th>
-                                                <th scope="col" sortable="date" (sort)="onDeviceSort($event)">Date</th>
-                                                <!-- <th>Actions</th> -->
+                                                <th>Bluetooth Device Id</th>
+                                                <th>Bluetooth Device Name</th>
+                                                <th>Bluetooth Address</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let data of devices">
-                                                <td>{{data.deviceId}}</td>
-                                                <td>{{data.deviceName}}</td>
-                                                <!-- <td>{{data.PhoneNumber}}</td>
-                                                <td>{{data.place}}</td> -->
-                                                <td>{{data.deviceAddress}}</td>
-                                                <td>{{data.date}}</td>
-                                                <!-- <td>
-                                                    <button style="margin-right:5px" title="Edit Location"
-                                                        (click)="openEditDevicePopup($event, data)"
-                                                        class="btn btn-small btn-flat btn-warning">
-                                                        <i class="btn-icon-only fa fa-pencil"> </i>
-                                                    </button>
-
-                                                    <button style="margin-right:5px" title="Delete Location"
-                                                        (click)="openDeleteDevicePopup($event, data)"
-                                                        class="btn btn-small btn-flat btn-danger">
-                                                        <i class="btn-icon-only fa fa-trash"> </i>
-                                                    </button>
-                                                </td> -->
+                                            <tr *ngFor="let data of devices;index as i">
+                                                <td>{{i+1}}</td>
+                                                <td>{{data.blutoothDeviceName}}</td>
+                                                <td>{{data.blutoothDeviceAddress}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -393,7 +270,7 @@
                                             <div class="checkbox">
                                                 <label>
                                                     <input formControlName="confirmed" id="confirmed" name="confirmed"
-                                                        type="checkbox" disabled="true">
+                                                        type="checkbox">
                                                 </label>
                                             </div>
                                         </div>
@@ -480,383 +357,3 @@
         </div>
     </div>
 </section>
-
-<div class="modal fade" data-backdrop="static" id="addLocation">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-                <h4 class="modal-title">Add Location</h4>
-            </div>
-            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && addLocation(f)" #f="ngForm" novalidate>
-                <div class="modal-body">
-                    <div class="row">
-
-                        <div class="col-md-6 col-xs-12">
-                            <div class="form-group ">
-                                <div class="col-sm-2">
-                                    <label for="placeName" class="control-label">Location:</label>
-                                </div>
-
-                                <div class="col-sm-10">
-
-                                    <input name="placeId" id="placeId" [(ngModel)]="locationModel.placeId"
-                                        #placeId="ngModel" type="hidden" class="form-control" />
-
-                                    <input id="placeName" type="text" autocomplete="off" class="form-control"
-                                        name="placeName" [(ngModel)]="locationModel.placeName" #placeName="ngModel"
-                                        placeholder="Location" required>
-
-                                    <div *ngIf="f.submitted && !placeName.valid" class="text-danger">Location is
-                                        required
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-sm-2">
-                                    <label for="severity" class="control-label">Severity:</label>
-                                </div>
-
-                                <div class="col-sm-10">
-                                    <input id="severity" type="text" autocomplete="off" class="form-control"
-                                        name="severity" [(ngModel)]="locationModel.severity" #severity="ngModel"
-                                        placeholder="Severity" required>
-
-                                    <div *ngIf="f.submitted && !severity.valid" class="text-danger">Severity is required
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-sm-2">
-                                    <label for="date" class="control-label">Date:</label>
-                                </div>
-
-                                <div class="col-sm-10">
-                                    <input id="date" type="text" autocomplete="off" class="form-control" name="date"
-                                        [(ngModel)]="locationModel.date" #date="ngModel" placeholder="Date" required>
-
-                                    <div *ngIf="f.submitted && !date.valid" class="text-danger">Date is required
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
-                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" data-backdrop="static" id="editLocation">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-                <h4 class="modal-title">Edit Location</h4>
-            </div>
-            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && editLocation(f)" #f="ngForm" novalidate>
-                <div class="modal-body">
-                    <div class="row">
-
-                        <div class="col-md-6 col-xs-12">
-                            <div class="form-group ">
-                                <div class="col-sm-2">
-                                    <label for="placeName" class="control-label">Location:</label>
-                                </div>
-
-                                <div class="col-sm-10">
-
-                                    <input name="placeId" id="placeId" [(ngModel)]="locationModel.placeId"
-                                        #placeId="ngModel" type="hidden" class="form-control" />
-
-                                    <input id="placeName" type="text" autocomplete="off" class="form-control"
-                                        name="placeName" [(ngModel)]="locationModel.placeName" #placeName="ngModel"
-                                        placeholder="Location" required>
-
-                                    <div *ngIf="f.submitted && !placeName.valid" class="text-danger">Location is
-                                        required
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-sm-2">
-                                    <label for="severity" class="control-label">Severity:</label>
-                                </div>
-
-                                <div class="col-sm-10">
-                                    <input id="severity" type="text" autocomplete="off" class="form-control"
-                                        name="severity" [(ngModel)]="locationModel.severity" #severity="ngModel"
-                                        placeholder="Severity" required>
-
-                                    <div *ngIf="f.submitted && !severity.valid" class="text-danger">Severity is required
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-sm-2">
-                                    <label for="date" class="control-label">Date:</label>
-                                </div>
-
-                                <div class="col-sm-10">
-                                    <input id="date" type="text" autocomplete="off" class="form-control" name="date"
-                                        [(ngModel)]="locationModel.date" #date="ngModel" placeholder="Date" required>
-
-                                    <div *ngIf="f.submitted && !date.valid" class="text-danger">Date is required
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
-                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" data-backdrop="static" id="deleteLocation">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-                <h4 class="modal-title">Delete Location</h4>
-            </div>
-            <div class="modal-body">
-                <p style="font-weight: bold;">
-                    Do you want to delete {{locationModel.placeName}} ?
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">No</button>
-                <button (click)="deleteLocation(locationModel)" class="btn btn-info btn-flat">Yes</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-
-<div class="modal fade" data-backdrop="static" id="addDevice">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-                <h4 class="modal-title">Add Device</h4>
-            </div>
-            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && addDevice(f)" #f="ngForm" novalidate>
-                <div class="modal-body">
-                    <div class="row">
-
-                        <div class="col-md-6 col-xs-12">
-                            <div class="form-group ">
-                                <div class="col-sm-4">
-                                    <label for="deviceName" class="control-label">Device:</label>
-                                </div>
-
-                                <div class="col-sm-8">
-
-                                    <input name="deviceId" id="deviceId" [(ngModel)]="deviceModel.deviceId"
-                                        #deviceId="ngModel" type="hidden" class="form-control" />
-
-                                    <input id="deviceName" type="text" autocomplete="off" class="form-control"
-                                        name="deviceName" [(ngModel)]="deviceModel.deviceName" #deviceName="ngModel"
-                                        placeholder="Device Name" required>
-
-                                    <div *ngIf="f.submitted && !deviceName.valid" class="text-danger">Device Name is
-                                        required
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-sm-4">
-                                    <label for="deviceAddress" class="control-label">Device Address:</label>
-                                </div>
-
-                                <div class="col-sm-8">
-                                    <input id="deviceAddress" type="text" autocomplete="off" class="form-control"
-                                        name="deviceAddress" [(ngModel)]="deviceModel.deviceAddress"
-                                        #deviceAddress="ngModel" placeholder="Device Address" required>
-
-                                    <div *ngIf="f.submitted && !deviceAddress.valid" class="text-danger">Device Address
-                                        is required
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-sm-4">
-                                    <label for="date" class="control-label">Date:</label>
-                                </div>
-
-                                <div class="col-sm-8">
-                                    <input id="date" type="text" autocomplete="off" class="form-control" name="date"
-                                        [(ngModel)]="deviceModel.date" #date="ngModel" placeholder="Date" required>
-
-                                    <div *ngIf="f.submitted && !date.valid" class="text-danger">Date is required
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-sm-4">
-                                    <label for="status" class="control-label">Status:</label>
-                                </div>
-
-                                <div class="col-sm-8">
-                                    <input id="status" type="text" autocomplete="off" class="form-control" name="status"
-                                        [(ngModel)]="deviceModel.status" #status="ngModel" placeholder="Status"
-                                        required>
-
-                                    <div *ngIf="f.submitted && !status.valid" class="text-danger">Status is required
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
-                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" data-backdrop="static" id="editDevice">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-                <h4 class="modal-title">Add Device</h4>
-            </div>
-            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && addDevice(f)" #f="ngForm" novalidate>
-                <div class="modal-body">
-                    <div class="row">
-
-                        <div class="col-md-6 col-xs-12">
-                            <div class="form-group ">
-                                <div class="col-sm-4">
-                                    <label for="deviceName" class="control-label">Device:</label>
-                                </div>
-
-                                <div class="col-sm-8">
-
-                                    <input name="deviceId" id="deviceId" [(ngModel)]="deviceModel.deviceId"
-                                        #deviceId="ngModel" type="hidden" class="form-control" />
-
-                                    <input id="deviceName" type="text" autocomplete="off" class="form-control"
-                                        name="deviceName" [(ngModel)]="deviceModel.deviceName" #deviceName="ngModel"
-                                        placeholder="Device Name" required>
-
-                                    <div *ngIf="f.submitted && !deviceName.valid" class="text-danger">Device Name is
-                                        required
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-sm-4">
-                                    <label for="deviceAddress" class="control-label">Device Address:</label>
-                                </div>
-
-                                <div class="col-sm-8">
-                                    <input id="deviceAddress" type="text" autocomplete="off" class="form-control"
-                                        name="deviceAddress" [(ngModel)]="deviceModel.deviceAddress"
-                                        #deviceAddress="ngModel" placeholder="Device Address" required>
-
-                                    <div *ngIf="f.submitted && !deviceAddress.valid" class="text-danger">Device Address
-                                        is required
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-sm-4">
-                                    <label for="date" class="control-label">Date:</label>
-                                </div>
-
-                                <div class="col-sm-8">
-                                    <input id="date" type="text" autocomplete="off" class="form-control" name="date"
-                                        [(ngModel)]="deviceModel.date" #date="ngModel" placeholder="Date" required>
-
-                                    <div *ngIf="f.submitted && !date.valid" class="text-danger">Date is required
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-sm-4">
-                                    <label for="status" class="control-label">Status:</label>
-                                </div>
-
-                                <div class="col-sm-8">
-                                    <input id="status" type="text" autocomplete="off" class="form-control" name="status"
-                                        [(ngModel)]="deviceModel.status" #date="ngModel" placeholder="Status" required>
-
-                                    <div *ngIf="f.submitted && !status.valid" class="text-danger">Status is required
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
-                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" data-backdrop="static" id="deleteDevice">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-                <h4 class="modal-title">Delete Device</h4>
-            </div>
-            <div class="modal-body">
-                <p style="font-weight: bold;">
-                    Do you want to delete {{deviceModel.placeName}} ?
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">No</button>
-                <button (click)="deleteDevice(deviceModel)" class="btn btn-info btn-flat">Yes</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>

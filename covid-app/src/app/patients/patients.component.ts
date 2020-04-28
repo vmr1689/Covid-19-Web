@@ -86,6 +86,6 @@ export class PatientsComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   editPatient(patient: Patient) {
-    this.router.navigate(['/editpatient/' + patient.id]);
+    this.router.navigate(['/editpatient/' + patient.patientId]);
   }
 }

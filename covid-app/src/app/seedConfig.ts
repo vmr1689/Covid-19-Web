@@ -68,3 +68,30 @@ export const GENDER_TYPES = [
         text: 'Others'
     }
 ];
+
+export const STATUS_TYPES = [
+    {
+        id: 'quarantined',
+        text: 'Quarantined'
+    },
+    {
+        id: 'confirmed',
+        text: 'Confirmed'
+    },
+    {
+        id: 'active',
+        text: 'Active'
+    },
+    {
+        id: 'recovered',
+        text: 'Recovered'
+    },
+    {
+        id: 'deceased',
+        text: 'Deceased'
+    },
+    {
+        id: 'released',
+        text: 'Released'
+    }
+];

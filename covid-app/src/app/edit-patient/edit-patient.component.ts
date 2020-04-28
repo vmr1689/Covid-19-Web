@@ -1,12 +1,14 @@
-import { Component, OnInit, QueryList, ViewChildren, AfterViewChecked, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewChecked, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { DataTableDirective } from 'angular-datatables';
 
-import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sortable.directive';
-
-import { Patient } from '../shared/models';
-import { PatientService, SpinnerService } from '../shared/services';
-import { Subject } from 'rxjs';
+import * as Helpers from '../shared/helpers';
+import { STATUS_TYPES, GENDER_TYPES } from '.././seedConfig';
+import { environment } from '../../environments/environment';
+import { Patient, Location, GenderTypes, PatientDeviceInfo, PatientLocationInfo } from '../shared/models';
+import { PatientService, LocationService, SpinnerService } from '../shared/services';
+import { Subject, Observable, forkJoin } from 'rxjs';
 
 declare var $;
 
@@ -16,6 +18,9 @@ declare var $;
   styleUrls: ['./edit-patient.component.css']
 })
 export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy {
+  @ViewChild(DataTableDirective, { static: false }) dtElement: DataTableDirective;
+  public isDtInitialized = false;
+
   public dtOptions: DataTables.Settings = {
     autoWidth: false,
     jQueryUI: true,
@@ -23,62 +28,49 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
   };
   public dtTrigger = new Subject();
 
+  public model: Patient = {} as Patient;
+  public status: string;
+  public submitted: boolean;
+  public isReadOnly = true;
+  public genderTypes: GenderTypes[] = GENDER_TYPES;
+
   public form: FormGroup;
+
   public patientId: AbstractControl;
   public firstName: AbstractControl;
   public lastName: AbstractControl;
-  public age: AbstractControl;
-  public gender: AbstractControl;
-  public phone: AbstractControl;
   public email: AbstractControl;
-  public address1: AbstractControl;
-  public zipcode: AbstractControl;
-  public latitude: AbstractControl;
-  public longitude: AbstractControl;
-  public deviceName: AbstractControl;
-  public deviceAddress: AbstractControl;
-  public placeId: AbstractControl;
-  public severity: AbstractControl;
-  public submitted: boolean;
+  public phoneNumber: AbstractControl;
+  public gender: AbstractControl;
+  public city: AbstractControl;
+  public age: AbstractControl;
+  public address: AbstractControl;
   public confirmed: AbstractControl;
   public active: AbstractControl;
   public recovered: AbstractControl;
   public deceased: AbstractControl;
-  public isReadOnly = true;
+  public statusUpdatedDate: AbstractControl;
+  public cities: Location[] = [];
 
-  public locationModel: any = { placeId: '', severity: '', date: '' };
-  public deviceModel: any = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: '' };
-
-  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
-
-  locations: any[] = [
-    { locationId: '1', latitude: '28.7041', longitude: '77.1025', place: 'Orissa', status: 'Active', severity: 'high', date: '11/04/2020 06:10:24' },
-    { locationId: '2', latitude: '10.8505', longitude: '76.2711', place: 'Kerala', status: 'Recovered', severity: 'medium', date: '11/03/2020 12:20:24' },
-    { locationId: '3', latitude: '20.9517', longitude: '85.0985', place: 'Delhi', status: 'Deceased', severity: 'medium', date: '03/11/2019 18:20:24' }
-  ];
-
-  devices: any[] = [
-    { deviceId: '1', deviceName: 'Srini_IPhone_bsu', deviceAddress: '34:E9:D2:75:CE:86', PhoneNumber: '159751565', date: '11/04/2020 06:10:24', place: 'Orissa' },
-    { deviceId: '2', deviceName: 'msu_andriod_d', deviceAddress: 'E3:87:F2:81:5A:42', PhoneNumber: '147955555', date: '11/03/2020 12:20:24', place: 'Kerala' },
-    { deviceId: '3', deviceName: 'chiti_dev', deviceAddress: '70:7C:97:B2:23:B4', PhoneNumber: '147955555', date: '03/11/2019 18:20:24', place: 'Delhi' }
-  ];
-
-  // devices: any[] = [
-  //   { deviceId: '1', deviceName: 'Device 1', deviceAddress: 'West Bengal', status: 'In-Active', date: '11/04/2020 18:20:24' },
-  //   { deviceId: '2', deviceName: 'Device 2', deviceAddress: 'Tamil Nadu', status: 'In-Active', date: '11/03/2020 18:20:24' },
-  //   { deviceId: '3', deviceName: 'Device 3', deviceAddress: 'Karnataka', status: 'Active', date: '11/04/2020 18:20:24' }
-  // ];
+  locations: PatientLocationInfo[] = [];
+  devices: PatientDeviceInfo[] = [];
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private patientService: PatientService,
+    private locationService: LocationService,
     private activatedRoute: ActivatedRoute,
     private spinnerService: SpinnerService
   ) { }
 
   ngOnInit(): void {
     this.initLoginForm();
+    this.activatedRoute.paramMap.subscribe(params => {
+      const patientId = Number.parseInt(params.get('patientId'));
+      this.model.patientId = patientId;
+      this.getAllAPIValues();
+    });
   }
 
   ngAfterViewChecked() {
@@ -94,65 +86,185 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
   public initLoginForm() {
 
     this.form = this.fb.group({
-      patientId: ['1', [Validators.required]],
-      firstName: ['Srinivasan', [Validators.required]],
-      lastName: ['Kapadia', [Validators.required]],
-      age: ['83', Validators.required],
-      phone: ['+91 561 1159111', [Validators.required]],
-      email: ['srnikp32f@live.com', [Validators.required]],
-      address1: ['1359  Kuhl Avenue, Atlanta, GA', [Validators.required]],
-      zipcode: ['745798', [Validators.required]],
-      latitude: ['', [Validators.required]],
-      longitude: ['', [Validators.required]],
-      deviceName: ['', [Validators.required]],
-      deviceAddress: ['', [Validators.required]],
-      placeId: ['', [Validators.required]],
-      severity: ['', [Validators.required]],
-      confirmed: [true],
+      patientId: ['', [Validators.required]],
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      email: ['', [Validators.required]],
+      phoneNumber: ['', [Validators.required]],
+      gender: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      age: ['', Validators.required],
+      address: ['', [Validators.required]],
+      confirmed: [true, Validators.requiredTrue],
       active: [true],
-      recovered: [false],
-      deceased: [false],
-      gender: ['male']
+      recovered: [],
+      deceased: [],
+      statusUpdatedDate: [new Date(), [Validators.required]],
     });
     this.patientId = this.form.controls.patientId;
     this.firstName = this.form.controls.firstName;
     this.lastName = this.form.controls.lastName;
-    this.age = this.form.controls.age;
-    this.phone = this.form.controls.phone;
     this.email = this.form.controls.email;
+    this.phoneNumber = this.form.controls.phoneNumber;
     this.gender = this.form.controls.gender;
-    this.address1 = this.form.controls.address1;
-
-
-    this.zipcode = this.form.controls.zipcode;
-    this.latitude = this.form.controls.latitude;
-    this.longitude = this.form.controls.longitude;
-    this.placeId = this.form.controls.placeId;
-    this.severity = this.form.controls.severity;
-
-
-    this.deviceName = this.form.controls.deviceName;
-    this.deviceAddress = this.form.controls.deviceAddress;
-
+    this.city = this.form.controls.city;
+    this.age = this.form.controls.age;
+    this.address = this.form.controls.address;
     this.confirmed = this.form.controls.confirmed;
     this.active = this.form.controls.active;
     this.recovered = this.form.controls.recovered;
     this.deceased = this.form.controls.deceased;
+    this.statusUpdatedDate = this.form.controls.statusUpdatedDate;
 
     this.form.disable();
 
   }
+
+  setData() {
+    const model = { ...this.model };
+
+    this.patientId.setValue(model.patientId);
+    this.firstName.setValue(model.firstName);
+    this.lastName.setValue(model.lastName);
+    this.email.setValue(model.email);
+    this.phoneNumber.setValue(model.phoneNumber);
+    this.gender.setValue(model.gender);
+    this.city.setValue(model.city);
+    this.age.setValue(model.age);
+    this.address.setValue(model.address);
+
+    if (model.status == STATUS_TYPES[2].id) { // active
+      this.active.setValue(true);
+      this.recovered.setValue(false);
+      this.deceased.setValue(false);
+    } else if (model.status == STATUS_TYPES[3].id) { // recovered
+      this.active.setValue(false);
+      this.recovered.setValue(true);
+      this.deceased.setValue(false);
+    } else if (model.status == STATUS_TYPES[4].id) { // deceased
+      this.active.setValue(false);
+      this.recovered.setValue(false);
+      this.deceased.setValue(true);
+    }
+
+    if (model.statusUpdatedDate) {
+      const statusUpdatedDate = Helpers.getDateFromTimeStamp(model.statusUpdatedDate);
+      this.statusUpdatedDate.setValue(statusUpdatedDate);
+    }
+
+    this.status = model.status;
+  }
+
+  public getAllAPIValues() {
+    const getAllPatients = this.patientService.getAllPatients();
+    const getAllLocations = this.locationService.getAllLocationsDuplicate(environment.targetLocation);
+
+    this.cities = [];
+    let patientModel = {} as Patient;
+
+    this.spinnerService.show();
+    forkJoin([getAllPatients, getAllLocations]).subscribe(results => {
+      const patientsResult = results[0];
+      const locationsResult = results[1];
+
+      if (patientsResult && patientsResult.length > 0) {
+        patientModel = patientsResult.find(p => p.patientId == this.model.patientId);
+      }
+
+      if (locationsResult) {
+        this.cities = Helpers.restructureData(locationsResult);
+      }
+      if (patientModel) {
+        this.model = patientModel;
+        this.setData();
+      }
+    }).add(() => {
+      this.getAllLocationDeviceValues();
+      this.spinnerService.hide();
+    });
+  }
+
+  public getAllLocationDeviceValues() {
+    const phone = this.model.phoneNumber;
+    if (phone) {
+      const getAllLocationInfo = this.patientService.getLocationInfo(phone);
+      const getAllDeviceInfos = this.patientService.getDeviceInfo(phone);
+
+      this.spinnerService.show();
+
+      forkJoin([getAllLocationInfo, getAllDeviceInfos]).subscribe(results => {
+        const locationsResult = results[0];
+        const devicesResult = results[1];
+
+        if (locationsResult && locationsResult.length > 0) {
+          this.locations = locationsResult;
+        }
+
+        if (devicesResult && devicesResult.length > 0) {
+          this.devices = devicesResult;
+        }
+      }).add(() => {
+        this.spinnerService.hide();
+        this.rerender();
+      });
+    }
+  }
+
+  rerender(): void {
+    if (this.isDtInitialized) {
+      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.destroy();
+        setTimeout(() => {
+          this.dtTrigger.next();
+        });
+      });
+    } else {
+      this.isDtInitialized = true;
+      this.dtTrigger.next();
+    }
+  }
+
   public onSubmit(event: Event, form: any): void {
     event.stopPropagation();
     this.submitted = true;
 
     if (this.form.valid) {
-      this.patientService.createPatient(null).subscribe((response: any) => {
+      const request: Patient = {
+        patientId: this.patientId.value,
+        firstName: this.firstName.value,
+        lastName: this.lastName.value,
+        email: this.email.value,
+        phoneNumber: this.phoneNumber.value,
+        gender: this.gender.value,
+        city: this.city.value,
+        state: '',
+        country: '',
+        id: this.patientId.value,
+        age: this.age.value,
+        address: this.address.value,
+        status: this.status
+      };
+      if (this.deceased.value) {
+        request.status = STATUS_TYPES[4].id;
+      }
+      else if (this.recovered.value) {
+        request.status = STATUS_TYPES[3].id;
+      }
+      else if (this.active.value) {
+        request.status = STATUS_TYPES[2].id;
+      }
+      else {
+        request.status = STATUS_TYPES[2].id;
+      }
+      console.log(request);
+      this.spinnerService.show();
+      this.patientService.editPatient(request).subscribe((response: any) => {
         if (response) {
           this.BackToList();
         }
+      }).add(() => {
+        this.spinnerService.hide();
       });
-
     }
   }
 
@@ -165,6 +277,7 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
       this.form.disable();
     }
   }
+
   nextTab() {
     $('.nav-tabs > .active').next('li').find('a').trigger('click');
   }
@@ -177,109 +290,8 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
       $('.nav-tabs li:eq(0) a').trigger('click');
     }
   }
+
   BackToList() {
     this.router.navigate(['/patients']);
   }
-
-  CreateLocationPopup($event) {
-    this.locationModel = { placeId: '', severity: '', date: '' };
-    $('#addLocation').modal('toggle');
-  }
-
-  openEditLocationPopup($event, locationRow: any) {
-    this.locationModel = { placeId: '', severity: '', date: '' };
-    $('#editLocation').modal('toggle');
-  }
-
-  openDeleteLocationPopup($event, locationRow: any) {
-    this.locationModel = { placeId: '', severity: '', date: '' };
-    $('#deleteLocation').modal('toggle');
-  }
-
-  onLocationSort({ column, direction }: SortEvent) {
-
-    // resetting other headers
-    this.headers.forEach(header => {
-      if (header.sortable !== column) {
-        header.direction = '';
-      }
-    });
-
-    // sorting countries
-    const locations = [...this.locations];
-    if (direction === '' || column === '') {
-      this.locations = locations;
-    } else {
-      this.locations = [...locations].sort((a, b) => {
-        const res = compare(`${a[column]}`, `${b[column]}`);
-        return direction === 'asc' ? res : -res;
-      });
-    }
-  }
-
-
-
-  CreateDevicePopup(event) {
-    event.preventDefault();
-    this.deviceModel = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: '' };
-    $('#addDevice').modal('toggle');
-  }
-
-  openEditDevicePopup(event, deviceRow: any) {
-    event.preventDefault();
-    this.deviceModel = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: '' };
-    $('#editDevice').modal('toggle');
-  }
-
-  openDeleteDevicePopup(event, deviceRow: any) {
-    this.deviceModel = { deviceId: '', deviceName: '', deviceAddress: '', date: '', status: '' };
-    $('#deleteDevice').modal('toggle');
-  }
-
-  onDeviceSort({ column, direction }: SortEvent) {
-
-    // resetting other headers
-    this.headers.forEach(header => {
-      if (header.sortable !== column) {
-        header.direction = '';
-      }
-    });
-
-    // sorting countries
-    const devices = [...this.devices];
-    if (direction === '' || column === '') {
-      this.devices = devices;
-    } else {
-      this.devices = [...devices].sort((a, b) => {
-        const res = compare(`${a[column]}`, `${b[column]}`);
-        return direction === 'asc' ? res : -res;
-      });
-    }
-  }
-
-  addLocation(form: NgForm) {
-
-  }
-
-  editLocation(form: NgForm) {
-
-  }
-
-  deleteLocation(data: Location) {
-
-  }
-
-  addDevice(form: NgForm) {
-
-  }
-
-  editDevice(form: NgForm) {
-
-  }
-
-  deleteDevice(data: any) {
-
-  }
-
-
 }

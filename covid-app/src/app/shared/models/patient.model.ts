@@ -16,4 +16,5 @@ export interface Patient {
     address: string;
     status: string;
     rowColor?: string;
+    statusUpdatedDate?: string;
 }

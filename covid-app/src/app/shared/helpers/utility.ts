@@ -1,4 +1,6 @@
 import * as moment from 'moment';
+import { Location } from '../models';
+
 declare var $;
 
 export function renderTable(self, tableId, tableColumns, tableData, childTable = false) {
@@ -60,3 +62,33 @@ export function getDateFromTimeStamp(timestamp: any) {
     return moment(timestamp, 'X').format('DD/MM/YYYY HH:mm:ss');
 }
 
+export function restructureData(response: Location) {
+    const resCopy = { ...response };
+    let result: Location[] = [];
+    resCopy.istarget = resCopy.type == 'Country';
+    result.push(resCopy);
+
+    if (Array.isArray(response.subordinates)) {
+      result = result.concat(this.flatData(response.subordinates, response));
+    }
+    let locations = [...result];
+    locations = locations.sort((a, b) => a.placeName < b.placeName ? -1 : a.placeName > b.placeName ? 1 : 0);
+    return locations;
+}
+
+export function flatData(subordinates: Location[], root: Location) {
+    let result: Location[] = [];
+
+    const subor = [...subordinates];
+    subor.forEach((sub) => {
+      const subCopy = { ...sub };
+      subCopy.root = root;
+      subCopy.rootId = root.placeId;
+      result.push(subCopy);
+      if (Array.isArray(sub.subordinates)) {
+        result = result.concat(this.flatData(sub.subordinates, sub));
+      }
+    });
+
+    return result;
+}
