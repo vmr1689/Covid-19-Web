@@ -214,7 +214,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Location</th>
-                                                <th>patient</th>
+                                                <th>Person</th>
                                                 <th>Place</th>
                                                 <th>Date</th>
                                                 <th>Actions</th>
@@ -265,7 +265,7 @@
                             <div class="tab-pane" id="tab_3">
                                 <div class="row">
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
 
                                         <div class="col-sm-4 text-right">
                                             <label for="longitude" class="control-label "
@@ -283,7 +283,7 @@
 
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
 
                                         <div class="col-sm-4 text-right">
                                             <label for="longitude" class="control-label "
@@ -300,67 +300,8 @@
                                         </div>
 
                                     </div>
-                                    <div class="col-md-3">
 
-                                        <div class="col-sm-4 text-right">
-                                            <label for="longitude" class="control-label "
-                                                style="color: #444;">Active</label>
-                                        </div>
-
-                                        <div class="col-sm-8">
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input formControlName="active" id="active" name="active"
-                                                        type="checkbox">
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col-md-3">
-
-                                        <div class="col-sm-4 text-right">
-                                            <label for="longitude" class="control-label "
-                                                style="color: #444;">Recovered</label>
-                                        </div>
-
-                                        <div class="col-sm-8">
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input id="recovered" formControlName="recovered" name="recovered"
-                                                        type="checkbox">
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-
-
-
-                                </div>
-                                <div class="row">
-
-
-                                    <div class="col-md-3">
-
-                                        <div class="col-sm-4 text-right">
-                                            <label for="longitude" class="control-label "
-                                                style="color: #444;">Deceased</label>
-                                        </div>
-
-                                        <div class="col-sm-8">
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input id="deceased" formControlName="deceased" name="deceased"
-                                                        type="checkbox">
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
 
                                         <div class="col-sm-4 text-right">
                                             <label for="longitude" class="control-label "
@@ -377,6 +318,17 @@
                                         </div>
 
                                     </div>
+
+
+
+
+
+                                </div>
+                                <div class="row">
+
+
+
+
                                 </div>
                                 <br>
 
@@ -429,13 +381,17 @@
                                     <input name="referenceId" id="referenceId" [(ngModel)]="referenceModel.referenceId"
                                         #referenceId="ngModel" type="hidden" class="form-control" />
 
+                                    <input id="placeName" type="text" autocomplete="off" class="form-control" name="placeName"
+                                        [(ngModel)]="referenceModel.placeName" #placeName="ngModel" placeholder="Location"
+                                        required>
+<!-- 
                                     <select name="placeName" #placeName="ngModel" [(ngModel)]="referenceModel.placeName"
                                         id="placeName" class="form-control" required>
                                         <option *ngFor="let location of locations; let i = index"
                                             value={{location.placeId}}>
                                             {{location.placeName}}
                                         </option>
-                                    </select>
+                                    </select> -->
 
 
                                     <div *ngIf="f.submitted && !placeName.valid" class="text-danger">Location is
@@ -451,14 +407,18 @@
 
                                 <div class="col-sm-10">
 
-                                    <select name="patient" #patient="ngModel" [(ngModel)]="referenceModel.patient"
+                                    <input id="person" type="text" autocomplete="off" class="form-control" name="person"
+                                        [(ngModel)]="referenceModel.person" #person="ngModel" placeholder="Person"
+                                        required>
+
+                                    <!-- <select name="patient" #patient="ngModel" [(ngModel)]="referenceModel.patient"
                                         id="patient" class="form-control" required>
                                         <option *ngFor="let person of Persons; let i = index" value={{person.id}}>
                                             {{person.name}}
                                         </option>
-                                    </select>
+                                    </select> -->
 
-                                    <div *ngIf="f.submitted && !patient.valid" class="text-danger">Patient is required
+                                    <div *ngIf="f.submitted && !person.valid" class="text-danger">Patient is required
                                     </div>
                                 </div>
                             </div>
@@ -515,7 +475,8 @@
 
                                 <div class="col-sm-10">
                                     <input id="reason" type="text" autocomplete="off" class="form-control" name="reason"
-                                        [(ngModel)]="referenceModel.reason" #reason="ngModel" placeholder="Reason" required>
+                                        [(ngModel)]="referenceModel.reason" #reason="ngModel" placeholder="Reason"
+                                        required>
 
                                     <div *ngIf="f.submitted && !reason.valid" class="text-danger">Reason is required
                                     </div>
@@ -555,16 +516,21 @@
 
                                 <div class="col-sm-10">
 
+                                    
                                     <input name="referenceId" id="referenceId" [(ngModel)]="referenceModel.referenceId"
                                         #referenceId="ngModel" type="hidden" class="form-control" />
 
-                                    <select name="placeName" #placeName="ngModel" [(ngModel)]="referenceModel.placeName"
+                                        <input id="placeName" type="text" autocomplete="off" class="form-control" name="placeName"
+                                        [(ngModel)]="referenceModel.placeName" #placeName="ngModel" placeholder="Location"
+                                        required>
+
+                                    <!-- <select name="placeName" #placeName="ngModel" [(ngModel)]="referenceModel.placeName"
                                         id="placeName" class="form-control" required>
                                         <option *ngFor="let location of locations; let i = index"
                                             value={{location.placeId}}>
                                             {{location.placeName}}
                                         </option>
-                                    </select>
+                                    </select> -->
 
 
                                     <div *ngIf="f.submitted && !placeName.valid" class="text-danger">Location is
@@ -580,14 +546,18 @@
 
                                 <div class="col-sm-10">
 
-                                    <select name="patient" #patient="ngModel" [(ngModel)]="referenceModel.patient"
+                                    <input id="person" type="text" autocomplete="off" class="form-control" name="person"
+                                    [(ngModel)]="referenceModel.person" #person="ngModel" placeholder="Person"
+                                    required>
+
+                                    <!-- <select name="patient" #patient="ngModel" [(ngModel)]="referenceModel.patient"
                                         id="patient" class="form-control" required>
                                         <option *ngFor="let person of Persons; let i = index" value={{person.id}}>
                                             {{person.name}}
                                         </option>
-                                    </select>
+                                    </select> -->
 
-                                    <div *ngIf="f.submitted && !patient.valid" class="text-danger">Patient is required
+                                    <div *ngIf="f.submitted && !person.valid" class="text-danger">Patient is required
                                     </div>
                                 </div>
                             </div>
@@ -644,7 +614,8 @@
 
                                 <div class="col-sm-10">
                                     <input id="reason" type="text" autocomplete="off" class="form-control" name="reason"
-                                        [(ngModel)]="referenceModel.reason" #reason="ngModel" placeholder="Reason" required>
+                                        [(ngModel)]="referenceModel.reason" #reason="ngModel" placeholder="Reason"
+                                        required>
 
                                     <div *ngIf="f.submitted && !reason.valid" class="text-danger">Reason is required
                                     </div>

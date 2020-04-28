@@ -49,9 +49,6 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
   public address: AbstractControl;
   public quarantined: AbstractControl;
   public confirmed: AbstractControl;
-  public active: AbstractControl;
-  public recovered: AbstractControl;
-  public deceased: AbstractControl;
   public released: AbstractControl;
   public quaratinedDate: AbstractControl;
   public cities: Location[] = [];
@@ -59,7 +56,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
 
   public referenceModel: any = {
     referenceId: '',
-    patient: '',
+    person: '',
     type: '',
     placeName: '',
     severity: '',
@@ -130,9 +127,6 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
       address: ['', [Validators.required]],
       quarantined: [true],
       confirmed: [false],
-      active: [false],
-      recovered: [false],
-      deceased: [false],
       released: [false],
       quaratinedDate: [new Date()],
     });
@@ -147,9 +141,6 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
     this.address = this.form.controls.address;
     this.quarantined = this.form.controls.quarantined;
     this.confirmed = this.form.controls.confirmed;
-    this.active = this.form.controls.active;
-    this.recovered = this.form.controls.recovered;
-    this.deceased = this.form.controls.deceased;
     this.released = this.form.controls.released;
     this.quaratinedDate = this.form.controls.quaratinedDate;
 
@@ -199,39 +190,12 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
     this.address.setValue(model.address);
 
     if (model.status == STATUS_TYPES[1].id) {
-      this.quarantined.setValue(true);
-      this.confirmed.setValue(false);
-      this.active.setValue(false);
-      this.recovered.setValue(false);
-      this.deceased.setValue(false);
-      this.released.setValue(false);
-    } else if (model.status == STATUS_TYPES[2].id) { // active
       this.quarantined.setValue(false);
       this.confirmed.setValue(true);
-      this.active.setValue(true);
-      this.recovered.setValue(false);
-      this.deceased.setValue(false);
       this.released.setValue(false);
-    } else if (model.status == STATUS_TYPES[3].id) { // recovered
-      this.quarantined.setValue(false);
-      this.confirmed.setValue(true);
-      this.active.setValue(false);
-      this.recovered.setValue(true);
-      this.deceased.setValue(false);
-      this.released.setValue(false);
-    } else if (model.status == STATUS_TYPES[4].id) { // deceased
-      this.quarantined.setValue(false);
-      this.confirmed.setValue(true);
-      this.active.setValue(false);
-      this.recovered.setValue(false);
-      this.deceased.setValue(true);
-      this.released.setValue(false);
-    } else if (model.status == STATUS_TYPES[5].id) { // deceased
+    } else if (model.status == STATUS_TYPES[5].id) { // released
       this.quarantined.setValue(false);
       this.confirmed.setValue(false);
-      this.active.setValue(false);
-      this.recovered.setValue(false);
-      this.deceased.setValue(false);
       this.released.setValue(true);
     }
 
@@ -275,17 +239,14 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
         quaratinedDateStr: Helpers.convertDate(this.quaratinedDate.value)
       };
 
-      if (this.deceased.value) {
-        request.status = STATUS_TYPES[4].id;
+      if (this.released.value) {
+        request.status = STATUS_TYPES[5].id;
       }
-      else if (this.recovered.value) {
-        request.status = STATUS_TYPES[3].id;
-      }
-      else if (this.active.value) {
-        request.status = STATUS_TYPES[2].id;
+      else if (this.confirmed.value) {
+        request.status = STATUS_TYPES[1].id;
       }
       else {
-        request.status = STATUS_TYPES[2].id;
+        request.status = STATUS_TYPES[0].id;
       }
 
       console.log(request);

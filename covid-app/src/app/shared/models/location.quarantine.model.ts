@@ -19,5 +19,6 @@ export interface LocationQuarantine {
     active?: boolean;
     recovered?: boolean;
     deceased?: boolean;
+    released?: boolean;
     quarantined?: boolean;
 }

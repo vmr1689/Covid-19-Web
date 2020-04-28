@@ -45,7 +45,7 @@
 
                                 <div class="col-sm-9">
                                     <input id="organizationName" type="text" autocomplete="off" class="form-control"
-                                        name="organizationName" [(ngModel)]="model.organizationName" #name="ngModel"
+                                        name="organizationName" [(ngModel)]="model.organizationName" #organizationName="ngModel"
                                         placeholder="Name" required>
 
                                     <div *ngIf="editForm.submitted && !organizationName.valid" class="text-danger">Name is required
