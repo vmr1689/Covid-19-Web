@@ -25,26 +25,27 @@
                                 <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th sortable="patientId" (sort)="onSort($event)">Patient Id</th>
-                                            <th sortable="firstName" (sort)="onSort($event)">First Name</th>
-                                            <th sortable="lastName" (sort)="onSort($event)">Last Name</th>
-                                            <th scope="col" sortable="phone" (sort)="onSort($event)">Phone Number</th>
-                                            <th scope="col" sortable="email" (sort)="onSort($event)">Email</th>
-                                            <th scope="col" sortable="placeName" (sort)="onSort($event)">Place</th>
-                                            <th scope="col" sortable="severity" (sort)="onSort($event)">Severity</th>
-                                            <th scope="col" sortable="status" (sort)="onSort($event)">Status</th>
+                                            <th style="display: none;">Id</th>
+                                            <th>Patient Id</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Phone Number</th>
+                                            <th>Email</th>
+                                            <th>Place</th>
+                                            
+                                            <th>Status</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr [style.color]="data.rowColor" *ngFor="let data of patients; index as i ">
-                                            <td>COVID-PAT-{{i + 1}}</td>
+                                            <td style="display: none;">data.patientId</td>
+                                            <td>COVID-PAT-{{data.patientId}}</td>
                                             <td>{{data.firstName}}</td>
                                             <td>{{data.lastName}} </td>
-                                            <td>{{data.phone}}</td>
+                                            <td>{{data.phoneNumber}}</td>
                                             <td>{{data.email}}</td>
-                                            <td>{{data.place.placeName}}</td>
-                                            <td>{{data.severity}}</td>
+                                            <td>{{data.city}}</td>
                                             <td>{{data.status}}</td>
                                             <td>
                                                 <button style="margin-right:5px" title="View Patient"

@@ -9,7 +9,7 @@ export class PatientService {
     constructor(private http: HttpClient) { }
 
     getAllPatients = () => {
-        return this.http.get<Patient[]>(`${environment.apiUrl}/patient/getAllPatients`);
+        return this.http.get<Patient[]>(`${environment.apiUrl}/covid/covid19PatientList`);
     }
 
     getPatientById = (patientId: number) => {
