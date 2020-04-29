@@ -1,12 +1,11 @@
-import { Component, OnInit, EventEmitter, Input, Output, QueryList, ViewChildren, ViewChild, OnDestroy, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewChecked } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 
-
 import { OrganisationService, SpinnerService } from '../shared/services';
-import { Organisation, ngBootstrapTable } from '../shared/models';
+import { Organisation } from '../shared/models';
 
 declare var $;
 
@@ -30,8 +29,6 @@ export class OrganisationComponent implements OnInit, AfterViewChecked, OnDestro
   public isDtInitialized = false;
   public model: Organisation = {} as Organisation;
   public organisations: Organisation[] = [];
-
-
 
   constructor(
     private spinnerService: SpinnerService,
@@ -71,7 +68,7 @@ export class OrganisationComponent implements OnInit, AfterViewChecked, OnDestro
         dtInstance.destroy();
         setTimeout(() => {
           this.dtTrigger.next();
-        });
+        }, 5000);
       });
     } else {
       this.isDtInitialized = true;
@@ -109,15 +106,17 @@ export class OrganisationComponent implements OnInit, AfterViewChecked, OnDestro
 
   importOrganisation(form: NgForm) {
 
-    debugger;
     if (this.fileInput && this.fileInput.nativeElement.files.length > 0) {
       const formData = new FormData();
       formData.append('file', this.fileInput.nativeElement.files[0]);
 
+      this.spinnerService.show();
       this.organisationService.importExcel(formData).subscribe(result => {
-        $('#importOrganisation').modal('toggle');
         this.importMessage = result.toString();
-        this.getAllOrganisations();
+      }).add(() => {
+        $('#importOrganisation').modal('toggle');
+        this.spinnerService.hide();
+        window.location.reload();
       });
     }
   }

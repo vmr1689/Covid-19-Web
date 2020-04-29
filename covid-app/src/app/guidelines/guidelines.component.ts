@@ -52,14 +52,14 @@ export class GuidelinesComponent implements OnInit, AfterViewChecked, OnDestroy 
 
   getAllGuidelines() {
     this.spinnerService.show();
+    this.guidelines = [];
     this.guidelinesService.getAllGuidelines().subscribe((response: Guidelines[]) => {
-      this.guidelines = [];
       if (response && response.length > 0) {
         this.guidelines = response;
       }
-      this.rerender();
     }).add(() => {
       this.spinnerService.hide();
+      this.rerender();
     });
   }
 
@@ -77,7 +77,9 @@ export class GuidelinesComponent implements OnInit, AfterViewChecked, OnDestroy 
     if (this.isDtInitialized) {
       this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
         dtInstance.destroy();
-        this.dtTrigger.next();
+        setTimeout(() => {
+          this.dtTrigger.next();
+        });
       });
     } else {
       this.isDtInitialized = true;
@@ -103,9 +105,12 @@ export class GuidelinesComponent implements OnInit, AfterViewChecked, OnDestroy 
       formData.append('description', model.description);
       formData.append('type', model.type);
 
+      this.spinnerService.show();
       this.guidelinesService.importExcel(formData).subscribe(result => {
-        $('#importGuidelines').modal('toggle');
         this.importMessage = result.toString();
+      }).add(() => {
+        $('#importGuidelines').modal('toggle');
+        this.spinnerService.hide();
         this.getAllGuidelines();
       });
     }

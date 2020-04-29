@@ -1,13 +1,11 @@
-import { Component, OnInit, Input, Output, QueryList, ViewChildren, ViewChild, OnDestroy, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewChecked } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 
-import { SortEvent, NgbdSortableHeader, compare } from '../shared/directives/sortable.directive';
-
+import { ORGANISATION_TYPES } from '.././seedConfig';
 import { OrganisationService, SpinnerService } from '../shared/services';
-import { Organisation, ngBootstrapTable } from '../shared/models';
+import { Organisation, OrganisationTypes } from '../shared/models';
 
 @Component({
   selector: 'app-essentials',
@@ -16,7 +14,6 @@ import { Organisation, ngBootstrapTable } from '../shared/models';
 })
 export class EssentialsComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild(DataTableDirective, { static: false }) dtElement: DataTableDirective;
-  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   @ViewChild('importForm') importForm: NgForm;
   @ViewChild('fileInput') fileInput;
   public importMessage: string;
@@ -35,11 +32,10 @@ export class EssentialsComponent implements OnInit, AfterViewChecked, OnDestroy 
   public states: any[] = [];
   public districts: any[] = [];
   public cities: any[] = [];
-  public categories: any[] = [
-    { categoryId: 0, category: 'All Categories' },
-    { categoryId: 1, category: 'Hospital' },
-    { categoryId: 2, category: 'CoVID-19 Testing Lab' },
-  ];
+
+  public categories: OrganisationTypes[] = ORGANISATION_TYPES;
+  public allCategories: OrganisationTypes = { id: '', text: 'All Categories' };
+
   latitude = 20.5937;
   longitude = 78.9629;
   marlatitude = 20.5937;
@@ -49,10 +45,10 @@ export class EssentialsComponent implements OnInit, AfterViewChecked, OnDestroy 
 
   constructor(
     private spinnerService: SpinnerService,
-    private router: Router,
     private organisationService: OrganisationService) { }
 
   ngOnInit(): void {
+    this.categories = [this.allCategories].concat(this.categories);
     this.getAllOrganisations();
   }
 
@@ -90,24 +86,17 @@ export class EssentialsComponent implements OnInit, AfterViewChecked, OnDestroy 
       states = [...uniqueStates];
       states.unshift('All States');
 
-      // let districts = organisations.map(o => o.district);
-      // const uniqueDistricts = new Set(districts);
-      // districts = [...uniqueDistricts];
-      // districts.unshift('All Districts');
-
       let cities = organisations.map(o => o.city);
       const uniqueCities = new Set(cities);
       cities = [...uniqueCities];
       cities.unshift('All Cities');
 
       this.states = states;
-      //this.districts = districts;
       this.cities = cities;
 
       this.model.state = 'All States';
-      //this.model.district = 'All Districts';
       this.model.city = 'All Cities';
-      this.model.categoryId = 0;
+      this.model.categoryId = '';
     }
   }
 
@@ -127,35 +116,28 @@ export class EssentialsComponent implements OnInit, AfterViewChecked, OnDestroy 
     this.model = {} as Organisation;
     this.organisations = [...this.organisationsCopy];
     this.model.state = 'All States';
-    //this.model.district = 'All Districts';
     this.model.city = 'All Cities';
-    this.model.categoryId = 0;
+    this.model.categoryId = '';
 
     this.searchOrganisation();
   }
 
   searchOrganisation() {
-    debugger;
-    let selectedState = this.model.state;
-    //let selectedDistrict = this.model.district;
-    let selectedCity = this.model.city;
-    let selectedCategoryId = this.model.categoryId;
+    const selectedState = this.model.state;
+    const selectedCity = this.model.city;
+    const selectedCategoryId = this.model.categoryId;
 
     let includeState = true;
-    let includeDistrict = true;
     let includeCity = true;
     let includeCategory = true;
 
     if (selectedState == 'All States') {
       includeState = false;
     }
-    // if (selectedDistrict == 'All Districts') {
-    //   includeDistrict = false;
-    // }
     if (selectedCity == 'All Cities') {
       includeCity = false;
     }
-    if (selectedCategoryId == 0) {
+    if (selectedCategoryId == '') {
       includeCategory = false;
     }
 
@@ -163,13 +145,10 @@ export class EssentialsComponent implements OnInit, AfterViewChecked, OnDestroy 
       if (includeState && selectedState != x.state) {
         return false;
       }
-      // if (includeDistrict && selectedDistrict != x.district) {
-      //   return false;
-      // }
       if (includeCity && selectedCity != x.city) {
         return false;
       }
-      if (includeCategory && selectedCategoryId != x.categoryId) {
+      if (includeCategory && selectedCategoryId != x.category) {
         return false;
       }
       return true;
@@ -182,6 +161,7 @@ export class EssentialsComponent implements OnInit, AfterViewChecked, OnDestroy 
   closeMap() {
     this.viewMap = false;
   }
+
   openMapOrganisation(data) {
     this.viewMap = true;
 

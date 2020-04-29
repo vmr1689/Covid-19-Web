@@ -1,7 +1,7 @@
 export interface Organisation {
     covidOrganizationId: number;
     category: string;
-    categoryId: number;
+    categoryId: string;
     organizationName: string;
     latitude: number;
     longitude: number;

@@ -66,8 +66,8 @@
                                     <select name="categoryId" #categoryId="ngModel" [(ngModel)]="model.categoryId"
                                         id="categoryId" class="form-control">
                                         <option *ngFor="let category of categories; let i = index"
-                                            value={{category.categoryId}} [selected]="i == 0">
-                                            {{category.category}}
+                                            value={{category.id}} [selected]="i == 0">
+                                            {{category.text}}
                                         </option>
                                     </select>
                                 </div>
