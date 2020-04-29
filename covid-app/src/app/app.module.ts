@@ -24,10 +24,7 @@ import { FooterComponent } from './footer/footer.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { LocationComponent } from './location/location.component';
-import { AddLocationComponent } from './add-location/add-location.component';
-import { EditLocationComponent } from './edit-location/edit-location.component';
 import { PatientsComponent } from './patients/patients.component';
-import { AddPatientComponent } from './add-patient/add-patient.component';
 import { LocationPatientsComponent } from './location-patients/location-patients.component';
 import { UserComponent } from './user/user.component';
 import { BannerComponent } from './banner/banner.component';
@@ -35,7 +32,6 @@ import { UpdatesComponent } from './updates/updates.component';
 import { EditPatientComponent } from './edit-patient/edit-patient.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { QuarantinePatientComponent } from './quarantine-patient/quarantine-patient.component';
-import { AddQuarantinePatientComponent } from './add-quarantine-patient/add-quarantine-patient.component';
 import { EditQuarantinePatientComponent } from './edit-quarantine-patient/edit-quarantine-patient.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { OrganisationComponent } from './organisation/organisation.component';
@@ -55,10 +51,7 @@ import { EssentialsComponent } from './essentials/essentials.component';
     DashboardComponent,
     LoginComponent,
     LocationComponent,
-    AddLocationComponent,
-    EditLocationComponent,
     PatientsComponent,
-    AddPatientComponent,
     LocationPatientsComponent,
     UserComponent,
     BannerComponent,
@@ -66,7 +59,6 @@ import { EssentialsComponent } from './essentials/essentials.component';
     EditPatientComponent,
     ForgotPasswordComponent,
     QuarantinePatientComponent,
-    AddQuarantinePatientComponent,
     EditQuarantinePatientComponent,
     HasRoleDirective,
     SpinnerComponent,

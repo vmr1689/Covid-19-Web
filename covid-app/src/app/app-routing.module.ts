@@ -5,10 +5,7 @@ import { AuthGuard, RoleGuard, UserRoleGuard } from './shared/helpers';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LocationComponent } from './location/location.component';
-import { AddLocationComponent } from './add-location/add-location.component';
-import { EditLocationComponent } from './edit-location/edit-location.component';
 import { PatientsComponent } from './patients/patients.component';
-import { AddPatientComponent } from './add-patient/add-patient.component';
 import { LocationPatientsComponent } from './location-patients/location-patients.component';
 import { UserComponent } from './user/user.component';
 import { BannerComponent } from './banner/banner.component';
@@ -17,7 +14,6 @@ import { EditPatientComponent } from './edit-patient/edit-patient.component';
 import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { QuarantinePatientComponent } from './quarantine-patient/quarantine-patient.component';
-import { AddQuarantinePatientComponent } from './add-quarantine-patient/add-quarantine-patient.component';
 import { EditQuarantinePatientComponent } from './edit-quarantine-patient/edit-quarantine-patient.component';
 import { OrganisationComponent } from './organisation/organisation.component';
 import { AddOrganisationComponent } from './add-organisation/add-organisation.component';
@@ -44,8 +40,6 @@ const superAdminRole = {
 };
 
 const routes: Routes = [
-  // { path: 'addlocation', component: AddLocationComponent },
-  // { path: 'editlocation/:placeId', component: EditLocationComponent },
   {
     path: '',
     component: DashboardComponent,
@@ -87,12 +81,6 @@ const routes: Routes = [
     canActivate: levelOneRole.canActivate,
   },
   {
-    path: 'addpatient',
-    component: AddPatientComponent,
-    data: levelOneRole.data,
-    canActivate: levelOneRole.canActivate,
-  },
-  {
     path: 'editpatient/:patientId',
     component: EditPatientComponent,
     data: levelOneRole.data,
@@ -119,12 +107,6 @@ const routes: Routes = [
   {
     path: 'quarantinepersons',
     component: QuarantinePatientComponent,
-    data: levelOneRole.data,
-    canActivate: levelOneRole.canActivate,
-  },
-  {
-    path: 'addquarantineperson',
-    component: AddQuarantinePatientComponent,
     data: levelOneRole.data,
     canActivate: levelOneRole.canActivate,
   },
