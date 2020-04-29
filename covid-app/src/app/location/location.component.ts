@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewChecked, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewChecked, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -8,7 +8,7 @@ import * as Helpers from '../shared/helpers';
 import { LOCATION_TYPES, GENDER_TYPES } from '.././seedConfig';
 import { environment } from '../../environments/environment';
 import { LocationService, SpinnerService } from '../shared/services';
-import { Location, LocationTypes, LocationPatient, LocationQuarantine, GenderTypes } from '../shared/models';
+import { Location, LocationTypes, LocationPatient, LocationQuarantine, GenderTypes, Select2DropDown } from '../shared/models';
 
 declare var $;
 
@@ -41,10 +41,12 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
   public tableLocations: Location[] = [];
   public locations: Location[] = [];
   public rootLocations: Location[] = [];
+  public dropdownLocations: Select2DropDown[] = [];
   public types: LocationTypes[] = LOCATION_TYPES;
   public genderTypes: GenderTypes[] = GENDER_TYPES;
 
   constructor(
+    private cdRef: ChangeDetectorRef,
     private spinnerService: SpinnerService,
     private router: Router,
     private locationService: LocationService) { }
@@ -56,6 +58,7 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   ngAfterViewChecked() {
     $('.dataTables_filter input, .dataTables_length select').addClass('form-control');
+    this.cdRef.detectChanges();
   }
 
   ngOnDestroy(): void {
@@ -72,6 +75,7 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.locations = [];
       this.tableLocations = [];
       this.rootLocations = [];
+      this.dropdownLocations = [];
 
       if (response.type == 'Country') {
         this.country = response.placeName;
@@ -82,7 +86,13 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.locations = [...result];
         this.rootLocations = [...result];
         this.tableLocations = [...result];
+
+        this.rootLocations = this.rootLocations.filter(item => item.subordinates.length === 0);
+
         this.rootLocations = this.rootLocations.sort((a, b) => a.placeName < b.placeName ? -1 : a.placeName > b.placeName ? 1 : 0);
+        this.rootLocations.forEach(item => {
+          this.dropdownLocations.push({ id: item.placeId, text: item.placeName });
+        });
       }
       this.rerender();
     }).add(() => {
