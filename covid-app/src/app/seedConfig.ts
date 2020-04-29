@@ -106,3 +106,14 @@ export const ORGANISATION_TYPES = [
         text: 'Lab'
     }
 ];
+
+export const USER_ROLES = [
+    {
+        id: 'admin',
+        text: 'Admin'
+    },
+    {
+        id: 'superadmin',
+        text: 'Super Admin'
+    }
+];

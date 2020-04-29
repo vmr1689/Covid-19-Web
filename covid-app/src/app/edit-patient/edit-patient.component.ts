@@ -238,7 +238,7 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
         gender: this.gender.value,
         city: this.city.value,
         state: '',
-        country: '',
+        country: environment.targetLocation,
         id: this.patientId.value,
         age: this.age.value,
         address: this.address.value,

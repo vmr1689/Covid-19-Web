@@ -44,6 +44,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
   public bannerList: Banner[];
   public infoIndex = 0;
   public info: string;
+  public lastUpdatedTime: string;
 
   public sampleData: SampleData;
   public sampleStateDistrictData: SampleStateDistrictWiseData;
@@ -66,6 +67,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
   public patientGenderChart: am4charts.PieChart;
   public patientAgeChart: am4charts.XYChart;
 
+  public targetRegion: string;
   public countryDivisions: CountryDivision = IndiaDivisions;
 
   constructor(
@@ -73,7 +75,11 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
     private updatesService: UpdatesService,
     private spinnerService: SpinnerService,
     private dashboardService: DashboardService,
-    private guidelinesService: GuidelinesService) { }
+    private guidelinesService: GuidelinesService) {
+    const date = new Date();
+    this.lastUpdatedTime = 'Last Updated on ' + date.toString();
+    this.targetRegion = environment.targetLocation;
+  }
 
   ngOnInit(): void {
     this.getAllAPIValues();
@@ -86,16 +92,35 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
   public getMapData(response: Location) {
     const subOrdinates = response.subordinates ? response.subordinates : [];
     this.mapDataList = [];
-    subOrdinates.forEach(item => {
-      const mapData = {} as MapData;
-      mapData.name = item.placeName;
-      mapData.value = item.covidInfo ? item.covidInfo.confirmed : 0;
-      const division = this.countryDivisions.divisions.find(x => x.name.trim().toLowerCase() == item.placeName.trim().toLowerCase());
-      if (division) {
-        mapData.id = 'IN-' + division.code;
-      }
-      this.mapDataList.push(mapData);
+    const divisions = [...this.countryDivisions.divisions];
+
+    divisions.forEach(item => {
+      const dt: MapData = {
+        id: item.code,
+        name: item.name,
+        value: 0
+      };
+      this.mapDataList.push(dt);
     });
+
+    this.mapDataList.forEach(item => {
+      const result = subOrdinates.find(x => x.placeName.trim().toLowerCase() == item.name.trim().toLowerCase());
+
+      if (result) {
+        item.value = result.covidInfo ? result.covidInfo.confirmed : 0;
+      }
+    });
+    //console.log(this.mapDataList);
+    // subOrdinates.forEach(item => {
+    //   const mapData = {} as MapData;
+    //   mapData.name = item.placeName;
+    //   mapData.value = item.covidInfo ? item.covidInfo.confirmed : 0;
+    //   const division = this.countryDivisions.divisions.find(x => x.name.trim().toLowerCase() == item.placeName.trim().toLowerCase());
+    //   if (division) {
+    //     mapData.id = 'IN-' + division.code;
+    //   }
+    //   this.mapDataList.push(mapData);
+    // });
     this.destroyMaps();
     this.renderMapChart();
   }

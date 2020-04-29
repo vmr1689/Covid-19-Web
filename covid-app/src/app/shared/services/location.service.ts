@@ -72,7 +72,8 @@ export class LocationService {
             gender: model.gender,
             city: model.placeName,
             age: model.age,
-            address: model.address
+            address: model.address,
+            country: environment.targetLocation
         };
         return this.http.post(`${environment.apiUrl}/covid/addNewPatient`, request, this.httpOptions);
     }
@@ -87,7 +88,8 @@ export class LocationService {
             city: model.placeName,
             age: model.age,
             address: model.address,
-            quaratinedDate: model.quaratinedDateStr
+            quaratinedDate: model.quaratinedDateStr,
+            country: environment.targetLocation
         };
         console.log(request);
         return this.http.post(`${environment.apiUrl}/covid/addQuaratinedPerson`, request, this.httpOptions);

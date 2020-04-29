@@ -3,155 +3,155 @@
     "code": "IN",
     "divisions": [
         {
-            "code": "AN",
+            "code": "IN-AN",
             "name": "Andaman and Nicobar Islands"
         },
         {
-            "code": "AP",
+            "code": "IN-AP",
             "name": "Andhra Pradesh"
         },
         {
-            "code": "AR",
+            "code": "IN-AR",
             "name": "Arunachal Pradesh"
         },
         {
-            "code": "AS",
+            "code": "IN-AS",
             "name": "Assam"
         },
         {
-            "code": "BR",
+            "code": "IN-BR",
             "name": "Bihar"
         },
         {
-            "code": "CH",
+            "code": "IN-CH",
             "name": "Chandigarh"
         },
         {
-            "code": "CT",
+            "code": "IN-CT",
             "name": "Chhattisgarh"
         },
         {
-            "code": "DD",
+            "code": "IN-DD",
             "name": "Daman and Diu"
         },
         {
-            "code": "DL",
+            "code": "IN-DL",
             "name": "Delhi"
         },
         {
-            "code": "DN",
+            "code": "IN-DN",
             "name": "Dadra and Nagar Haveli"
         },
         {
-            "code": "DD",
+            "code": "IN-DD",
             "name": "Dadra and Nagar Haveli and Daman and Diu"
         },
         {
-            "code": "LA",
+            "code": "IN-LA",
             "name": "Ladakh"
         },
         {
-            "code": "GA",
+            "code": "IN-GA",
             "name": "Goa"
         },
         {
-            "code": "GJ",
+            "code": "IN-GJ",
             "name": "Gujarat"
         },
         {
-            "code": "HR",
+            "code": "IN-HR",
             "name": "Haryana"
         },
         {
-            "code": "HP",
+            "code": "IN-HP",
             "name": "Himachal Pradesh"
         },
         {
-            "code": "JK",
+            "code": "IN-JK",
             "name": "Jammu and Kashmir"
         },
         {
-            "code": "JH",
+            "code": "IN-JH",
             "name": "Jharkhand"
         },
         {
-            "code": "KA",
+            "code": "IN-KA",
             "name": "Karnataka"
         },
         {
-            "code": "KL",
+            "code": "IN-KL",
             "name": "Kerala"
         },
         {
-            "code": "LD",
+            "code": "IN-LD",
             "name": "Lakshadweep"
         },
         {
-            "code": "MP",
+            "code": "IN-MP",
             "name": "Madhya Pradesh"
         },
         {
-            "code": "MH",
+            "code": "IN-MH",
             "name": "Maharashtra"
         },
         {
-            "code": "MN",
+            "code": "IN-MN",
             "name": "Manipur"
         },
         {
-            "code": "ML",
+            "code": "IN-ML",
             "name": "Meghalaya"
         },
         {
-            "code": "MZ",
+            "code": "IN-MZ",
             "name": "Mizoram"
         },
         {
-            "code": "NL",
+            "code": "IN-NL",
             "name": "Nagaland"
         },
         {
-            "code": "OR",
+            "code": "IN-OR",
             "name": "Odisha"
         },
         {
-            "code": "PB",
+            "code": "IN-PB",
             "name": "Punjab"
         },
         {
-            "code": "PY",
+            "code": "IN-PY",
             "name": "Puducherry"
         },
         {
-            "code": "RJ",
+            "code": "IN-RJ",
             "name": "Rajasthan"
         },
         {
-            "code": "SK",
+            "code": "IN-SK",
             "name": "Sikkim"
         },
         {
-            "code": "TN",
+            "code": "IN-TN",
             "name": "Tamil Nadu"
         },
         {
-            "code": "TG",
+            "code": "IN-TG",
             "name": "Telangana"
         },
         {
-            "code": "TR",
+            "code": "IN-TR",
             "name": "Tripura"
         },
         {
-            "code": "UT",
+            "code": "IN-UT",
             "name": "Uttarakhand"
         },
         {
-            "code": "UP",
+            "code": "IN-UP",
             "name": "Uttar Pradesh"
         },
         {
-            "code": "WB",
+            "code": "IN-WB",
             "name": "West Bengal"
         }
     ]
