@@ -98,7 +98,7 @@ export class GuidelinesComponent implements OnInit, AfterViewChecked, OnDestroy 
 
   importGuidelines(form: NgForm) {
     const model = { ...this.model };
-    debugger;
+
     if (this.fileInput && this.fileInput.nativeElement.files.length > 0) {
       const formData = new FormData();
       formData.append('file', this.fileInput.nativeElement.files[0]);

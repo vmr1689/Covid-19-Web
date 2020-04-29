@@ -11,6 +11,7 @@ export interface Location {
     root?: Location;
     subordinates?: Location[];
     name?: string;
+    country?: string;
 }
 
 export interface CovidInfo {

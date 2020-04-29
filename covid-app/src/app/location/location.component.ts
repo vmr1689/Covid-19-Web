@@ -24,6 +24,7 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('addPatientForm') addPatientForm: NgForm;
   @ViewChild('addQuarantineForm') addQuarantineForm: NgForm;
   public isDtInitialized = false;
+  public country: string;
 
   public dtOptions: DataTables.Settings = {
     autoWidth: false,
@@ -71,12 +72,16 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.locations = [];
       this.tableLocations = [];
       this.rootLocations = [];
+
+      if (response.type == 'Country') {
+        this.country = response.placeName;
+        response.country = response.placeName;
+      }
       if (response) {
         const result = this.restructureData(response);
         this.locations = [...result];
         this.rootLocations = [...result];
         this.tableLocations = [...result];
-        debugger;
         this.rootLocations = this.rootLocations.sort((a, b) => a.placeName < b.placeName ? -1 : a.placeName > b.placeName ? 1 : 0);
       }
       this.rerender();
@@ -92,12 +97,12 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
     result.push(resCopy);
 
     if (Array.isArray(response.subordinates)) {
-      result = result.concat(this.flatData(response.subordinates, response));
+      result = result.concat(this.flatData(response.subordinates, response, response.country));
     }
     return result;
   }
 
-  flatData(subordinates: Location[], root: Location) {
+  flatData(subordinates: Location[], root: Location, country: string) {
     let result: Location[] = [];
 
     const subor = [...subordinates];
@@ -105,9 +110,10 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
       const subCopy = { ...sub };
       subCopy.root = root;
       subCopy.rootId = root.placeId;
+      subCopy.country = country;
       result.push(subCopy);
       if (Array.isArray(sub.subordinates)) {
-        result = result.concat(this.flatData(sub.subordinates, sub));
+        result = result.concat(this.flatData(sub.subordinates, sub, country));
       }
     });
     return result;
@@ -128,22 +134,24 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
   }
 
-  openAddPatient(data) {
+  openAddPatient(data: Location) {
     this.patientModel = {} as LocationPatient;
     this.patientModel.placeId = data.placeId;
     this.patientModel.confirmed = true;
     this.patientModel.active = true;
     this.patientModel.placeName = data.placeName;
+    this.patientModel.country = data.country;
     this.addPatientForm.resetForm({ ...this.patientModel });
     $('#addPatient').modal('toggle');
   }
 
-  openQuarantinePerson(data) {
+  openQuarantinePerson(data: Location) {
     this.quarantinePersonModel = {} as LocationQuarantine;
     this.quarantinePersonModel.placeId = data.placeId;
     this.quarantinePersonModel.quarantined = true;
     this.quarantinePersonModel.placeName = data.placeName;
     this.quarantinePersonModel.quaratinedDate = new Date();
+    this.quarantinePersonModel.country = data.country;
     this.addQuarantineForm.resetForm({ ...this.quarantinePersonModel });
     $('#addQuarantinePerson').modal('toggle');
   }
@@ -161,6 +169,7 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   openEditLocation(data: Location) {
     this.model = { ...data };
+    this.model.istarget = (this.model.root && this.model.root.placeName ? true : false);
     this.editForm.resetForm({ ...this.model });
     $('#editLocation').modal('toggle');
   }
@@ -202,6 +211,8 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
     const patientModel = { ...this.patientModel };
     this.spinnerService.show();
 
+    this.addPatientForm.resetForm();
+
     this.locationService.createPatient(patientModel).subscribe((response: any) => {
     }).add(() => {
       $('#addPatient').modal('toggle');
@@ -212,11 +223,11 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
 
 
   addQuarantinePerson(form: NgForm) {
-    debugger;
     const quarantinedModel = { ...this.quarantinePersonModel };
     quarantinedModel.quaratinedDateStr = Helpers.convertDate(quarantinedModel.quaratinedDate);
 
     this.spinnerService.show();
+    this.addQuarantineForm.resetForm();
 
     this.locationService.createQurarantine(quarantinedModel).subscribe((response: any) => {
     }).add(() => {

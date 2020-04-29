@@ -1,11 +1,11 @@
-import { Component, OnInit, EventEmitter, Input, Output, QueryList, ViewChildren, ViewChild, OnDestroy, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewChecked } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 
 import * as Helpers from '../shared/helpers';
 import { UpdatesService, SpinnerService } from '../shared/services';
-import { Banner, ngBootstrapTable } from '../shared/models';
+import { Banner } from '../shared/models';
 
 declare var $;
 
@@ -27,9 +27,7 @@ export class BannerComponent implements OnInit, AfterViewChecked, OnDestroy {
   public isDtInitialized = false;
 
   public model: Banner = {} as Banner;
-
   public banners: Banner[] = [];
-  public bannerTable: ngBootstrapTable;
 
   constructor(
     private spinnerService: SpinnerService,

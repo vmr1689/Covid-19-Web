@@ -1,15 +1,11 @@
-import { Component, OnInit, EventEmitter, Input, Output, QueryList, ViewChildren, ViewChild, OnDestroy, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewChecked } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
-import { FormControl, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 
 import * as Helpers from '../shared/helpers';
-
 import { UpdatesService, SpinnerService } from '../shared/services';
-import { Updatedto, ngBootstrapTable } from '../shared/models';
-
+import { Updatedto } from '../shared/models';
 
 declare var $;
 
@@ -33,11 +29,9 @@ export class UpdatesComponent implements OnInit, AfterViewChecked, OnDestroy {
   public currentDate = new Date();
   public model: Updatedto = {} as Updatedto;
   public updates: Updatedto[] = [];
-  public updatesTable: ngBootstrapTable;
 
   constructor(
     private spinnerService: SpinnerService,
-    private router: Router,
     private updatesService: UpdatesService) { }
 
   ngOnInit(): void {
@@ -119,7 +113,6 @@ export class UpdatesComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   editUpdates(form: NgForm) {
-    debugger;
     this.model.date = this.currentDate;
     this.model.timestamp = Helpers.getTimeStampFromDate(new Date(this.model.date));
     this.spinnerService.show();

@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import * as fileSaver from 'file-saver';
 import { DataTableDirective } from 'angular-datatables';
@@ -38,7 +37,6 @@ export class HelpLinkComponent implements OnInit, AfterViewChecked, OnDestroy {
   constructor(
     private cd: ChangeDetectorRef,
     private spinnerService: SpinnerService,
-    private router: Router,
     private helplinkService: HelplinkService) { }
 
   ngOnInit(): void {
@@ -64,8 +62,6 @@ export class HelpLinkComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.spinnerService.show();
     this.helplinkService.downloadFile(data.covidLinkId).subscribe(response => {
       const blob: any = new Blob([response], { type: response.type });
-      //const url = window.URL.createObjectURL(blob);
-      //window.open(url);
       fileSaver.saveAs(blob, data.fileName);
     }).add(() => {
       this.spinnerService.hide();
@@ -153,21 +149,26 @@ export class HelpLinkComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     if (this.model.category === HELP_LINK_TYPES[1].id) {
       if (this.fileInput && this.fileInput.nativeElement.files.length > 0) {
-        // model.link = this.fileInput.nativeElement.files[0];
 
         const formData = new FormData();
         formData.append('file', this.fileInput.nativeElement.files[0]);
         formData.append('header', model.header);
         formData.append('type', HELP_LINK_TYPES[1].id);
 
+        this.spinnerService.show();
         this.helplinkService.UploadContent(formData).subscribe(result => {
           $('#addHelpLink').modal('toggle');
+        }).add(() => {
+          this.spinnerService.hide();
           this.getAllHelpLinks();
         });
       }
     } else {
+      this.spinnerService.show();
       this.helplinkService.create(model).subscribe(result => {
         $('#addHelpLink').modal('toggle');
+      }).add(() => {
+        this.spinnerService.hide();
         this.getAllHelpLinks();
       });
     }
