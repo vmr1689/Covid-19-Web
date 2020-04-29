@@ -22,6 +22,8 @@ import { HelpLinkComponent } from './help-link/help-link.component';
 import { GuidelinesComponent } from './guidelines/guidelines.component';
 import { LinksComponent } from './links/links.component';
 import { EssentialsComponent } from './essentials/essentials.component';
+import { LocationQuarantinePersonsComponent } from './location-quarantine-persons/location-quarantine-persons.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const levelOneRole = {
   data: {
@@ -44,6 +46,11 @@ const routes: Routes = [
     path: '',
     component: DashboardComponent,
     canActivate: [UserRoleGuard]
+  },
+  {
+    path: 'profile',
+    component: UserProfileComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'dashboard',
@@ -89,6 +96,12 @@ const routes: Routes = [
   {
     path: 'location/:locationId/patients',
     component: LocationPatientsComponent,
+    data: levelOneRole.data,
+    canActivate: levelOneRole.canActivate,
+  },
+  {
+    path: 'location/:locationId/persons',
+    component: LocationQuarantinePersonsComponent,
     data: levelOneRole.data,
     canActivate: levelOneRole.canActivate,
   },

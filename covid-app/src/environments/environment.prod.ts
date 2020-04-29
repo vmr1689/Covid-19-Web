@@ -1,7 +1,8 @@
 export const environment = {
   production: true,
   apiUrl: 'http://52.66.244.249:8080/covid19',
-  targetLocation: 'India'
+  targetLocation: 'India',
+  googleMapAPIKey: 'AIzaSyBHqjazKg_SINMhocRoz-XK-CzY_Po4_Ww'
 };
 
 export const Countries = {

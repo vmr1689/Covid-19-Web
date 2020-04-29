@@ -161,6 +161,11 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.router.navigate(['/location/' + this.model.placeId + '/patients']);
   }
 
+  openAssignedPersons(data: Location) {
+    this.model = { ...data };
+    this.router.navigate(['/location/' + this.model.placeId + '/persons']);
+  }
+
   openCreateLocation() {
     this.model = {} as Location;
     this.addForm.resetForm({ ...this.model });
@@ -189,6 +194,7 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
         rootName = root.placeName;
       }
     }
+    this.addForm.resetForm();
 
     this.spinnerService.show();
     this.locationService.createLocation(model, rootName).subscribe((response: any) => {

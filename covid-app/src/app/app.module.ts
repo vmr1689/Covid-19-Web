@@ -5,9 +5,10 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DataTablesModule } from 'angular-datatables';
 import { AgmCoreModule } from '@agm/core';
+
+import { environment } from '../environments/environment';
 
 // used to create fake backend
 import { fakeBackendProvider, AuthGuard, JwtInterceptor, ErrorInterceptor } from './shared/helpers';
@@ -41,6 +42,8 @@ import { HelpLinkComponent } from './help-link/help-link.component';
 import { GuidelinesComponent } from './guidelines/guidelines.component';
 import { LinksComponent } from './links/links.component';
 import { EssentialsComponent } from './essentials/essentials.component';
+import { LocationQuarantinePersonsComponent } from './location-quarantine-persons/location-quarantine-persons.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -68,19 +71,20 @@ import { EssentialsComponent } from './essentials/essentials.component';
     HelpLinkComponent,
     GuidelinesComponent,
     LinksComponent,
-    EssentialsComponent
+    EssentialsComponent,
+    LocationQuarantinePersonsComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModule,
     BrowserAnimationsModule,
     BsDatepickerModule.forRoot(),
     TimepickerModule.forRoot(),
     HttpClientModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBHqjazKg_SINMhocRoz-XK-CzY_Po4_Ww'
+      apiKey: environment.googleMapAPIKey
     }),
     DataTablesModule,
     AppRoutingModule,

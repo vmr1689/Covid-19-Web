@@ -1,0 +1,178 @@
+<section class="content-header">
+    <h1>
+        User Profile
+    </h1>
+</section>
+<section class="content container-fluid">
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">User Profile</h3>
+                </div>
+                <form class="form-horizontal" name="updateForm"
+                    (ngSubmit)="updateForm.form.valid && updateProfile(updateForm)" #updateForm="ngForm" novalidate>
+                    <div class="box-body">
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="category" class="control-label">User Name:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+                                    <input name="id" id="id" [(ngModel)]="model.id" #id="ngModel" type="hidden"
+                                        class="form-control" />
+
+                                    <input id="username" type="text" autocomplete="off" class="form-control"
+                                        name="username" [(ngModel)]="model.username" #username="ngModel"
+                                        placeholder="User Name" required>
+
+
+                                    <div *ngIf="updateForm.submitted && !username.valid" class="text-danger">User Name
+                                        is
+                                        required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="category" class="control-label">First Name:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+                                    <input name="id" id="id" [(ngModel)]="model.id" #id="ngModel" type="hidden"
+                                        class="form-control" />
+
+                                    <input id="firstName" type="text" autocomplete="off" class="form-control"
+                                        name="firstName" [(ngModel)]="model.firstName" #firstName="ngModel"
+                                        placeholder="First Name" required>
+
+
+                                    <div *ngIf="updateForm.submitted && !firstName.valid" class="text-danger">First Name
+                                        is
+                                        required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="lastName" class="control-label">Last Name:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+                                    <input id="lastName" type="text" autocomplete="off" class="form-control"
+                                        name="lastName" [(ngModel)]="model.lastName" #lastName="ngModel"
+                                        placeholder="Last Name" required>
+
+                                    <div *ngIf="updateForm.submitted && !lastName.valid" class="text-danger">
+                                        Last Name is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="phoneNumber" class="control-label">Phone Number:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+                                    <input id="phoneNumber" type="text" autocomplete="off" class="form-control"
+                                        name="phoneNumber" [(ngModel)]="model.phoneNumber" #phoneNumber="ngModel"
+                                        placeholder="Phone Number" required>
+
+                                    <div *ngIf="updateForm.submitted && !phoneNumber.valid" class="text-danger">
+                                        Phone Number is
+                                        required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="role" class="control-label">Role:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+                                    <input id="role" type="text" autocomplete="off" class="form-control"
+                                        name="role" [(ngModel)]="model.role" #role="ngModel"
+                                        placeholder="Longitude" required>
+
+                                    <div *ngIf="updateForm.submitted && !role.valid" class="text-danger">Role
+                                        is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="hospitalId" class="control-label">Hospital ID:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+                                    <input id="hospitalId" type="text" autocomplete="off" class="form-control"
+                                        name="hospitalId" [(ngModel)]="model.hospitalId" #hospitalId="ngModel"
+                                        placeholder="Hospital ID" required>
+
+                                    <div *ngIf="updateForm.submitted && !hospitalId.valid" class="text-danger">Hospital ID
+                                        is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="hospitalAddress" class="control-label">Hospital Address:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+                                    <input id="hospitalAddress" type="text" autocomplete="off" class="form-control"
+                                        name="hospitalAddress" [(ngModel)]="model.hospitalAddress" #hospitalAddress="ngModel"
+                                        placeholder="Contact Url" required>
+
+                                    <div *ngIf="updateForm.submitted && !hospitalAddress.valid" class="text-danger">Hospital
+                                        Address is required
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="profilePic" class="control-label">Profile:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+
+                                    <div class="form-row d-flex justify-content-center" style="margin-top: 20px;">
+                                        <img *ngIf="model.profilePic" src="{{model.profilePic}}" alt="image"
+                                            height="200" width="200" style="border-radius: 50%;" alt="avatar">
+
+                                        <img *ngIf="!model.profilePic" src="../../assets/images/profile_1.png"
+                                            class="user-image" alt="User Image">
+                                        <span class="hidden-xs"></span>
+                                    </div>
+
+                                    <input type="file" class="custom-file-input" id="uploadButton" name="file"
+                                        accept="image/gif, image/jpeg, image/png " autocomplete="off"
+                                        (change)="changeListener($event,this)">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <button type="button" class="btn btn-default" style="margin-right: 15px;"
+                            (click)="navigateToMainPage()">Cancel</button>
+                        <button type="submit" class="btn btn-primary" style="margin-right: 15px;">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
