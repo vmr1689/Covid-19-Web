@@ -5,19 +5,16 @@ import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import * as am4maps from '@amcharts/amcharts4/maps';
 import am4geodata_indiaLow from '@amcharts/amcharts4-geodata/indiaLow';
 import * as moment from 'moment';
-import { Subject, Observable, forkJoin } from 'rxjs';
+import { forkJoin } from 'rxjs';
 
-import { Countries, Continents, environment } from '../../environments/environment';
+import { environment } from '../../environments/environment';
 import { renderTable, createChild, destroyChild } from '../shared/helpers';
 import { DashboardService, SpinnerService, GuidelinesService, UpdatesService } from '../shared/services';
 import {
   Updates,
   SampleData,
   SampleStateDistrictWiseData,
-  SampleUpdatesData,
-  SampleWebData,
   CasesTimeSeries,
-  StateWise,
   Guidelines,
   Banner,
   Updatedto,
@@ -27,8 +24,6 @@ import {
   CountryDivision,
   MapData
 } from '../shared/models';
-
-import SampleMapDataJson from '.././mapdata.json';
 
 import IndiaDivisions from '.././IndiaDivisions.json';
 

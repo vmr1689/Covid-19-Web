@@ -4,18 +4,9 @@ import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 
 import SampleDataJson from '../../sample_data.json';
-import StateDistrictWiseDataJson from '../../sample_state-district-wise.json';
-import SampleLocationsJson from '../../locations.json';
-import SamplePatientsJson from '../../patients.json';
 import SampleUsersJson from '../../users.json';
 
-import {
-    SampleData,
-    SampleStateDistrictWiseData,
-    Location,
-    Patient,
-    Organisation,
-} from '../models';
+import { SampleData } from '../models';
 
 // array in local storage for registered users
 let users = SampleUsersJson;
@@ -49,27 +40,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
                 case url.endsWith('/dashboard/getDetails') && method === 'GET':
                     return dashboardData();
-                case url.endsWith('dashboard/getStateDistrictData') && method === 'GET':
-                    return stateDistrictData();
-
-                case url.endsWith('location/getAllLocations') && method === 'GET':
-                    return getAllLocations();
-                case url.match(/\/getLocationById\/\d+$/) && method === 'GET':
-                    return getLocation();
-                case url.endsWith('location/createLocation') && method === 'POST':
-                    return createLocation();
-                case url.endsWith('location/editLocation') && method === 'PUT':
-                    return editLocation();
-
-                case url.match(/\/getPatientById\/\d+$/) && method === 'GET':
-                    return getPatient();
-                case url.endsWith('patient/createPatient') && method === 'POST':
-                    return createPatient();
-                case url.endsWith('patient/editPatient') && method === 'PUT':
-                    return editPatient();
-                case url.match(/\/deletePatient\/\d+$/) && method === 'DELETE':
-                    return deletePatient();
-
 
                 default:
                     // pass through any requests not handled above
@@ -169,7 +139,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function isLoggedIn() {
-            //return headers.get('Authorization') === 'Bearer fake-jwt-token';
+            // return headers.get('Authorization') === 'Bearer fake-jwt-token';
             return true;
         }
 
@@ -182,79 +152,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             const mainData = SampleDataJson;
             const castObject = mainData as SampleData;
             return ok(castObject);
-        }
-
-        function stateDistrictData() {
-            const mainData = StateDistrictWiseDataJson;
-            const castObject = mainData as SampleStateDistrictWiseData;
-            return ok(castObject);
-        }
-
-        function getAllLocations() {
-            const mainData = SampleLocationsJson;
-            const castObject = mainData as Location[];
-            return ok(castObject);
-        }
-
-        function createLocation() {
-            const user = body;
-            return ok(true);
-        }
-
-        function editLocation() {
-            const user = body;
-            return ok(true);
-        }
-
-        function getLocation() {
-            const mainData = SampleLocationsJson;
-            const castObject = mainData as Location[];
-            const aa = castObject[2];
-            return ok(aa);
-        }
-
-        function getAllPatients() {
-            const mainData = SamplePatientsJson;
-            const castObject = mainData as Patient[];
-            return ok(castObject);
-        }
-
-        function createPatient() {
-            const user = body;
-            return ok(true);
-        }
-
-        function editPatient() {
-            const user = body;
-            return ok(true);
-        }
-
-        function deletePatient() {
-            const user = body;
-            return ok(true);
-        }
-
-        function getPatient() {
-            const mainData = SamplePatientsJson;
-            const castObject = mainData as Patient[];
-            const aa = castObject[2];
-            return ok(aa);
-        }
-
-
-        function createOrganisation() {
-            const user = body;
-            return ok(true);
-        }
-
-        function editOrganisation() {
-            const user = body;
-            return ok(true);
-        }
-
-        function deleteOrganisation() {
-            const user = body;
-            return ok(true);
         }
     }
 }
