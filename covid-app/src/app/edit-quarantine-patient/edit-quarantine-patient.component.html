@@ -213,9 +213,10 @@
                                     <table datatable [dtOptions]="dtOptions" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Location</th>
+                                                <th>#</th>
                                                 <th>Person</th>
                                                 <th>Place</th>
+                                                <th>Phone Number</th>
                                                 <th>Date</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -223,9 +224,10 @@
                                         <tbody>
                                             <tr *ngFor="let data of references">
                                                 <td>{{data.referenceId}}</td>
-                                                <td>{{data.patient}}</td>
+                                                <td>{{data.person}}</td>
                                                 <td>{{data.placeName}}</td>
-                                                <td>{{data.date}}</td>
+                                                <td>{{data.phoneNumber}}</td>
+                                                <td>{{data.dateStr}}</td>
                                                 <td>
                                                     <button style="margin-right:5px" title="Edit Location"
                                                         (click)="openEditReferencePopup($event, data)"
@@ -372,19 +374,19 @@
 
                         <div class="col-md-6 col-xs-12">
                             <div class="form-group ">
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <label for="placeName" class="control-label">Location:</label>
                                 </div>
 
-                                <div class="col-sm-10">
+                                <div class="col-sm-8">
 
                                     <input name="referenceId" id="referenceId" [(ngModel)]="referenceModel.referenceId"
                                         #referenceId="ngModel" type="hidden" class="form-control" />
 
-                                    <input id="placeName" type="text" autocomplete="off" class="form-control" name="placeName"
-                                        [(ngModel)]="referenceModel.placeName" #placeName="ngModel" placeholder="Location"
-                                        required>
-<!-- 
+                                    <input id="placeName" type="text" autocomplete="off" class="form-control"
+                                        name="placeName" [(ngModel)]="referenceModel.placeName" #placeName="ngModel"
+                                        placeholder="Location" required>
+                                    <!-- 
                                     <select name="placeName" #placeName="ngModel" [(ngModel)]="referenceModel.placeName"
                                         id="placeName" class="form-control" required>
                                         <option *ngFor="let location of locations; let i = index"
@@ -401,11 +403,11 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="col-sm-2">
-                                    <label for="patient" class="control-label">Patient:</label>
+                                <div class="col-sm-4">
+                                    <label for="person" class="control-label">Person:</label>
                                 </div>
 
-                                <div class="col-sm-10">
+                                <div class="col-sm-8">
 
                                     <input id="person" type="text" autocomplete="off" class="form-control" name="person"
                                         [(ngModel)]="referenceModel.person" #person="ngModel" placeholder="Person"
@@ -424,11 +426,27 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
+                                    <label for="phoneNumber" class="control-label">Phone Number:</label>
+                                </div>
+
+                                <div class="col-sm-8">
+                                    <input id="status" type="text" autocomplete="off" class="form-control"
+                                        name="phoneNumber" [(ngModel)]="referenceModel.phoneNumber"
+                                        #phoneNumber="ngModel" placeholder="Phone Number" required>
+
+                                    <div *ngIf="f.submitted && !phoneNumber.valid" class="text-danger">Phone Number is
+                                        required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-4">
                                     <label for="status" class="control-label">Status:</label>
                                 </div>
 
-                                <div class="col-sm-10">
+                                <div class="col-sm-8">
                                     <input id="status" type="text" autocomplete="off" class="form-control" name="status"
                                         [(ngModel)]="referenceModel.status" #status="ngModel" placeholder="Status"
                                         required>
@@ -439,11 +457,11 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <label for="severity" class="control-label">Severity:</label>
                                 </div>
 
-                                <div class="col-sm-10">
+                                <div class="col-sm-8">
                                     <input id="severity" type="text" autocomplete="off" class="form-control"
                                         name="severity" [(ngModel)]="referenceModel.severity" #severity="ngModel"
                                         placeholder="Severity" required>
@@ -455,25 +473,35 @@
 
 
                             <div class="form-group">
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <label for="date" class="control-label">Date:</label>
                                 </div>
 
-                                <div class="col-sm-10">
-                                    <input id="date" type="text" autocomplete="off" class="form-control" name="date"
-                                        [(ngModel)]="referenceModel.date" #date="ngModel" placeholder="Date" required>
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <input class="form-control" [ngModelOptions]="{standalone: true}"
+                                            #date="ngModel" name="date" #datepickerFull="bsDatepicker" bsDatepicker
+                                            [(ngModel)]="referenceModel.date"
+                                            [bsConfig]="{ dateInputFormat: 'MM/DD/YYYY' }" id="bsDatepickerRefAdd"
+                                            required>
 
-                                    <div *ngIf="f.submitted && !date.valid" class="text-danger">Date is required
+                                        <div class="input-group-addon" (click)='calTrigDatepickerRef()'>
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+
+                                        <div *ngIf="f.submitted && !date.valid" class="text-danger">Date is required
+                                        </div>
                                     </div>
+
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <label for="reason" class="control-label">Reason:</label>
                                 </div>
 
-                                <div class="col-sm-10">
+                                <div class="col-sm-8">
                                     <input id="reason" type="text" autocomplete="off" class="form-control" name="reason"
                                         [(ngModel)]="referenceModel.reason" #reason="ngModel" placeholder="Reason"
                                         required>
@@ -510,19 +538,19 @@
 
                         <div class="col-md-6 col-xs-12">
                             <div class="form-group ">
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <label for="placeName" class="control-label">Location:</label>
                                 </div>
 
-                                <div class="col-sm-10">
+                                <div class="col-sm-8">
 
-                                    
+
                                     <input name="referenceId" id="referenceId" [(ngModel)]="referenceModel.referenceId"
                                         #referenceId="ngModel" type="hidden" class="form-control" />
 
-                                        <input id="placeName" type="text" autocomplete="off" class="form-control" name="placeName"
-                                        [(ngModel)]="referenceModel.placeName" #placeName="ngModel" placeholder="Location"
-                                        required>
+                                    <input id="placeName" type="text" autocomplete="off" class="form-control"
+                                        name="placeName" [(ngModel)]="referenceModel.placeName" #placeName="ngModel"
+                                        placeholder="Location" required>
 
                                     <!-- <select name="placeName" #placeName="ngModel" [(ngModel)]="referenceModel.placeName"
                                         id="placeName" class="form-control" required>
@@ -540,15 +568,15 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <label for="patient" class="control-label">Person:</label>
                                 </div>
 
-                                <div class="col-sm-10">
+                                <div class="col-sm-8">
 
                                     <input id="person" type="text" autocomplete="off" class="form-control" name="person"
-                                    [(ngModel)]="referenceModel.person" #person="ngModel" placeholder="Person"
-                                    required>
+                                        [(ngModel)]="referenceModel.person" #person="ngModel" placeholder="Person"
+                                        required>
 
                                     <div *ngIf="f.submitted && !person.valid" class="text-danger">Person is required
                                     </div>
@@ -556,26 +584,27 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <label for="phoneNumber" class="control-label">Phone Number:</label>
                                 </div>
 
-                                <div class="col-sm-10">
-                                    <input id="status" type="text" autocomplete="off" class="form-control" name="phoneNumber"
-                                        [(ngModel)]="referenceModel.phoneNumber" #phoneNumber="ngModel" placeholder="Phone Number"
-                                        required>
+                                <div class="col-sm-8">
+                                    <input id="status" type="text" autocomplete="off" class="form-control"
+                                        name="phoneNumber" [(ngModel)]="referenceModel.phoneNumber"
+                                        #phoneNumber="ngModel" placeholder="Phone Number" required>
 
-                                    <div *ngIf="f.submitted && !phoneNumber.valid" class="text-danger">Phone Number is required
+                                    <div *ngIf="f.submitted && !phoneNumber.valid" class="text-danger">Phone Number is
+                                        required
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <label for="status" class="control-label">Status:</label>
                                 </div>
 
-                                <div class="col-sm-10">
+                                <div class="col-sm-8">
                                     <input id="status" type="text" autocomplete="off" class="form-control" name="status"
                                         [(ngModel)]="referenceModel.status" #status="ngModel" placeholder="Status"
                                         required>
@@ -586,11 +615,11 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <label for="severity" class="control-label">Severity:</label>
                                 </div>
 
-                                <div class="col-sm-10">
+                                <div class="col-sm-8">
                                     <input id="severity" type="text" autocomplete="off" class="form-control"
                                         name="severity" [(ngModel)]="referenceModel.severity" #severity="ngModel"
                                         placeholder="Severity" required>
@@ -602,25 +631,35 @@
 
 
                             <div class="form-group">
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <label for="date" class="control-label">Date:</label>
                                 </div>
 
-                                <div class="col-sm-10">
-                                    <input id="date" type="text" autocomplete="off" class="form-control" name="date"
-                                        [(ngModel)]="referenceModel.date" #date="ngModel" placeholder="Date" required>
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <input class="form-control" [ngModelOptions]="{standalone: true}"
+                                            #date="ngModel" name="date" #datepickerFull="bsDatepicker" bsDatepicker
+                                            [(ngModel)]="referenceModel.date"
+                                            [bsConfig]="{ dateInputFormat: 'MM/DD/YYYY' }" id="bsDatepickerRefAdd"
+                                            required>
 
-                                    <div *ngIf="f.submitted && !date.valid" class="text-danger">Date is required
+                                        <div class="input-group-addon" (click)='calTrigDatepickerRef()'>
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+
+                                        <div *ngIf="f.submitted && !date.valid" class="text-danger">Date is required
+                                        </div>
                                     </div>
+
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <label for="reason" class="control-label">Reason:</label>
                                 </div>
 
-                                <div class="col-sm-10">
+                                <div class="col-sm-8">
                                     <input id="reason" type="text" autocomplete="off" class="form-control" name="reason"
                                         [(ngModel)]="referenceModel.reason" #reason="ngModel" placeholder="Reason"
                                         required>
@@ -656,7 +695,7 @@
             </div>
             <div class="modal-body">
                 <p style="font-weight: bold;">
-                    Do you want to delete {{referenceModel.patient}} ?
+                    Do you want to delete {{referenceModel.person}} ?
                 </p>
             </div>
             <div class="modal-footer">

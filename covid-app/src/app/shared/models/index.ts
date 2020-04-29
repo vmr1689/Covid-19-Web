@@ -21,6 +21,7 @@ export * from './organisationTypes.model';
 export * from './ageChart.model';
 export * from './countryDivision.model';
 export * from './mapData.model';
+export * from './quarantinedReference.model';
 
 export * from './sample_data.model';
 export * from './sample_state-district-wise.model';

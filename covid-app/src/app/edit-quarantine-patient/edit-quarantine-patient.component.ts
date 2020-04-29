@@ -7,7 +7,7 @@ import * as Helpers from '../shared/helpers';
 import { STATUS_TYPES, GENDER_TYPES } from '.././seedConfig';
 import { environment } from '../../environments/environment';
 
-import { QuarantinedPerson, Location, GenderTypes } from '../shared/models';
+import { QuarantinedPerson, Location, GenderTypes, QuarantinedReference } from '../shared/models';
 import { QuarantinedService, LocationService, SpinnerService } from '../shared/services';
 import { Subject, Observable, forkJoin } from 'rxjs';
 
@@ -54,16 +54,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
   public cities: Location[] = [];
   public referenceLocations: Location[] = [];
 
-  public referenceModel: any = {
-    referenceId: '',
-    person: '',
-    phoneNumber: '',
-    type: '',
-    placeName: '',
-    severity: '',
-    date: '',
-    reason: ''
-  };
+  public referenceModel: QuarantinedReference = {} as QuarantinedReference;
 
   locations: any[] = [
     { placeId: '1', placeName: 'Pune' },
@@ -79,10 +70,10 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
     { id: '5', name: 'Kirti Date' }
   ];
 
-  references: any[] = [
-    { referenceId: '1', patient: 'Gajendra Panchal', status: 'Active', placeName: 'Coimbatore', severity: 'high', date: '11/04/2020 06:10:24' },
-    { referenceId: '2', patient: 'Umesh Pandya', status: 'Confirmed', placeName: 'New Delhi', severity: 'Medium', date: '11/03/2020 12:20:24' },
-    { referenceId: '3', patient: 'Supriya Hayer', status: 'Deceased', placeName: 'Puri', severity: 'High', date: '03/11/2019 18:20:24' },
+  references: QuarantinedReference[] = [
+    { referenceId: '1', phoneNumber: '12130', reason: 'Travel', person: 'Gajendra Panchal', status: 'Active', placeName: 'Coimbatore', severity: 'high', dateStr: '11/04/2020 06:10:24' },
+    { referenceId: '2', phoneNumber: '12130', reason: 'Travel', person: 'Umesh Pandya', status: 'Confirmed', placeName: 'New Delhi', severity: 'Medium', dateStr: '11/03/2020 12:20:24' },
+    { referenceId: '3', phoneNumber: '12130', reason: 'Travel', person: 'Supriya Hayer', status: 'Deceased', placeName: 'Puri', severity: 'High', dateStr: '03/11/2019 18:20:24' },
   ];
 
   constructor(
@@ -284,33 +275,60 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
     $('#bsDatepickerAdd').click();
   }
 
+  calTrigDatepickerRef() {
+    $('#bsDatepickerRefAdd').click();
+  }
+
   CreateReferencePopup($event) {
     $event.preventDefault();
-    this.referenceModel = { placeId: '', severity: '', date: '' };
+    this.referenceModel = {} as QuarantinedReference;
+    this.referenceModel.date = new Date();
     $('#addReference').modal('toggle');
   }
 
-  openEditReferencePopup($event, locationRow: any) {
+  openEditReferencePopup($event, model: QuarantinedReference) {
     $event.preventDefault();
-    this.referenceModel = { placeId: '', severity: '', date: '' };
+    this.referenceModel = {...model};
+    this.referenceModel.date = Helpers.getDateFromDateStr(this.referenceModel.dateStr);
     $('#editReference').modal('toggle');
   }
 
-  openDeleteReferencePopup($event, locationRow: any) {
+  openDeleteReferencePopup($event, model: QuarantinedReference) {
     $event.preventDefault();
-    this.referenceModel = { placeId: '', severity: '', date: '' };
+    this.referenceModel = {...model};
+    this.referenceModel.date = Helpers.getDateFromDateStr(this.referenceModel.dateStr);
     $('#deleteReference').modal('toggle');
   }
 
   addReference(form: NgForm) {
+    const referenceModel = { ...this.referenceModel };
+    this.spinnerService.show();
 
+    this.quarantinedService.addReference(referenceModel).subscribe((response: any) => {
+    }).add(() => {
+      $('#addReference').modal('toggle');
+      this.spinnerService.hide();
+    });
   }
 
   editReference(form: NgForm) {
+    const referenceModel = { ...this.referenceModel };
+    this.spinnerService.show();
 
+    this.quarantinedService.editReference(referenceModel).subscribe((response: any) => {
+    }).add(() => {
+      $('#editReference').modal('toggle');
+      this.spinnerService.hide();
+    });
   }
 
-  deleteReference(data: Location) {
+  deleteReference(data: QuarantinedReference) {
+    this.spinnerService.show();
 
+    this.quarantinedService.deleteReference(data.referenceId).subscribe((response: any) => {
+      $('#deleteReference').modal('toggle');
+    }).add(() => {
+      this.spinnerService.hide();
+    });
   }
 }
