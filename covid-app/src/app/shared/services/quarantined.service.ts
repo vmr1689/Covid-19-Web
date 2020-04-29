@@ -26,9 +26,11 @@ export class QuarantinedService {
         const request = {
             ...model,
             quaratinedDate: model.quaratinedDateStr
-        };
+        };  
 
-        return this.http.put(`${environment.apiUrl}/covid/editCovidPatient`, request, this.httpOptions);
+        console.log(request);
+
+        return this.http.put(`${environment.apiUrl}/covid/editQuaratinedPerson`, request, this.httpOptions);
     }
 
     getConnectedPersonInfo = (phoneNumber: string) => {
