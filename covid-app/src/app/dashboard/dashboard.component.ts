@@ -7,6 +7,7 @@ import am4geodata_indiaLow from '@amcharts/amcharts4-geodata/indiaLow';
 import * as moment from 'moment';
 import { forkJoin } from 'rxjs';
 
+import * as Helpers from '../shared/helpers';
 import { environment } from '../../environments/environment';
 import { renderTable, createChild, destroyChild } from '../shared/helpers';
 import { DashboardService, SpinnerService, GuidelinesService, UpdatesService } from '../shared/services';
@@ -40,6 +41,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
   public infoIndex = 0;
   public info: string;
   public lastUpdatedTime: string;
+  public helpLineNumber: string;
 
   public sampleData: SampleData;
   public sampleStateDistrictData: SampleStateDistrictWiseData;
@@ -51,6 +53,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
   public ageChartList: AgeChart[] = [];
   public mapDataList: MapData[] = [];
   public covidInfoPlace: Location = {} as Location;
+  public covidInfoPlaceCopy: Location = {} as Location;
   public covidInfo: CovidInfo = {} as CovidInfo;
 
   public dailySpreadList: CasesTimeSeries[] = [];
@@ -72,8 +75,9 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
     private dashboardService: DashboardService,
     private guidelinesService: GuidelinesService) {
     const date = new Date();
-    this.lastUpdatedTime = 'Last Updated on ' + date.toString();
-    this.targetRegion = environment.targetLocation;
+    this.lastUpdatedTime = 'Last updated on ' + moment(date).format('llll').toString();
+    this.helpLineNumber = 'Call us on  1000-1000-1000';
+    this.targetRegion = environment.targetLocation.toUpperCase();
   }
 
   ngOnInit(): void {
@@ -102,20 +106,9 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
       const result = subOrdinates.find(x => x.placeName.trim().toLowerCase() == item.name.trim().toLowerCase());
 
       if (result) {
-        item.value = result.covidInfo ? result.covidInfo.confirmed : 0;
+        item.value = result.covidInfo ? result.covidInfo.active : 0;
       }
     });
-    //console.log(this.mapDataList);
-    // subOrdinates.forEach(item => {
-    //   const mapData = {} as MapData;
-    //   mapData.name = item.placeName;
-    //   mapData.value = item.covidInfo ? item.covidInfo.confirmed : 0;
-    //   const division = this.countryDivisions.divisions.find(x => x.name.trim().toLowerCase() == item.placeName.trim().toLowerCase());
-    //   if (division) {
-    //     mapData.id = 'IN-' + division.code;
-    //   }
-    //   this.mapDataList.push(mapData);
-    // });
     this.destroyMaps();
     this.renderMapChart();
   }
@@ -183,6 +176,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
 
     if (response) {
       this.covidInfoPlace = response;
+      this.covidInfoPlaceCopy = response;
       this.covidInfo = response.covidInfo;
       if (this.patientGenderChart) {
         this.patientGenderChart.dispose();
@@ -191,6 +185,42 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
       this.renderMainData('locationTable', true);
     }
 
+  }
+
+  public resetLocationWiseCovidInfo() {
+    const response = { ...this.covidInfoPlaceCopy };
+
+    if (response) {
+      this.covidInfo = {} as CovidInfo;
+      this.covidInfoPlace = response;
+      this.targetRegion = response.placeName.toUpperCase();
+      this.covidInfo = response.covidInfo;
+      if (this.patientGenderChart) {
+        this.patientGenderChart.dispose();
+      }
+      this.renderPatientGenderChart();
+      $('#locationTable').DataTable().clear().destroy();
+      this.renderMainData('locationTable', true);
+    }
+
+  }
+
+  public getLocationWiseCovidInfo(placeName: string) {
+    const locationsCopy = { ...this.covidInfoPlaceCopy };
+    const response: Location = Helpers.getPlaceLocations_Name(locationsCopy, placeName);
+
+    if (response) {
+      this.covidInfo = {} as CovidInfo;
+      this.covidInfoPlace = response;
+      this.targetRegion = response.placeName.toUpperCase();
+      this.covidInfo = response.covidInfo;
+      if (this.patientGenderChart) {
+        this.patientGenderChart.dispose();
+      }
+      this.renderPatientGenderChart();
+      $('#locationTable').DataTable().clear().destroy();
+      this.renderMainData('locationTable', true);
+    }
   }
 
   public getAgeChartData(response: AgeChart[]) {
@@ -337,6 +367,26 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit, Aft
 
     polygonSeries.mapPolygons.template.events.on('out', (ev) => {
       heatLegend.valueAxis.hideTooltip();
+    });
+
+    polygonTemplate.events.on('hit', (ev) => {
+      const selectedRegion: string = ev.target.dataItem.dataContext['name'];
+      if (selectedRegion) {
+        this.targetRegion = selectedRegion.toUpperCase();
+        this.getLocationWiseCovidInfo(this.targetRegion);
+      }
+      console.log(ev.target.dataItem.dataContext[name]);
+    });
+
+    const button = mapchart.chartContainer.createChild(am4core.Button);
+    button.label.text = '...';
+    button.padding(5, 5, 5, 5);
+    button.width = 20;
+    button.align = 'right';
+    button.marginRight = 15;
+    button.events.on('hit', () => {
+      mapchart.goHome();
+      this.resetLocationWiseCovidInfo();
     });
 
     this.mapchart = mapchart;

@@ -12,6 +12,7 @@ export interface Location {
     subordinates?: Location[];
     name?: string;
     country?: string;
+    level?: number;
 }
 
 export interface CovidInfo {

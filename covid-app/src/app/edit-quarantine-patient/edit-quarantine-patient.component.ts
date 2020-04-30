@@ -50,6 +50,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
   public quarantined: AbstractControl;
   public confirmed: AbstractControl;
   public released: AbstractControl;
+  public remainingDays: AbstractControl;
   public quaratinedDate: AbstractControl;
   public cities: Location[] = [];
   public referenceLocations: Location[] = [];
@@ -70,11 +71,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
     { id: '5', name: 'Kirti Date' }
   ];
 
-  references: QuarantinedReference[] = [
-    { referenceId: '1', phoneNumber: '12130', reason: 'Travel', person: 'Gajendra Panchal', status: 'Active', placeName: 'Coimbatore', severity: 'high', dateStr: '11/04/2020 06:10:24' },
-    { referenceId: '2', phoneNumber: '12130', reason: 'Travel', person: 'Umesh Pandya', status: 'Confirmed', placeName: 'New Delhi', severity: 'Medium', dateStr: '11/03/2020 12:20:24' },
-    { referenceId: '3', phoneNumber: '12130', reason: 'Travel', person: 'Supriya Hayer', status: 'Deceased', placeName: 'Puri', severity: 'High', dateStr: '03/11/2019 18:20:24' },
-  ];
+  references: QuarantinedReference[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -114,6 +111,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
       email: ['', [Validators.required]],
       phoneNumber: ['', [Validators.required]],
       gender: ['', [Validators.required]],
+      remainingDays: ['', [Validators.required]],
       city: ['', [Validators.required]],
       age: ['', Validators.required],
       address: ['', [Validators.required]],
@@ -135,6 +133,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
     this.confirmed = this.form.controls.confirmed;
     this.released = this.form.controls.released;
     this.quaratinedDate = this.form.controls.quaratinedDate;
+    this.remainingDays = this.form.controls.remainingDays;
 
     this.form.disable();
   }
@@ -180,6 +179,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
     this.city.setValue(model.city);
     this.age.setValue(model.age);
     this.address.setValue(model.address);
+    this.remainingDays.setValue(model.remainingDays);
 
     if (model.status == STATUS_TYPES[1].id) {
       this.quarantined.setValue(false);
@@ -288,14 +288,14 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
 
   openEditReferencePopup($event, model: QuarantinedReference) {
     $event.preventDefault();
-    this.referenceModel = {...model};
+    this.referenceModel = { ...model };
     this.referenceModel.date = Helpers.getDateFromDateStr(this.referenceModel.dateStr);
     $('#editReference').modal('toggle');
   }
 
   openDeleteReferencePopup($event, model: QuarantinedReference) {
     $event.preventDefault();
-    this.referenceModel = {...model};
+    this.referenceModel = { ...model };
     this.referenceModel.date = Helpers.getDateFromDateStr(this.referenceModel.dateStr);
     $('#deleteReference').modal('toggle');
   }

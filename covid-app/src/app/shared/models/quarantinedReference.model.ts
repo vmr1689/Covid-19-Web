@@ -5,6 +5,10 @@ export interface QuarantinedReference {
     phoneNumber: string;
     status: string;
     severity: string;
+    primaryAddress: string;
+    secondaryAddress: string;
+    familyCount: number;
+    patientId: string;
     dateStr: string;
     reason: string;
     date?: Date;

@@ -73,14 +73,14 @@ export function restructureData(response: Location) {
     result.push(resCopy);
 
     if (Array.isArray(response.subordinates)) {
-        result = result.concat(this.flatData(response.subordinates, response));
+        result = result.concat(this.flatData(response.subordinates, response, response.country));
     }
     let locations = [...result];
     locations = locations.sort((a, b) => a.placeName < b.placeName ? -1 : a.placeName > b.placeName ? 1 : 0);
     return locations;
 }
 
-export function flatData(subordinates: Location[], root: Location) {
+export function flatData(subordinates: Location[], root: Location, country: string) {
     let result: Location[] = [];
 
     const subor = [...subordinates];
@@ -88,6 +88,7 @@ export function flatData(subordinates: Location[], root: Location) {
         const subCopy = { ...sub };
         subCopy.root = root;
         subCopy.rootId = root.placeId;
+        subCopy.country = country;
         result.push(subCopy);
         if (Array.isArray(sub.subordinates)) {
             result = result.concat(this.flatData(sub.subordinates, sub));
@@ -116,6 +117,29 @@ export function getPlaceLocations(element: Location, placeId: number) {
     if (result) {
         const response = this.restructureData(result);
         return response;
+    }
+    return null;
+}
+
+export function searchTree_Name(element: Location, placeName: string) {
+    if (element.placeName.trim().toLowerCase() == placeName.trim().toLowerCase()) {
+        return element;
+    } else if (element.subordinates && element.subordinates.length > 0) {
+        let i;
+        let result = null;
+        for (i = 0; result == null && i < element.subordinates.length; i++) {
+            result = searchTree_Name(element.subordinates[i], placeName);
+        }
+        return result;
+    }
+    return null;
+}
+
+export function getPlaceLocations_Name(element: Location, placeName: string) {
+    placeName = placeName.trim().toLowerCase();
+    const result = this.searchTree_Name(element, placeName);
+    if (result) {
+        return result;
     }
     return null;
 }

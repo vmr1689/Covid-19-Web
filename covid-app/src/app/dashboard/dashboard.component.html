@@ -1,20 +1,33 @@
 <div>
   <section class="content-header">
     <div class="row">
-      <span class="col-md-4" style="font-weight: bold;">
-        {{targetRegion}}
-      </span>
-      <span class="col-md-8" style="text-align:right;font-weight: bold;font-size: 13px;">
-        {{lastUpdatedTime}}
-      </span>
+
+      <div class="col-md-4 col-xs-12" style="font-weight: bold;">
+        <span class="btn btn-block btn-social btn-bitbucket" style="cursor: default !important;">
+          <i class="fa fa-clock-o"></i> {{lastUpdatedTime}}
+        </span>
+      </div>
+
+      <div class="col-md-4 col-xs-12" style="font-weight: bold;font-size: 13px;">
+        <span class="btn btn-block btn-social btn-linkedin" style="cursor: default !important;">
+          <i class="fa fa-eye"></i> Selected Region - {{targetRegion}}
+        </span>
+      </div>
+
+      <div class="col-md-4 col-xs-12" style="font-weight: bold;font-size: 13px;">
+        <a class="btn btn-block btn-social btn-google" style="cursor: default !important;">
+          <i class="fa fa-phone"></i> {{helpLineNumber}}
+        </a>
+      </div>
+
     </div>
   </section>
 
   <section class="content">
-    <div class="callout callout-info" style="text-align: center;">
+
+    <div class="col-md-12 callout callout-info" style="text-align: center;">
       <p>{{info}}</p>
     </div>
-
     <div class="row">
       <div class="col-md-3 col-sm-6 col-xs-12">
         <div class="info-box bg-yellow">
@@ -195,7 +208,7 @@
           <div class="box-body" style="background-color: #fff1b0;">
             <div class="col-md-6 symptoms">
               <!-- <img src="https://www.mygov.in/sites/all/themes/mygov/images/covid/symptoms.png" alt="symptoms" /> -->
-  
+
               <h3 style="color: #fa7c01; text-align: center;">SYMPTOMS</h3>
               <br>
               <div class="col-md-4" *ngFor="let data of symptomsList">
@@ -203,32 +216,32 @@
                   <img src="data:{{data.fileType}};base64,{{data.data}}" alt="symptoms" width="50" height="50" />
                   <p style="text-align: center;">{{data.description}}</p>
                 </div>
-  
+
               </div>
             </div>
-  
+
             <div class="col-md-6 corona">
-  
+
               <div class="row">
                 <h3 style="color: #fa7c01;text-align: center;">DO'S</h3>
                 <br>
                 <!-- <img src="https://www.mygov.in/sites/all/themes/mygov/images/covid/block-one.png" alt="symptoms" /> -->
-  
+
                 <div class="col-md-4" *ngFor="let data of dosList">
                   <div class="img-with-text">
                     <img src="data:{{data.fileType}};base64,{{data.data}}" alt="symptoms" width="50" height="50" />
                     <p style="text-align: center;">{{data.description}}</p>
                   </div>
                 </div>
-  
+
               </div>
               <div class="row">
-  
-  
+
+
                 <h3 style="color: #fa7c01;text-align: center;">DONT'S</h3>
                 <br>
                 <!-- <img src="https://www.mygov.in/sites/all/themes/mygov/images/covid/block-two.png" alt="symptoms" /> -->
-  
+
                 <div class="col-md-4" *ngFor="let data of dontsList">
                   <div class="img-with-text">
                     <img src="data:{{data.fileType}};base64,{{data.data}}" alt="symptoms" width="50" height="50" />
@@ -240,7 +253,7 @@
           </div>
         </div>
       </div>
-      
+
     </div>
   </section>
 </div>

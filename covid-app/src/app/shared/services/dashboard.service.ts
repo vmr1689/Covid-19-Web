@@ -54,9 +54,11 @@ export class DashboardService {
                         { age: '91-100', count: 0 },
                     ];
 
-                Object.keys(response).map((key, index) => {
-                    result[index].count = response[key];
-                });
+                if (response) {
+                    Object.keys(response).map((key, index) => {
+                        result[index].count = response[key];
+                    });
+                }
                 return result;
             }));
     }

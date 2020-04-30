@@ -30,6 +30,10 @@ export const LOCATION_TYPES = [
         text: 'Country'
     },
     {
+        id: 'District',
+        text: 'District'
+    },
+    {
         id: 'State',
         text: 'State'
     },

@@ -6,7 +6,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { DataTablesModule } from 'angular-datatables';
-import { AgmCoreModule } from '@agm/core';
 import { NgSelect2Module } from 'ng-select2';
 
 import { environment } from '../environments/environment';
@@ -84,9 +83,6 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     BsDatepickerModule.forRoot(),
     TimepickerModule.forRoot(),
     HttpClientModule,
-    AgmCoreModule.forRoot({
-      apiKey: environment.googleMapAPIKey
-    }),
     DataTablesModule,
     AppRoutingModule,
     DirectivesModule,

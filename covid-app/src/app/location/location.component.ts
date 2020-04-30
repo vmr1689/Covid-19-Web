@@ -87,12 +87,13 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.rootLocations = [...result];
         this.tableLocations = [...result];
 
-        this.rootLocations = this.rootLocations.filter(item => item.subordinates.length === 0);
+        //this.rootLocations = this.rootLocations.filter(item => item.subordinates.length === 0);
 
         this.rootLocations = this.rootLocations.sort((a, b) => a.placeName < b.placeName ? -1 : a.placeName > b.placeName ? 1 : 0);
         this.rootLocations.forEach(item => {
           this.dropdownLocations.push({ id: item.placeId, text: item.placeName });
         });
+        console.log(result);
       }
       this.rerender();
     }).add(() => {
@@ -104,15 +105,17 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
     const resCopy = { ...response };
     let result: Location[] = [];
     resCopy.istarget = resCopy.type == 'Country';
+    resCopy.level = 1;
+
     result.push(resCopy);
 
     if (Array.isArray(response.subordinates)) {
-      result = result.concat(this.flatData(response.subordinates, response, response.country));
+      result = result.concat(this.flatData(response.subordinates, response, response.country, (resCopy.level + 1)));
     }
     return result;
   }
 
-  flatData(subordinates: Location[], root: Location, country: string) {
+  flatData(subordinates: Location[], root: Location, country: string, level: number) {
     let result: Location[] = [];
 
     const subor = [...subordinates];
@@ -121,9 +124,10 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
       subCopy.root = root;
       subCopy.rootId = root.placeId;
       subCopy.country = country;
+      subCopy.level = level;
       result.push(subCopy);
       if (Array.isArray(sub.subordinates)) {
-        result = result.concat(this.flatData(sub.subordinates, sub, country));
+        result = result.concat(this.flatData(sub.subordinates, sub, country, (subCopy.level + 1)));
       }
     });
     return result;

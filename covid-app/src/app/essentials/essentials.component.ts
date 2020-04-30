@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 
+import { environment } from '../../environments/environment';
 import { ORGANISATION_TYPES } from '.././seedConfig';
 import { OrganisationService, SpinnerService } from '../shared/services';
 import { Organisation, OrganisationTypes } from '../shared/models';
@@ -163,11 +164,9 @@ export class EssentialsComponent implements OnInit, AfterViewChecked, OnDestroy 
   }
 
   openMapOrganisation(data) {
-    this.viewMap = true;
-
-    this.latitude = Number(data.latitude);
-    this.longitude = Number(data.longitude);
-    this.marlatitude = Number(data.latitude);
-    this.marongitude = Number(data.longitude);
+    if (data.latitude && data.longitude) {
+      const url = environment.googleMapUrl + Number(data.latitude) + ',' + Number(data.longitude);
+      window.open(url, '_blank');
+    }
   }
 }
