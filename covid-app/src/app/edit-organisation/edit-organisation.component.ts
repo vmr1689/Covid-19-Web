@@ -39,7 +39,6 @@ export class EditOrganisationComponent implements OnInit {
     this.spinnerService.show();
     this.organisationService.getAllOrganisations().subscribe((response: Organisation[]) => {
       if (response && response.length > 0) {
-        debugger;
         this.model = response.find(x=> x.covidOrganizationId == this.organisationId);
       }
     }).add(() => {

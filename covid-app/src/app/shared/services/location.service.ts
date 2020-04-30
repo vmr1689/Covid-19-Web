@@ -64,34 +64,36 @@ export class LocationService {
     }
 
     createPatient = (model: LocationPatient) => {
-        const request = {
+        const request = [{
             firstName: model.firstName,
             lastName: model.lastName,
             email: model.email,
             phoneNumber: model.phoneNumber,
             gender: model.gender,
+            country: model.country,
             city: model.placeName,
             age: model.age,
             address: model.address,
-            country: model.country
-        };
+            type: 'patient'
+        }];
         return this.http.post(`${environment.apiUrl}/covid/addNewPatient`, request, this.httpOptions);
     }
 
     createQurarantine = (model: LocationQuarantine) => {
-        const request = {
+        const request = [{
             firstName: model.firstName,
             lastName: model.lastName,
             email: model.email,
             phoneNumber: model.phoneNumber,
             gender: model.gender,
+            country: model.country,
             city: model.placeName,
             age: model.age,
             address: model.address,
             quaratinedDate: model.quaratinedDateStr,
-            country: model.country
-        };
+            type: 'quarantined'
+        }];
         console.log(request);
-        return this.http.post(`${environment.apiUrl}/covid/addQuaratinedPerson`, request, this.httpOptions);
+        return this.http.post(`${environment.apiUrl}/covid/addNewPatient`, request, this.httpOptions);
     }
 }

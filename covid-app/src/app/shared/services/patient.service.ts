@@ -31,7 +31,10 @@ export class PatientService {
     }
 
     editPatient = (model: Patient) => {
-        return this.http.put(`${environment.apiUrl}/covid/editCovidPatient`, model, this.httpOptions);
+        const request = {
+            ...model,
+        };
+        return this.http.put(`${environment.apiUrl}/covid/editCovidPatient`, request, this.httpOptions);
     }
 
     deletePatient = (patientId: number) => {

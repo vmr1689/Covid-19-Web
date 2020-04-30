@@ -1,5 +1,5 @@
 export interface QuarantinedPerson {
-    quaratinedId: number;
+    patientId: number;
     firstName: string;
     lastName: string;
     email: string;
@@ -16,4 +16,5 @@ export interface QuarantinedPerson {
     address: string;
     status: string;
     rowColor?: string;
+    type?: string;
 }

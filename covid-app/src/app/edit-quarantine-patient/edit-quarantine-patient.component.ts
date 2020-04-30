@@ -7,7 +7,7 @@ import * as Helpers from '../shared/helpers';
 import { STATUS_TYPES, GENDER_TYPES } from '.././seedConfig';
 import { environment } from '../../environments/environment';
 
-import { QuarantinedPerson, Location, GenderTypes, QuarantinedReference } from '../shared/models';
+import { QuarantinedPerson, Location, GenderTypes, QuarantinedReference, Patient } from '../shared/models';
 import { QuarantinedService, LocationService, SpinnerService } from '../shared/services';
 import { Subject, Observable, forkJoin } from 'rxjs';
 
@@ -38,7 +38,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
 
   public form: FormGroup;
 
-  public quaratinedId: AbstractControl;
+  public patientId: AbstractControl;
   public firstName: AbstractControl;
   public lastName: AbstractControl;
   public email: AbstractControl;
@@ -85,7 +85,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
       const patientId = Number.parseInt(params.get('patientId'));
-      this.model.quaratinedId = patientId;
+      this.model.patientId = patientId;
       this.getAllAPIValues();
     });
 
@@ -105,7 +105,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
   public initLoginForm() {
 
     this.form = this.fb.group({
-      quaratinedId: ['', [Validators.required]],
+      patientId: ['', [Validators.required]],
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       email: ['', [Validators.required]],
@@ -120,7 +120,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
       released: [false],
       quaratinedDate: [new Date()],
     });
-    this.quaratinedId = this.form.controls.quaratinedId;
+    this.patientId = this.form.controls.patientId;
     this.firstName = this.form.controls.firstName;
     this.lastName = this.form.controls.lastName;
     this.email = this.form.controls.email;
@@ -151,7 +151,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
       const locationsResult = results[1];
 
       if (personResult && personResult.length > 0) {
-        personModel = personResult.find(p => p.quaratinedId == this.model.quaratinedId);
+        personModel = personResult.find(p => p.patientId == this.model.patientId);
       }
 
       if (locationsResult) {
@@ -170,7 +170,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
   setData() {
     const model = { ...this.model };
 
-    this.quaratinedId.setValue(model.quaratinedId);
+    this.patientId.setValue(model.patientId);
     this.firstName.setValue(model.firstName);
     this.lastName.setValue(model.lastName);
     this.email.setValue(model.email);
@@ -213,7 +213,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
 
     if (this.form.valid) {
       const request: QuarantinedPerson = {
-        quaratinedId: this.quaratinedId.value,
+        patientId: this.patientId.value,
         firstName: this.firstName.value,
         lastName: this.lastName.value,
         email: this.email.value,
@@ -228,7 +228,8 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
         remainingDays: this.model.remainingDays,
         quaratinedDate: this.model.quaratinedDate,
         street: this.model.street,
-        quaratinedDateStr: Helpers.convertDate(this.quaratinedDate.value)
+        quaratinedDateStr: Helpers.convertDate(this.quaratinedDate.value),
+        type: 'quarantined'
       };
 
       if (this.released.value) {
@@ -240,7 +241,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
       else {
         request.status = STATUS_TYPES[0].id;
       }
-
+      request.type = (request.status == STATUS_TYPES[1].id) ? 'patient' : 'quarantined';
       console.log(request);
       this.spinnerService.show();
       this.quarantinedService.editPerson(request).subscribe((response: any) => {

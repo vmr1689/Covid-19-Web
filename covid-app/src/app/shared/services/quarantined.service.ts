@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment';
-import { QuarantinedPerson, QuarantinedReference } from '../models';
+import { QuarantinedPerson, QuarantinedReference, Patient } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class QuarantinedService {
@@ -30,7 +30,7 @@ export class QuarantinedService {
 
         console.log(request);
 
-        return this.http.put(`${environment.apiUrl}/covid/editQuaratinedPerson`, request, this.httpOptions);
+        return this.http.put(`${environment.apiUrl}/covid/editCovidPatient`, request, this.httpOptions);
     }
 
     getConnectedPersonInfo = (phoneNumber: string) => {

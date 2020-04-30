@@ -82,7 +82,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   updateProfile(form: NgForm) {
-    debugger;
     const model = {...this.model};
     this.spinnerService.show();
     this.userService.updateUser(model.id, model).subscribe((response: any) => {

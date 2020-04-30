@@ -30,7 +30,7 @@ export class LocationQuarantinePersonsComponent implements OnInit, AfterViewChec
   public locationId: number;
   public location: Location = {} as Location;
   public persons: QuarantinedPerson[] = [];
-  public model: any = {};
+  public model: QuarantinedPerson = {} as QuarantinedPerson;
   public cities: Location[] = [];
 
   constructor(
@@ -66,7 +66,6 @@ export class LocationQuarantinePersonsComponent implements OnInit, AfterViewChec
 
     this.spinnerService.show();
     forkJoin([getAllLocations, getAllPersons]).subscribe(results => {
-      debugger;
       const locationsResult = results[0];
       const personsResult = results[1];
       let placeNames = [];
@@ -123,9 +122,12 @@ export class LocationQuarantinePersonsComponent implements OnInit, AfterViewChec
   }
 
   assignLocation(form: NgForm) {
+    const model = { ...this.model};
     if (form.valid) {
       this.spinnerService.show();
-      this.quarantinedService.editReference(this.model).subscribe((response: QuarantinedPerson[]) => {
+      const quarantineDate = Helpers.getDateFromDateStr(model.quaratinedDate);
+      model.quaratinedDateStr = Helpers.convertDate(quarantineDate);
+      this.quarantinedService.editPerson(model).subscribe((response: QuarantinedPerson[]) => {
       }).add(() => {
         $('#reassignLocation').modal('toggle');
         this.spinnerService.hide();

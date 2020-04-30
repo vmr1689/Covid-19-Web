@@ -72,6 +72,6 @@ export class QuarantinePatientComponent implements OnInit, AfterViewChecked, OnD
   }
 
   editQuarantinePatient(person: QuarantinedPerson) {
-    this.router.navigate(['/editquarantineperson/' + person.quaratinedId]);
+    this.router.navigate(['/editquarantineperson/' + person.patientId]);
   }
 }

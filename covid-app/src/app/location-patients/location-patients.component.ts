@@ -88,7 +88,6 @@ export class LocationPatientsComponent implements OnInit, AfterViewChecked, OnDe
       }
 
       if (patientsResult && patientsResult.length > 0) {
-        debugger;
         //const patients = patientsResult.filter(p => p.city == locationModel.placeName);
         const patients = patientsResult.filter(item => {
           return placeNames.includes(item.city);

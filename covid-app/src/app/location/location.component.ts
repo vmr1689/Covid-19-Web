@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewChecked, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewChecked, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -17,7 +17,7 @@ declare var $;
   templateUrl: './location.component.html',
   styleUrls: ['./location.component.css']
 })
-export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class LocationComponent implements OnInit, AfterViewChecked, AfterViewInit, OnDestroy {
   @ViewChild(DataTableDirective, { static: false }) dtElement: DataTableDirective;
   @ViewChild('addForm') addForm: NgForm;
   @ViewChild('editForm') editForm: NgForm;
@@ -56,6 +56,8 @@ export class LocationComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.getAllLocations();
   }
 
+  ngAfterViewInit() {
+  }
   ngAfterViewChecked() {
     $('.dataTables_filter input, .dataTables_length select').addClass('form-control');
     this.cdRef.detectChanges();

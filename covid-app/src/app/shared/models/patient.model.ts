@@ -17,4 +17,8 @@ export interface Patient {
     status: string;
     rowColor?: string;
     statusUpdatedDate?: string;
+    remainingDays?: string;
+    quaratinedDate?: string;
+    quaratinedDateStr?: string;
+    type?: string;
 }
