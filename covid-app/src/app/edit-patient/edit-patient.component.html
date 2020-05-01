@@ -127,8 +127,46 @@
                                         <label for="city" class="col-sm-3 control-label">City</label>
 
                                         <div class="col-sm-9">
-                                            <select name="city" formControlName="city" id="city"
-                                                class="form-control" required>
+
+                                            <div class="btn-group hierarchy-select" style="display: block;"
+                                                data-resize="auto" id="example_one">
+                                                <button type="button" [disabled]="isReadOnly"
+                                                    class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                    <span class="selected-label pull-left">&nbsp;</span>
+                                                    <span class="caret"></span>
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <div class="dropdown-menu open">
+                                                    <div class="hs-searchbox">
+                                                        <input type="text" class="form-control" autocomplete="off">
+                                                    </div>
+                                                    <ul class="dropdown-menu inner" role="menu">
+                                                        <li data-value="" data-level="" data-default-selected="">
+                                                            <a href="#">Location</a>
+                                                        </li>
+
+                                                        <li *ngFor="let location of cities; let i = index"
+                                                            [attr.class]="location.subordinates.length > 0 ? 'disabled' : ''"
+                                                            [attr.data-value]="location.placeName"
+                                                            [attr.data-level]="location.level">
+                                                            <a href="#">{{location.placeName}}</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <input class="hidden hidden-field" name="example_one"
+                                                    readonly="readonly" aria-hidden="true" type="text" />
+
+                                                <input type="hidden" class="form-control" formControlName="city"
+                                                    id="city" name="city" placeholder="City" required>
+
+                                                <small
+                                                    *ngIf="(submitted || city.dirty || city.touched) && city.hasError('required')"
+                                                    class="text-danger">City is required</small>
+
+                                            </div>
+
+                                            <!-- <select name="city" formControlName="city" id="city" class="form-control"
+                                                required>
                                                 <option *ngFor="let location of cities; let i = index"
                                                     value={{location.placeName}}>
                                                     {{location.placeName}}
@@ -137,7 +175,7 @@
 
                                             <small
                                                 *ngIf="(submitted || city.dirty || city.touched) && city.hasError('required')"
-                                                class="text-danger">City is required</small>
+                                                class="text-danger">City is required</small> -->
                                         </div>
                                     </div>
 
@@ -186,7 +224,8 @@
                             <div class="tab-pane" id="tab_2">
                                 <div class="table-responsive">
 
-                                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-hover">
+                                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                        class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
                                                 <th>Location</th>
@@ -222,7 +261,8 @@
                             <div class="tab-pane" id="tab_3">
                                 <div class="table-responsive">
 
-                                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-hover">
+                                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                        class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
                                                 <th>Bluetooth Device Id</th>

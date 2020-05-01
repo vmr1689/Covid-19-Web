@@ -36,7 +36,6 @@
               "node_modules/select2/dist/css/select2.min.css"
             ],
             "scripts": [
-              "node_modules/jquery/dist/jquery.js",
               "node_modules/select2/dist/js/select2.min.js",
               "node_modules/admin-lte/bower_components/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/admin-lte/bower_components/datatables.net/js/jquery.dataTables.min.js",

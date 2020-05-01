@@ -11,14 +11,15 @@
                     <h3 class="box-title">{{location.placeName}} Patients</h3>
                     <button class="btn btn-info btn-flat pull-right" (click)="openLocation()">
                         Back To Location
-                     </button>
+                    </button>
                 </div>
                 <form class="form-horizontal">
                     <div class="box-body">
                         <div class="clearfix"></div>
                         <div class="col-md-12">
                             <div class="table-responsive">
-                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-hover">
+                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                    class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
                                             <th style="display: none;">Id</th>
@@ -84,7 +85,8 @@
                                     <i class="fa fa-user"></i>
                                 </div>
                                 <input type="text" autocomplete="off" class="form-control" name="firstName"
-                                    [(ngModel)]="model.firstName" #firstName="ngModel" required placeholder="First Name"/>
+                                    [(ngModel)]="model.firstName" #firstName="ngModel" required
+                                    placeholder="First Name" />
                             </div>
                             <div *ngIf="f.submitted && !firstName.valid" class="text-danger">First Name is required
                             </div>
@@ -97,7 +99,7 @@
                                     <i class="fa fa-user"></i>
                                 </div>
                                 <input type="text" autocomplete="off" class="form-control" name="lastName"
-                                    [(ngModel)]="model.lastName" #lastName="ngModel" required placeholder="Last Name"/>
+                                    [(ngModel)]="model.lastName" #lastName="ngModel" required placeholder="Last Name" />
                             </div>
                             <div *ngIf="f.submitted && !lastName.valid" class="text-danger">Last Name is required</div>
                         </div>
@@ -110,9 +112,11 @@
                                     <i class="fa fa-phone"></i>
                                 </div>
                                 <input type="text" autocomplete="off" class="form-control" name="phoneNumber"
-                                    [(ngModel)]="model.phoneNumber" #phoneNumber="ngModel" required placeholder="Phone Number"/>
+                                    [(ngModel)]="model.phoneNumber" #phoneNumber="ngModel" required
+                                    placeholder="Phone Number" />
                             </div>
-                            <div *ngIf="f.submitted && !phoneNumber.valid" class="text-danger">Phone Number is required</div>
+                            <div *ngIf="f.submitted && !phoneNumber.valid" class="text-danger">Phone Number is required
+                            </div>
                         </div>
                         <div class="form-group col-md-6 col-xs-12">
                             <label>Email</label>
@@ -121,7 +125,7 @@
                                     <i class="fa fa-envelope"></i>
                                 </div>
                                 <input type="text" autocomplete="off" class="form-control" name="email"
-                                    [(ngModel)]="model.email" #email="ngModel" required placeholder="Email"/>
+                                    [(ngModel)]="model.email" #email="ngModel" required placeholder="Email" />
                             </div>
                             <div *ngIf="f.submitted && !email.valid" class="text-danger">Email is required</div>
                         </div>
@@ -130,7 +134,42 @@
 
                         <div class="form-group col-md-6 col-xs-12">
                             <label>Assign To</label>
-                            <select class="form-control" name="city" [(ngModel)]="model.city" #city="ngModel"
+
+                            <div class="btn-group hierarchy-select" style="display: block;" data-resize="auto"
+                                id="example_one">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                    <span class="selected-label pull-left">&nbsp;</span>
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div class="dropdown-menu open">
+                                    <div class="hs-searchbox">
+                                        <input type="text" class="form-control" autocomplete="off">
+                                    </div>
+                                    <ul class="dropdown-menu inner" role="menu">
+                                        <li data-value="" data-level="" data-default-selected="">
+                                            <a href="#">Reassign Location</a>
+                                        </li>
+                                        <li *ngFor="let location of cities; let i = index"
+                                            [attr.class]="location.subordinates.length > 0 ? 'disabled' : ''"
+                                            [attr.data-value]="location.placeName" [attr.data-level]="location.level">
+                                            <a href="#">{{location.placeName}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <input class="hidden hidden-field" name="example_one" readonly="readonly"
+                                    aria-hidden="true" type="text" />
+
+                                <input class="form-control" id="city" name="city" #city="ngModel" readonly="readonly"
+                                    [(ngModel)]="model.city" aria-hidden="true" type="hidden" required />
+
+                                <div *ngIf="f.submitted && !city.valid" class="text-danger">Assign To Location is
+                                    required
+                                </div>
+
+                            </div>
+
+                            <!-- <select class="form-control" name="city" [(ngModel)]="model.city" #city="ngModel"
                                 required>
                                 <option *ngFor="let location of cities; let i = index" value={{location.placeName}}>
                                     {{location.placeName}}
@@ -138,10 +177,10 @@
                             </select>
                             <div *ngIf="f.submitted && !city.valid" class="text-danger">Assign To Location is
                                 required
-                            </div>
+                            </div> -->
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>

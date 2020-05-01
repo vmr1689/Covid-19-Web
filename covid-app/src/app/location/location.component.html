@@ -147,10 +147,12 @@
 
                                 <div class="col-sm-10">
 
-                                    <ng-select2 name="type" #type="ngModel" [(ngModel)]="model.type" [data]="types"
-                                        [placeholder]="'Type'" required>
-                                    </ng-select2>
-
+                                    <select name="type" #type="ngModel" [(ngModel)]="model.type" id="type"
+                                        class="form-control" required>
+                                        <option *ngFor="let type of types; let i = index" [value]="type.id">
+                                            {{type.text}}
+                                        </option>
+                                    </select>
 
                                     <div *ngIf="addForm.submitted && !type.valid" class="text-danger">Type is
                                         required
@@ -206,17 +208,42 @@
                                 <label for="longitude" class="col-sm-2 control-label">Root Location</label>
 
                                 <div class="col-sm-10">
+                                    <div class="btn-group hierarchy-select" style="display: block;" data-resize="auto"
+                                        id="example_one">
+                                        <button type="button" class="btn btn-default dropdown-toggle"
+                                            data-toggle="dropdown">
+                                            <span class="selected-label pull-left">&nbsp;</span>
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu open">
+                                            <div class="hs-searchbox">
+                                                <input type="text" class="form-control" autocomplete="off">
+                                            </div>
+                                            <ul class="dropdown-menu inner" role="menu">
+                                                <li data-value="" data-level="" data-default-selected="">
+                                                    <a href="#">Root Location</a>
+                                                </li>
+                                                <li *ngFor="let location of rootLocations; let i = index"
+                                                    [attr.data-value]="location.placeId"
+                                                    [attr.data-level]="location.level">
+                                                    <a href="#">{{location.placeName}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <input class="hidden hidden-field" name="example_one" readonly="readonly"
+                                            aria-hidden="true" type="text" />
 
-                                    <ng-select2 [required]="model && model.istarget ? true : null" id="rootId"
-                                        name="rootId" #rootId="ngModel" [(ngModel)]="model.rootId"
-                                        [data]="dropdownLocations" [placeholder]="'Root Location'" required>
-                                    </ng-select2>
+                                        <input class="form-control" id="rootId" name="rootId" #rootId="ngModel"
+                                            readonly="readonly" [(ngModel)]="model.rootId" aria-hidden="true"
+                                            type="hidden" [required]="model && model.istarget ? true : null" />
 
+                                        <div *ngIf="addForm.submitted && !rootId.valid" class="text-danger">Root
+                                            Location is
+                                            required
+                                        </div>
 
-                                    <div *ngIf="addForm.submitted && !rootId.valid" class="text-danger">Root Location is
-                                        required
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -276,10 +303,12 @@
 
                                 <div class="col-sm-10">
 
-                                    <ng-select2 name="type" #type="ngModel" [(ngModel)]="model.type" [data]="types"
-                                        [placeholder]="'Type'" required>
-                                    </ng-select2>
-
+                                    <select name="type" #type="ngModel" [(ngModel)]="model.type" id="type"
+                                        class="form-control" required>
+                                        <option *ngFor="let type of types; let i = index" [value]="type.id">
+                                            {{type.text}}
+                                        </option>
+                                    </select>
 
                                     <div *ngIf="editForm.submitted && !type.valid" class="text-danger">Type is
                                         required
@@ -331,23 +360,46 @@
                                 </div>
                             </div>
 
-                            <div class="form-group" *ngIf="model.istarget">
+                            <div class="form-group" [hidden]="!model.istarget">
                                 <label for="longitude" class="col-sm-2 control-label">Root Location</label>
 
                                 <div class="col-sm-10">
-                                    <select name="rootId" #rootId="ngModel" [(ngModel)]="model.rootId" id="rootId"
-                                        class="form-control" [required]="model.istarget ? true : null">
-                                        <option *ngFor="let location of rootLocations; let i = index"
-                                            value={{location.placeId}}>
-                                            {{location.placeName}}
-                                        </option>
-                                    </select>
+                                    <div class="example_one btn-group hierarchy-select" style="display: block;"
+                                        data-resize="auto" id="edit_example_one">
+                                        <button type="button" class="btn btn-default dropdown-toggle"
+                                            data-toggle="dropdown">
+                                            <span class="selected-label pull-left">&nbsp;</span>
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu open">
+                                            <div class="hs-searchbox">
+                                                <input type="text" class="form-control" autocomplete="off">
+                                            </div>
+                                            <ul class="dropdown-menu inner" role="menu">
+                                                <li data-value="" data-level="" data-default-selected="">
+                                                    <a href="#">Root Location</a>
+                                                </li>
+                                                <li *ngFor="let location of rootLocations; let i = index"
+                                                    [attr.data-value]="location.placeId"
+                                                    [attr.data-level]="location.level">
+                                                    <a href="#">{{location.placeName}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <input class="hidden hidden-field" name="edit_example_one" readonly="readonly"
+                                            aria-hidden="true" type="text" />
 
-                                    <div *ngIf="editForm.submitted && !rootId.valid" class="text-danger">Root Location
-                                        is
-                                        required
+                                        <input class="form-control" id="rootId" name="rootId" #rootId="ngModel"
+                                            readonly="readonly" [(ngModel)]="model.rootId" aria-hidden="true"
+                                            type="hidden" [required]="model && model.istarget ? true : null" />
+
+                                        <div *ngIf="editForm.submitted && !rootId.valid" class="text-danger">Root
+                                            Location is
+                                            required
+                                        </div>
+
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -412,7 +464,7 @@
                                 <label for="placeName" class="col-sm-3 control-label">Location:</label>
 
                                 <div class="col-sm-9">
-                                    <input id="placeName" type="text" autocomplete="off" class="form-control"
+                                    <input id="patplaceName" type="text" autocomplete="off" class="form-control"
                                         name="placeName" [(ngModel)]="patientModel.placeName" #placeName="ngModel"
                                         placeholder="Location" readonly="true">
 
@@ -427,7 +479,7 @@
                                 <label for="firstName" class="col-sm-3 control-label">First Name:</label>
 
                                 <div class="col-sm-9">
-                                    <input id="firstName" type="text" autocomplete="off" class="form-control"
+                                    <input id="patfirstName" type="text" autocomplete="off" class="form-control"
                                         name="firstName" [(ngModel)]="patientModel.firstName" #firstName="ngModel"
                                         placeholder="First Name" required>
 
@@ -443,7 +495,7 @@
                                 <label for="lastName" class="col-sm-3 control-label">Last Name:</label>
 
                                 <div class="col-sm-9">
-                                    <input id="lastName" type="text" autocomplete="off" class="form-control"
+                                    <input id="patlastName" type="text" autocomplete="off" class="form-control"
                                         name="lastName" [(ngModel)]="patientModel.lastName" #lastName="ngModel"
                                         placeholder="Last Name" required>
 
@@ -459,7 +511,7 @@
                                 <label for="age" class="col-sm-3 control-label">Age:</label>
 
                                 <div class="col-sm-9">
-                                    <input id="age" type="number" autocomplete="off" class="form-control" name="age"
+                                    <input id="patage" type="number" autocomplete="off" class="form-control" name="age"
                                         [(ngModel)]="patientModel.age" #age="ngModel" placeholder="Age" required>
 
                                     <div *ngIf="addPatientForm.submitted && !age.valid" class="text-danger">Age is
@@ -474,7 +526,7 @@
                                 <div class="col-sm-9">
                                     <div class="row" style="padding-left: 15px;">
                                         <label class=" checkbox-inline">
-                                            <input [(ngModel)]="patientModel.confirmed" id="status" #status="ngModel"
+                                            <input [(ngModel)]="patientModel.confirmed" id="patstatus" #status="ngModel"
                                                 name="confirmed" type="checkbox" checked="true" disabled="true">
                                             Confirmed
                                         </label>
@@ -482,22 +534,22 @@
 
                                     <div class="row" style="padding-left: 15px;">
                                         <label class=" checkbox-inline">
-                                            <input [(ngModel)]="patientModel.active" id="active" #active="ngModel"
+                                            <input [(ngModel)]="patientModel.active" id="patactive" #active="ngModel"
                                                 name="active" type="checkbox" checked="true" disabled="true"> Active
                                         </label>
                                     </div>
 
                                     <div class="row" style="padding-left: 15px;">
                                         <label class=" checkbox-inline">
-                                            <input [(ngModel)]="patientModel.recovered" id="recovered"
+                                            <input [(ngModel)]="patientModel.recovered" id="patrecovered"
                                                 #recovered="ngModel" name="recovered" type="checkbox"> Recovered
                                         </label>
                                     </div>
 
                                     <div class="row" style="padding-left: 15px;">
                                         <label class=" checkbox-inline">
-                                            <input [(ngModel)]="patientModel.deceased" id="deceased" #deceased="ngModel"
-                                                name="deceased" type="checkbox"> Deceased
+                                            <input [(ngModel)]="patientModel.deceased" id="patdeceased"
+                                                #deceased="ngModel" name="deceased" type="checkbox"> Deceased
                                         </label>
                                     </div>
 
@@ -513,8 +565,8 @@
 
                                 <div class="col-sm-9">
 
-                                    <select name="gender" #gender="ngModel" [(ngModel)]="patientModel.gender"
-                                        id="gender" class="form-control" required>
+                                    <select name="patgender" #gender="ngModel" [(ngModel)]="patientModel.gender"
+                                        id="patgender" class="form-control" required>
                                         <option *ngFor="let type of genderTypes; let i = index" [value]="type.id">
                                             {{type.text}}
                                         </option>
@@ -532,7 +584,7 @@
                                 <label for="phoneNumber" class="col-sm-3 control-label">Phone:</label>
 
                                 <div class="col-sm-9">
-                                    <input id="phoneNumber" type="text" autocomplete="off" class="form-control"
+                                    <input id="patphoneNumber" type="text" autocomplete="off" class="form-control"
                                         name="phoneNumber" [(ngModel)]="patientModel.phoneNumber" #phoneNumber="ngModel"
                                         placeholder="Phone Number" required>
 
@@ -550,8 +602,9 @@
                                 <label for="email" class="col-sm-3 control-label">Email:</label>
 
                                 <div class="col-sm-9">
-                                    <input id="email" type="email" autocomplete="off" class="form-control" name="email"
-                                        [(ngModel)]="patientModel.email" #email="ngModel" placeholder="Email" required>
+                                    <input id="patemail" type="email" autocomplete="off" class="form-control"
+                                        name="email" [(ngModel)]="patientModel.email" #email="ngModel"
+                                        placeholder="Email" required>
 
                                     <div *ngIf="addPatientForm.submitted && !email.valid" class="text-danger">Email is
                                         required
@@ -564,7 +617,7 @@
                                 <label for="address" class="col-sm-3 control-label">Address:</label>
 
                                 <div class="col-sm-9">
-                                    <input id="address" type="text" autocomplete="off" class="form-control"
+                                    <input id="pataddress" type="text" autocomplete="off" class="form-control"
                                         name="address" [(ngModel)]="patientModel.address" #address="ngModel"
                                         placeholder="Address" required>
 

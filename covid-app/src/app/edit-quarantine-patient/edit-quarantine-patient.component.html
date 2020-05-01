@@ -147,7 +147,44 @@
                                         <label for="city" class="col-sm-3 control-label">City</label>
 
                                         <div class="col-sm-9">
-                                            <select name="city" formControlName="city" id="city" class="form-control"
+                                            <div class="btn-group hierarchy-select" style="display: block;"
+                                                data-resize="auto" id="example_one">
+                                                <button type="button" [disabled]="isReadOnly"
+                                                    class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                    <span class="selected-label pull-left">&nbsp;</span>
+                                                    <span class="caret"></span>
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <div class="dropdown-menu open">
+                                                    <div class="hs-searchbox">
+                                                        <input type="text" class="form-control" autocomplete="off">
+                                                    </div>
+                                                    <ul class="dropdown-menu inner" role="menu">
+                                                        <li data-value="" data-level="" data-default-selected="">
+                                                            <a href="#">Location</a>
+                                                        </li>
+
+                                                        <li *ngFor="let location of cities; let i = index"
+                                                            [attr.class]="location.subordinates.length > 0 ? 'disabled' : ''"
+                                                            [attr.data-value]="location.placeName"
+                                                            [attr.data-level]="location.level">
+                                                            <a href="#">{{location.placeName}}</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <input class="hidden hidden-field" name="example_one"
+                                                    readonly="readonly" aria-hidden="true" type="text" />
+
+                                                <input type="hidden" class="form-control" formControlName="city"
+                                                    id="city" name="city" placeholder="City" required>
+
+                                                <small
+                                                    *ngIf="(submitted || city.dirty || city.touched) && city.hasError('required')"
+                                                    class="text-danger">City is required</small>
+
+                                            </div>
+
+                                            <!-- <select name="city" formControlName="city" id="city" class="form-control"
                                                 required>
                                                 <option *ngFor="let location of cities; let i = index"
                                                     value={{location.placeName}}>
@@ -157,7 +194,7 @@
 
                                             <small
                                                 *ngIf="(submitted || city.dirty || city.touched) && city.hasError('required')"
-                                                class="text-danger">City is required</small>
+                                                class="text-danger">City is required</small> -->
                                         </div>
                                     </div>
 
@@ -174,7 +211,7 @@
                                         </div>
                                     </div>
 
-                                     <div class="form-group">
+                                    <div class="form-group">
                                         <label for="remainingDays" class="col-sm-3 control-label">Remaining Days</label>
 
                                         <div class="col-sm-9">
@@ -434,10 +471,11 @@
 
                                 <div class="col-sm-7">
                                     <input id="familyCount" type="text" autocomplete="off" class="form-control"
-                                        name="familyCount" [(ngModel)]="referenceModel.familyCount" #familyCount="ngModel"
-                                        placeholder="Family Count" required>
+                                        name="familyCount" [(ngModel)]="referenceModel.familyCount"
+                                        #familyCount="ngModel" placeholder="Family Count" required>
 
-                                    <div *ngIf="f.submitted && !familyCount.valid" class="text-danger">Family Count is required
+                                    <div *ngIf="f.submitted && !familyCount.valid" class="text-danger">Family Count is
+                                        required
                                     </div>
                                 </div>
                             </div>
@@ -521,10 +559,11 @@
 
                                 <div class="col-sm-7">
                                     <input id="primaryAddress" type="text" autocomplete="off" class="form-control"
-                                        name="primaryAddress" [(ngModel)]="referenceModel.primaryAddress" #primaryAddress="ngModel"
-                                        placeholder="Primary Address" required>
+                                        name="primaryAddress" [(ngModel)]="referenceModel.primaryAddress"
+                                        #primaryAddress="ngModel" placeholder="Primary Address" required>
 
-                                    <div *ngIf="f.submitted && !primaryAddress.valid" class="text-danger">Primary Address is required
+                                    <div *ngIf="f.submitted && !primaryAddress.valid" class="text-danger">Primary
+                                        Address is required
                                     </div>
                                 </div>
                             </div>
@@ -537,15 +576,16 @@
 
                                 <div class="col-sm-7">
                                     <input id="secondaryAddress" type="text" autocomplete="off" class="form-control"
-                                        name="secondaryAddress" [(ngModel)]="referenceModel.secondaryAddress" #secondaryAddress="ngModel"
-                                        placeholder="Secondary Address" required>
+                                        name="secondaryAddress" [(ngModel)]="referenceModel.secondaryAddress"
+                                        #secondaryAddress="ngModel" placeholder="Secondary Address" required>
 
-                                    <div *ngIf="f.submitted && !secondaryAddress.valid" class="text-danger">Secondary Address is required
+                                    <div *ngIf="f.submitted && !secondaryAddress.valid" class="text-danger">Secondary
+                                        Address is required
                                     </div>
                                 </div>
                             </div>
 
-                            
+
 
                             <div class="form-group">
                                 <div class="col-sm-5">
@@ -557,13 +597,14 @@
                                         name="patientId" [(ngModel)]="referenceModel.patientId" #patientId="ngModel"
                                         placeholder="Patient ID" required>
 
-                                    <div *ngIf="f.submitted && !patientId.valid" class="text-danger">Patient ID is required
+                                    <div *ngIf="f.submitted && !patientId.valid" class="text-danger">Patient ID is
+                                        required
                                     </div>
                                 </div>
                             </div>
 
 
-                            
+
                         </div>
 
                     </div>
@@ -638,10 +679,11 @@
 
                                 <div class="col-sm-7">
                                     <input id="familyCount" type="text" autocomplete="off" class="form-control"
-                                        name="familyCount" [(ngModel)]="referenceModel.familyCount" #familyCount="ngModel"
-                                        placeholder="Family Count" required>
+                                        name="familyCount" [(ngModel)]="referenceModel.familyCount"
+                                        #familyCount="ngModel" placeholder="Family Count" required>
 
-                                    <div *ngIf="f.submitted && !familyCount.valid" class="text-danger">Family Count is required
+                                    <div *ngIf="f.submitted && !familyCount.valid" class="text-danger">Family Count is
+                                        required
                                     </div>
                                 </div>
                             </div>
@@ -725,10 +767,11 @@
 
                                 <div class="col-sm-7">
                                     <input id="primaryAddress" type="text" autocomplete="off" class="form-control"
-                                        name="primaryAddress" [(ngModel)]="referenceModel.primaryAddress" #primaryAddress="ngModel"
-                                        placeholder="Primary Address" required>
+                                        name="primaryAddress" [(ngModel)]="referenceModel.primaryAddress"
+                                        #primaryAddress="ngModel" placeholder="Primary Address" required>
 
-                                    <div *ngIf="f.submitted && !primaryAddress.valid" class="text-danger">Primary Address is required
+                                    <div *ngIf="f.submitted && !primaryAddress.valid" class="text-danger">Primary
+                                        Address is required
                                     </div>
                                 </div>
                             </div>
@@ -741,15 +784,16 @@
 
                                 <div class="col-sm-7">
                                     <input id="secondaryAddress" type="text" autocomplete="off" class="form-control"
-                                        name="secondaryAddress" [(ngModel)]="referenceModel.secondaryAddress" #secondaryAddress="ngModel"
-                                        placeholder="Secondary Address" required>
+                                        name="secondaryAddress" [(ngModel)]="referenceModel.secondaryAddress"
+                                        #secondaryAddress="ngModel" placeholder="Secondary Address" required>
 
-                                    <div *ngIf="f.submitted && !secondaryAddress.valid" class="text-danger">Secondary Address is required
+                                    <div *ngIf="f.submitted && !secondaryAddress.valid" class="text-danger">Secondary
+                                        Address is required
                                     </div>
                                 </div>
                             </div>
 
-                            
+
 
                             <div class="form-group">
                                 <div class="col-sm-5">
@@ -761,13 +805,14 @@
                                         name="patientId" [(ngModel)]="referenceModel.patientId" #patientId="ngModel"
                                         placeholder="Patient ID" required>
 
-                                    <div *ngIf="f.submitted && !patientId.valid" class="text-danger">Patient ID is required
+                                    <div *ngIf="f.submitted && !patientId.valid" class="text-danger">Patient ID is
+                                        required
                                     </div>
                                 </div>
                             </div>
 
 
-                            
+
                         </div>
 
 

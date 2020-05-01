@@ -153,6 +153,17 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
     }
 
     this.status = model.status;
+
+    setTimeout(() => {
+      $('#example_one').hierarchySelect({
+        value: this.model.city,
+        onChange: (value) => {
+          this.model.city = value;
+          this.city.setValue(value);
+          console.log('[Three] value: "' + value + '"');
+        }
+      });
+    });
   }
 
   public getAllAPIValues() {
@@ -172,7 +183,12 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
       }
 
       if (locationsResult) {
-        this.cities = Helpers.restructureData(locationsResult);
+        const locationsWithLevel = Helpers.getLocationWithLevel(locationsResult, 1, locationsResult.placeName);
+        const cities = this.restructureData(locationsWithLevel);
+
+        if (cities) {
+          this.cities = cities;
+        }
       }
       if (patientModel) {
         this.model = patientModel;
@@ -182,6 +198,38 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
       this.getAllLocationDeviceValues();
       this.spinnerService.hide();
     });
+  }
+
+  restructureData(response: Location) {
+    const resCopy = { ...response };
+    let result: Location[] = [];
+    resCopy.istarget = resCopy.type == 'Country';
+    resCopy.level = 1;
+
+    result.push(resCopy);
+
+    if (Array.isArray(response.subordinates)) {
+      result = result.concat(this.flatData(response.subordinates, response, response.country, (resCopy.level + 1)));
+    }
+    return result;
+  }
+
+  flatData(subordinates: Location[], root: Location, country: string, level: number) {
+    let result: Location[] = [];
+
+    const subor = [...subordinates];
+    subor.forEach((sub) => {
+      const subCopy = { ...sub };
+      subCopy.root = root;
+      subCopy.rootId = root.placeId;
+      subCopy.country = country;
+      subCopy.level = level;
+      result.push(subCopy);
+      if (Array.isArray(sub.subordinates)) {
+        result = result.concat(this.flatData(sub.subordinates, sub, country, (subCopy.level + 1)));
+      }
+    });
+    return result;
   }
 
   public getAllLocationDeviceValues() {
@@ -238,7 +286,7 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
         gender: this.gender.value,
         city: this.city.value,
         state: '',
-        country: environment.targetLocation,
+        country: this.model.country,
         id: this.patientId.value,
         age: this.age.value,
         address: this.address.value,

@@ -155,7 +155,12 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
       }
 
       if (locationsResult) {
-        this.cities = Helpers.restructureData(locationsResult);
+        const locationsWithLevel = Helpers.getLocationWithLevel(locationsResult, 1, locationsResult.placeName);
+        const cities = this.restructureData(locationsWithLevel);
+
+        if (cities) {
+          this.cities = cities;
+        }
       }
 
       if (personModel) {
@@ -165,6 +170,38 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
     }).add(() => {
       this.spinnerService.hide();
     });
+  }
+
+  restructureData(response: Location) {
+    const resCopy = { ...response };
+    let result: Location[] = [];
+    resCopy.istarget = resCopy.type == 'Country';
+    resCopy.level = 1;
+
+    result.push(resCopy);
+
+    if (Array.isArray(response.subordinates)) {
+      result = result.concat(this.flatData(response.subordinates, response, response.country, (resCopy.level + 1)));
+    }
+    return result;
+  }
+
+  flatData(subordinates: Location[], root: Location, country: string, level: number) {
+    let result: Location[] = [];
+
+    const subor = [...subordinates];
+    subor.forEach((sub) => {
+      const subCopy = { ...sub };
+      subCopy.root = root;
+      subCopy.rootId = root.placeId;
+      subCopy.country = country;
+      subCopy.level = level;
+      result.push(subCopy);
+      if (Array.isArray(sub.subordinates)) {
+        result = result.concat(this.flatData(sub.subordinates, sub, country, (subCopy.level + 1)));
+      }
+    });
+    return result;
   }
 
   setData() {
@@ -195,6 +232,18 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
     const quarantineDate = Helpers.getDateFromDateStr(model.quaratinedDate);
 
     this.quaratinedDate.setValue(quarantineDate);
+
+    
+    setTimeout(() => {
+      $('#example_one').hierarchySelect({
+        value: this.model.city,
+        onChange: (value) => {
+          this.model.city = value;
+          this.city.setValue(value);
+          console.log('[Three] value: "' + value + '"');
+        }
+      });
+    });
   }
 
   editInfo() {
@@ -210,7 +259,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
   public onSubmit(event: Event, form: any): void {
     event.stopPropagation();
     this.submitted = true;
-
+    debugger;
     if (this.form.valid) {
       const request: QuarantinedPerson = {
         patientId: this.patientId.value,
@@ -221,7 +270,7 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
         gender: this.gender.value,
         city: this.city.value,
         state: this.model.state,
-        country: environment.targetLocation,
+        country: this.model.country,
         age: this.age.value,
         address: this.address.value,
         status: this.status,

@@ -143,3 +143,20 @@ export function getPlaceLocations_Name(element: Location, placeName: string) {
     }
     return null;
 }
+
+export function getLocationWithLevel(response: Location, level: number, country: string) {
+
+    const result: Location[] = [];
+
+    response.level = level;
+    response.istarget = response.type == 'Country';
+    response.country = country;
+
+    if (Array.isArray(response.subordinates)) {
+        let i = 0;
+        for (i = 0; i < response.subordinates.length; i++) {
+            this.getLocationWithLevel(response.subordinates[i], response.level + 1, response.country);
+        }
+    }
+    return response;
+}

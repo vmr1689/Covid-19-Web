@@ -72,7 +72,8 @@ export class LocationPatientsComponent implements OnInit, AfterViewChecked, OnDe
       let placeNames = [];
 
       if (locationsResult) {
-        const cities = Helpers.restructureData(locationsResult);
+        const locationsWithLevel = Helpers.getLocationWithLevel(locationsResult, 1, locationsResult.placeName);
+        const cities = this.restructureData(locationsWithLevel);
         if (cities) {
           this.cities = cities;
         }
@@ -100,6 +101,38 @@ export class LocationPatientsComponent implements OnInit, AfterViewChecked, OnDe
     });
   }
 
+  restructureData(response: Location) {
+    const resCopy = { ...response };
+    let result: Location[] = [];
+    resCopy.istarget = resCopy.type == 'Country';
+    resCopy.level = 1;
+
+    result.push(resCopy);
+
+    if (Array.isArray(response.subordinates)) {
+      result = result.concat(this.flatData(response.subordinates, response, response.country, (resCopy.level + 1)));
+    }
+    return result;
+  }
+
+  flatData(subordinates: Location[], root: Location, country: string, level: number) {
+    let result: Location[] = [];
+
+    const subor = [...subordinates];
+    subor.forEach((sub) => {
+      const subCopy = { ...sub };
+      subCopy.root = root;
+      subCopy.rootId = root.placeId;
+      subCopy.country = country;
+      subCopy.level = level;
+      result.push(subCopy);
+      if (Array.isArray(sub.subordinates)) {
+        result = result.concat(this.flatData(sub.subordinates, sub, country, (subCopy.level + 1)));
+      }
+    });
+    return result;
+  }
+
   rerender(): void {
     if (this.isDtInitialized) {
       this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -117,6 +150,13 @@ export class LocationPatientsComponent implements OnInit, AfterViewChecked, OnDe
   public reAssignLocation(data: Patient) {
     this.model = { ...data };
     $('#reassignLocation').modal('toggle');
+    $('#example_one').hierarchySelect({
+      value: this.model.city,
+      onChange: (value) => {
+        this.model.city = value;
+        console.log('[Three] value: "' + value + '"');
+      }
+    });
   }
 
   public openLocation() {

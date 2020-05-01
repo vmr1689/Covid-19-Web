@@ -41,6 +41,7 @@ export class LocationComponent implements OnInit, AfterViewChecked, AfterViewIni
   public tableLocations: Location[] = [];
   public locations: Location[] = [];
   public rootLocations: Location[] = [];
+  public rootLocationsCopy: Location[] = [];
   public dropdownLocations: Select2DropDown[] = [];
   public types: LocationTypes[] = LOCATION_TYPES;
   public genderTypes: GenderTypes[] = GENDER_TYPES;
@@ -76,7 +77,6 @@ export class LocationComponent implements OnInit, AfterViewChecked, AfterViewIni
     this.locationService.getAllLocationsDuplicate(environment.targetLocation).subscribe((response: Location) => {
       this.locations = [];
       this.tableLocations = [];
-      this.rootLocations = [];
       this.dropdownLocations = [];
 
       if (response.type == 'Country') {
@@ -86,16 +86,11 @@ export class LocationComponent implements OnInit, AfterViewChecked, AfterViewIni
       if (response) {
         const result = this.restructureData(response);
         this.locations = [...result];
-        this.rootLocations = [...result];
         this.tableLocations = [...result];
+        const locationsWithLevel = Helpers.getLocationWithLevel(response, 1, response.placeName);
+        this.rootLocations = this.restructureData(locationsWithLevel);
 
-        //this.rootLocations = this.rootLocations.filter(item => item.subordinates.length === 0);
-
-        this.rootLocations = this.rootLocations.sort((a, b) => a.placeName < b.placeName ? -1 : a.placeName > b.placeName ? 1 : 0);
-        this.rootLocations.forEach(item => {
-          this.dropdownLocations.push({ id: item.placeId, text: item.placeName });
-        });
-        console.log(result);
+        console.log(this.rootLocations);
       }
       this.rerender();
     }).add(() => {
@@ -186,6 +181,15 @@ export class LocationComponent implements OnInit, AfterViewChecked, AfterViewIni
     this.model = {} as Location;
     this.addForm.resetForm({ ...this.model });
     $('#addLocation').modal('toggle');
+
+    $('#example_one').hierarchySelect({
+      value: this.model.rootId,
+      onChange: (value) => {
+        this.model.rootId = value;
+        console.log('[Three] value: "' + value + '"');
+      }
+    });
+
   }
 
   openEditLocation(data: Location) {
@@ -193,6 +197,13 @@ export class LocationComponent implements OnInit, AfterViewChecked, AfterViewIni
     this.model.istarget = (this.model.root && this.model.root.placeName ? true : false);
     this.editForm.resetForm({ ...this.model });
     $('#editLocation').modal('toggle');
+    $('#edit_example_one').hierarchySelect({
+      value: this.model.rootId,
+      onChange: (value) => {
+        this.model.rootId = value;
+        console.log('[Three] value: "' + value + '"');
+      }
+    });
   }
 
   openDeleteLocation(data: Location) {
@@ -202,9 +213,10 @@ export class LocationComponent implements OnInit, AfterViewChecked, AfterViewIni
 
 
   addLocation(form: NgForm) {
+    debugger;
     const model = { ...this.model };
     let rootName = '';
-    if (model.rootId) {
+    if (model.rootId && model.istarget) {
       const root = this.rootLocations.find(x => x.placeId == model.rootId);
       if (root) {
         rootName = root.placeName;
