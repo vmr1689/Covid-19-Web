@@ -1,14 +1,14 @@
 import { Component, OnInit, OnDestroy, AfterViewChecked, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 
 import * as Helpers from '../shared/helpers';
 import { LOCATION_TYPES, GENDER_TYPES } from '.././seedConfig';
 import { environment } from '../../environments/environment';
-import { LocationService, SpinnerService } from '../shared/services';
-import { Location, LocationTypes, LocationPatient, LocationQuarantine, GenderTypes, Select2DropDown } from '../shared/models';
+import { LocationService, SpinnerService, AuthenticationService } from '../shared/services';
+import { Location, User, LocationTypes, LocationPatient, LocationQuarantine, GenderTypes, Select2DropDown } from '../shared/models';
 
 declare var $;
 
@@ -33,7 +33,7 @@ export class LocationComponent implements OnInit, AfterViewChecked, AfterViewIni
     order: ['9']
   };
   public dtTrigger = new Subject();
-
+  public userSubscription: Subscription;
   public model: Location = {} as Location;
   public patientModel: LocationPatient = {} as LocationPatient;
   public quarantinePersonModel: LocationQuarantine = {} as LocationQuarantine;
@@ -45,16 +45,26 @@ export class LocationComponent implements OnInit, AfterViewChecked, AfterViewIni
   public dropdownLocations: Select2DropDown[] = [];
   public types: LocationTypes[] = LOCATION_TYPES;
   public genderTypes: GenderTypes[] = GENDER_TYPES;
+  public currentUser: User = {} as User;
 
   constructor(
     private cdRef: ChangeDetectorRef,
     private spinnerService: SpinnerService,
     private router: Router,
-    private locationService: LocationService) { }
+    private locationService: LocationService,
+    private authService: AuthenticationService) { }
 
   ngOnInit(): void {
-    this.quarantinePersonModel.quaratinedDate = new Date();
-    this.getAllLocations();
+    this.userSubscription = this.authService.currentUser.subscribe((response: any) => {
+      if (response) {
+        debugger;
+        this.currentUser = response;
+        this.quarantinePersonModel.quaratinedDate = new Date();
+        this.getAllLocations();
+      } else {
+        this.currentUser = {} as User;
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -68,13 +78,14 @@ export class LocationComponent implements OnInit, AfterViewChecked, AfterViewIni
     if (this.dtTrigger) {
       this.dtTrigger.unsubscribe();
     }
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 
   getAllLocations() {
     this.spinnerService.show();
-
-
-    this.locationService.getAllLocationsDuplicate(environment.targetLocation).subscribe((response: Location) => {
+    this.locationService.getAllLocationsDuplicate(this.currentUser.placeName).subscribe((response: Location) => {
       this.locations = [];
       this.tableLocations = [];
       this.dropdownLocations = [];

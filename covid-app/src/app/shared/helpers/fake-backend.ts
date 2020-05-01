@@ -66,7 +66,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 role: user.role,
                 status: user.status,
                 hospitalId: user.hospitalId,
-                hospitalAddress: user.hospitalAddress
+                hospitalAddress: user.hospitalAddress,
+                hospitalName: user.hospitalName,
+                placeId: user.placeId,
+                placeName: user.placeName
             });
         }
 

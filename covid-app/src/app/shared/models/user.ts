@@ -13,4 +13,6 @@ export class User {
     hospitalAddress?: string;
     hospitalName?: string;
     profilePic?: any;
+    placeId?: any;
+    placeName?: string;
 }

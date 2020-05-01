@@ -21,7 +21,8 @@
                         <div class="col-md-12">
                             <div class="table-responsive">
 
-                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-hover">
+                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                    class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
                                             <th>Hospital ID</th>
@@ -88,7 +89,8 @@
                 </button>
                 <h4 class="modal-title">Add User</h4>
             </div>
-            <form class="form-horizontal" name="addform" (ngSubmit)="addform.form.valid && addUser(addform)" #addform="ngForm" novalidate>
+            <form class="form-horizontal" name="addform" (ngSubmit)="addUser(addform)"
+                #addform="ngForm" novalidate>
                 <div class="modal-body">
                     <div class="row">
 
@@ -97,16 +99,17 @@
                                 <div class="col-sm-4">
                                     <label for="addformfirstName" class="control-label">First Name:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
-                                    <input name="addformid" id="addformid" [(ngModel)]="model.id" #addformid="ngModel" type="hidden"
-                                        class="form-control" />
-    
+                                    <input name="addformid" id="addformid" [(ngModel)]="model.id" #addformid="ngModel"
+                                        type="hidden" class="form-control" />
+
                                     <input id="addformfirstName" type="text" autocomplete="off" class="form-control"
-                                        name="addformfirstName" [(ngModel)]="model.firstName" #addformfirstName="ngModel"
-                                        placeholder="First Name" required>
-    
-                                    <div *ngIf="addform.submitted && addformfirstName.dirty && !addformfirstName.valid" class="text-danger">First Name is required
+                                        name="addformfirstName" [(ngModel)]="model.firstName"
+                                        #addformfirstName="ngModel" placeholder="First Name" required>
+
+                                    <div *ngIf="addform.submitted && addformfirstName.dirty && !addformfirstName.valid"
+                                        class="text-danger">First Name is required
                                     </div>
                                 </div>
                             </div>
@@ -115,12 +118,14 @@
                                 <div class="col-sm-4">
                                     <label for="addformlastName" class="control-label">Last Name:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
-                                    <input id="addformlastName" type="text" autocomplete="off" class="form-control" name="addformlastName"
-                                        [(ngModel)]="model.lastName" #addformlastName="ngModel" placeholder="Last Name" required>
-    
-                                    <div *ngIf="addform.submitted && addformlastName.dirty && !addformlastName.valid" class="text-danger">Last Name is required
+                                    <input id="addformlastName" type="text" autocomplete="off" class="form-control"
+                                        name="addformlastName" [(ngModel)]="model.lastName" #addformlastName="ngModel"
+                                        placeholder="Last Name" required>
+
+                                    <div *ngIf="addform.submitted && addformlastName.dirty && !addformlastName.valid"
+                                        class="text-danger">Last Name is required
                                     </div>
                                 </div>
                             </div>
@@ -129,13 +134,14 @@
                                 <div class="col-sm-4">
                                     <label for="addformphoneNumber" class="control-label">Phone Number:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
                                     <input id="addformphoneNumber" type="text" autocomplete="off" class="form-control"
-                                        name="addformphoneNumber" [(ngModel)]="model.phoneNumber" #addformphoneNumber="ngModel"
-                                        placeholder="Phone Number" required>
-    
-                                    <div *ngIf="addform.submitted && addformphoneNumber.dirty && !addformphoneNumber.valid" class="text-danger">Phone Number is
+                                        name="addformphoneNumber" [(ngModel)]="model.phoneNumber"
+                                        #addformphoneNumber="ngModel" placeholder="Phone Number" required>
+
+                                    <div *ngIf="addform.submitted && addformphoneNumber.dirty && !addformphoneNumber.valid"
+                                        class="text-danger">Phone Number is
                                         required
                                     </div>
                                 </div>
@@ -145,16 +151,17 @@
                                 <div class="col-sm-4">
                                     <label for="addformrole" class="control-label">Role:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
-                                    <select name="addformrole" #addformrole="ngModel" [(ngModel)]="model.role" id="addformrole"
-                                        class="form-control" required>
+                                    <select name="addformrole" #addformrole="ngModel" [(ngModel)]="model.role"
+                                        id="addformrole" class="form-control" required>
                                         <option *ngFor="let location of roles; let i = index" value={{location.id}}>
                                             {{location.value}}
                                         </option>
                                     </select>
-    
-                                    <div *ngIf="addform.submitted && addformrole.dirty && !addformrole.valid" class="text-danger">Role is required
+
+                                    <div *ngIf="addform.submitted && addformrole.dirty && !addformrole.valid"
+                                        class="text-danger">Role is required
                                     </div>
                                 </div>
                             </div>
@@ -163,15 +170,72 @@
                                 <div class="col-sm-4">
                                     <label for="addformstatus" class="control-label">Active:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
                                     <div class="checkbox">
                                         <label>
-                                            <input id="addformstatus" [(ngModel)]="model.status" #addformstatus="ngModel" type="checkbox"
-                                                id="addformstatus" name="addformstatus">
+                                            <input id="addformstatus" [(ngModel)]="model.status"
+                                                #addformstatus="ngModel" type="checkbox" id="addformstatus"
+                                                name="addformstatus">
                                         </label>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <label for="addformplaceName" class="control-label">Location:</label>
+                                </div>
+
+                                <div class="col-sm-8">
+
+                                    <div class="input-group">
+
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-plus" (click)="openCreateLocation()"></i>
+                                        </div>
+                                        <div class="btn-group hierarchy-select" style="display: block;"
+                                            data-resize="auto" id="example_one">
+                                            <button type="button" class="btn btn-default dropdown-toggle"
+                                                data-toggle="dropdown">
+                                                <span class="selected-label pull-left">&nbsp;</span>
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <div class="dropdown-menu open">
+                                                <div class="hs-searchbox">
+                                                    <input type="text" class="form-control" autocomplete="off">
+                                                </div>
+                                                <ul class="dropdown-menu inner" role="menu">
+                                                    <li data-value="" data-level="" data-default-selected="">
+                                                        <a href="#">Root Location</a>
+                                                    </li>
+                                                    <li *ngFor="let location of locations; let i = index"
+                                                        [attr.data-value]="location.placeId"
+                                                        [attr.data-level]="location.level">
+                                                        <a href="#">{{location.placeName}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <input class="hidden hidden-field" name="example_one" readonly="readonly"
+                                                aria-hidden="true" type="text" />
+
+                                            <input id="addformplaceName" type="hidden" autocomplete="off"
+                                                class="form-control" name="addformplaceName"
+                                                [(ngModel)]="model.placeId" #addformplaceName="ngModel"
+                                                placeholder="Last Name" required>
+
+
+                                            <div *ngIf="addform.submitted && addformplaceName.dirty && !addformplaceName.valid"
+                                                class="text-danger">Location is required
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
                             </div>
 
                         </div>
@@ -182,26 +246,30 @@
                                 <div class="col-sm-4">
                                     <label for="addformusername" class="control-label">Email:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
-                                    <input id="addformusername" type="text" autocomplete="off" class="form-control" name="addformusername"
-                                        [(ngModel)]="model.username" #addformusername="ngModel" placeholder="Email" required>
-    
-                                    <div *ngIf="addform.submitted && addformusername.dirty && !addformusername.valid" class="text-danger">Email is required
+                                    <input id="addformusername" type="text" autocomplete="off" class="form-control"
+                                        name="addformusername" [(ngModel)]="model.username" #addformusername="ngModel"
+                                        placeholder="Email" required>
+
+                                    <div *ngIf="addform.submitted && addformusername.dirty && !addformusername.valid"
+                                        class="text-danger">Email is required
                                     </div>
                                 </div>
                             </div>
-    
+
                             <div class="form-group">
                                 <div class="col-sm-4">
                                     <label for="addformpassword" class="control-label">Password:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
-                                    <input id="addformpassword" type="text" autocomplete="off" class="form-control" name="addformpassword"
-                                        [(ngModel)]="model.password" #addformpassword="ngModel" placeholder="Password" required>
-    
-                                    <div *ngIf="addform.submitted && addformhospitalId.dirty && addformhospitalId.dirty && !addformpassword.valid" class="text-danger">Password is required
+                                    <input id="addformpassword" type="text" autocomplete="off" class="form-control"
+                                        name="addformpassword" [(ngModel)]="model.password" #addformpassword="ngModel"
+                                        placeholder="Password" required>
+
+                                    <div *ngIf="addform.submitted && addformhospitalId.dirty && addformhospitalId.dirty && !addformpassword.valid"
+                                        class="text-danger">Password is required
                                     </div>
                                 </div>
                             </div>
@@ -210,12 +278,14 @@
                                 <div class="col-sm-4">
                                     <label for="addformhospitalId" class="control-label">Hospital ID:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
-                                    <input id="addformhospitalId" type="text" autocomplete="off" class="form-control" name="addformhospitalId"
-                                        [(ngModel)]="model.hospitalId" #addformhospitalId="ngModel" placeholder="Hospital ID">
-    
-                                    <div *ngIf="addform.submitted && addformhospitalId.dirty && !addformhospitalId.valid" class="text-danger">Hospital ID is required
+                                    <input id="addformhospitalId" type="text" autocomplete="off" class="form-control"
+                                        name="addformhospitalId" [(ngModel)]="model.hospitalId"
+                                        #addformhospitalId="ngModel" placeholder="Hospital ID">
+
+                                    <div *ngIf="addform.submitted && addformhospitalId.dirty && !addformhospitalId.valid"
+                                        class="text-danger">Hospital ID is required
                                     </div>
                                 </div>
                             </div>
@@ -224,12 +294,14 @@
                                 <div class="col-sm-4">
                                     <label for="addformhospitalName" class="control-label">Hospital Name:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
-                                    <input id="addformhospitalName" type="text" autocomplete="off" class="form-control" name="addformhospitalName"
-                                        [(ngModel)]="model.hospitalName" #addformhospitalName="ngModel" placeholder="Hospital Name">
-    
-                                    <div *ngIf="addform.submitted && addformhospitalName.dirty && !addformhospitalName.valid" class="text-danger">Hospital Name is required
+                                    <input id="addformhospitalName" type="text" autocomplete="off" class="form-control"
+                                        name="addformhospitalName" [(ngModel)]="model.hospitalName"
+                                        #addformhospitalName="ngModel" placeholder="Hospital Name">
+
+                                    <div *ngIf="addform.submitted && addformhospitalName.dirty && !addformhospitalName.valid"
+                                        class="text-danger">Hospital Name is required
                                     </div>
                                 </div>
                             </div>
@@ -238,21 +310,26 @@
                                 <div class="col-sm-4">
                                     <label for="addformhospitalAddress" class="control-label">Hospital Address:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
-                                    <input id="addformhospitalAddress" type="text" autocomplete="off" class="form-control" name="addformhospitalAddress"
-                                        [(ngModel)]="model.hospitalAddress" #addformhospitalAddress="ngModel" placeholder="Hospital Address">
-    
-                                    <div *ngIf="addform.submitted && addformhospitalAddress.dirty && !addformhospitalAddress.valid" class="text-danger">Hospital Address is required
+                                    <input id="addformhospitalAddress" type="text" autocomplete="off"
+                                        class="form-control" name="addformhospitalAddress"
+                                        [(ngModel)]="model.hospitalAddress" #addformhospitalAddress="ngModel"
+                                        placeholder="Hospital Address">
+
+                                    <div *ngIf="addform.submitted && addformhospitalAddress.dirty && !addformhospitalAddress.valid"
+                                        class="text-danger">Hospital Address is required
                                     </div>
                                 </div>
                             </div>
+
+
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
-                    <button [disabled]="!addform.form.valid" class="btn btn-info btn-flat">Save</button>
+                    <button class="btn btn-info btn-flat">Save</button>
                 </div>
             </form>
         </div>
@@ -269,7 +346,8 @@
                 </button>
                 <h4 class="modal-title">Edit User</h4>
             </div>
-            <form class="form-horizontal" name="editForm" (ngSubmit)="editForm.form.valid && editUser(editForm)" #editForm="ngForm" novalidate>
+            <form class="form-horizontal" name="editForm" (ngSubmit)="editForm.form.valid && editUser(editForm)"
+                #editForm="ngForm" novalidate>
                 <div class="modal-body">
                     <div class="row">
 
@@ -278,16 +356,17 @@
                                 <div class="col-sm-4">
                                     <label for="firstName" class="control-label">First Name:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
                                     <input name="id" id="id" [(ngModel)]="model.id" #id="ngModel" type="hidden"
                                         class="form-control" />
-    
+
                                     <input id="firstName" type="text" autocomplete="off" class="form-control"
                                         name="firstName" [(ngModel)]="model.firstName" #firstName="ngModel"
                                         placeholder="First Name" required>
-    
-                                    <div *ngIf="editForm.submitted && !firstName.valid" class="text-danger">First Name is required
+
+                                    <div *ngIf="editForm.submitted && !firstName.valid" class="text-danger">First Name
+                                        is required
                                     </div>
                                 </div>
                             </div>
@@ -296,12 +375,14 @@
                                 <div class="col-sm-4">
                                     <label for="lastName" class="control-label">Last Name:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
-                                    <input id="lastName" type="text" autocomplete="off" class="form-control" name="lastName"
-                                        [(ngModel)]="model.lastName" #lastName="ngModel" placeholder="Last Name" required>
-    
-                                    <div *ngIf="editForm.submitted && !lastName.valid" class="text-danger">Last Name is required
+                                    <input id="lastName" type="text" autocomplete="off" class="form-control"
+                                        name="lastName" [(ngModel)]="model.lastName" #lastName="ngModel"
+                                        placeholder="Last Name" required>
+
+                                    <div *ngIf="editForm.submitted && !lastName.valid" class="text-danger">Last Name is
+                                        required
                                     </div>
                                 </div>
                             </div>
@@ -310,13 +391,14 @@
                                 <div class="col-sm-4">
                                     <label for="phoneNumber" class="control-label">Phone Number:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
                                     <input id="phoneNumber" type="text" autocomplete="off" class="form-control"
                                         name="phoneNumber" [(ngModel)]="model.phoneNumber" #phoneNumber="ngModel"
                                         placeholder="Phone Number" required>
-    
-                                    <div *ngIf="editForm.submitted && !phoneNumber.valid" class="text-danger">Phone Number is
+
+                                    <div *ngIf="editForm.submitted && !phoneNumber.valid" class="text-danger">Phone
+                                        Number is
                                         required
                                     </div>
                                 </div>
@@ -326,7 +408,7 @@
                                 <div class="col-sm-4">
                                     <label for="role" class="control-label">Role:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
                                     <select name="role" #role="ngModel" [(ngModel)]="model.role" id="role"
                                         class="form-control" required>
@@ -334,7 +416,7 @@
                                             {{location.value}}
                                         </option>
                                     </select>
-    
+
                                     <div *ngIf="editForm.submitted && !role.valid" class="text-danger">Role is required
                                     </div>
                                 </div>
@@ -344,46 +426,105 @@
                                 <div class="col-sm-4">
                                     <label for="role" class="control-label">Active:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
                                     <div class="checkbox">
                                         <label>
-                                            <input id="status" [(ngModel)]="model.status" #status="ngModel" type="checkbox"
-                                                id="status" name="status">
+                                            <input id="status" [(ngModel)]="model.status" #status="ngModel"
+                                                type="checkbox" id="status" name="status">
                                         </label>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-4">
+                                    <label for="placeName" class="control-label">Location:</label>
+                                </div>
+
+                                <div class="col-sm-8">
+
+                                    <div class="input-group">
+
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-plus"></i>
+                                        </div>
+                                        <div class="btn-group hierarchy-select" style="display: block;"
+                                            data-resize="auto" id="example_one">
+                                            <button type="button" class="btn btn-default dropdown-toggle"
+                                                data-toggle="dropdown">
+                                                <span class="selected-label pull-left">&nbsp;</span>
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <div class="dropdown-menu open">
+                                                <div class="hs-searchbox">
+                                                    <input type="text" class="form-control" autocomplete="off">
+                                                </div>
+                                                <ul class="dropdown-menu inner" role="menu">
+                                                    <li data-value="" data-level="" data-default-selected="">
+                                                        <a href="#">Root Location</a>
+                                                    </li>
+                                                    <li *ngFor="let location of locations; let i = index"
+                                                        [attr.data-value]="location.placeId"
+                                                        [attr.data-level]="location.level">
+                                                        <a href="#">{{location.placeName}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <input class="hidden hidden-field" name="example_one" readonly="readonly"
+                                                aria-hidden="true" type="text" />
+
+                                            <input id="placeId" type="hidden" autocomplete="off" class="form-control"
+                                                name="placeId" [(ngModel)]="model.placeId" #placeName="ngModel"
+                                                placeholder="Last Name" required>
+
+
+                                            <div *ngIf="editForm.submitted && placeId.dirty && !placeId.valid"
+                                                class="text-danger">Location is required
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
                             </div>
                         </div>
 
                         <div class="col-md-6 col-xs-12">
 
-                            
+
 
                             <div class="form-group">
                                 <div class="col-sm-4">
                                     <label for="username" class="control-label">Email:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
-                                    <input id="username" type="text" autocomplete="off" class="form-control" name="username"
-                                        [(ngModel)]="model.username" #username="ngModel" placeholder="Email" required>
-    
-                                    <div *ngIf="editForm.submitted && !username.valid" class="text-danger">Email is required
+                                    <input id="username" type="text" autocomplete="off" class="form-control"
+                                        name="username" [(ngModel)]="model.username" #username="ngModel"
+                                        placeholder="Email" required>
+
+                                    <div *ngIf="editForm.submitted && !username.valid" class="text-danger">Email is
+                                        required
                                     </div>
                                 </div>
                             </div>
-    
+
                             <div class="form-group">
                                 <div class="col-sm-4">
                                     <label for="password" class="control-label">Password:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
-                                    <input id="password" type="text" autocomplete="off" class="form-control" name="password"
-                                        [(ngModel)]="model.password" #password="ngModel" placeholder="Password" required>
-    
-                                    <div *ngIf="editForm.submitted && !password.valid" class="text-danger">Password is required
+                                    <input id="password" type="text" autocomplete="off" class="form-control"
+                                        name="password" [(ngModel)]="model.password" #password="ngModel"
+                                        placeholder="Password" required>
+
+                                    <div *ngIf="editForm.submitted && !password.valid" class="text-danger">Password is
+                                        required
                                     </div>
                                 </div>
                             </div>
@@ -391,12 +532,14 @@
                                 <div class="col-sm-4">
                                     <label for="hospitalId" class="control-label">Hospital ID:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
-                                    <input id="hospitalId" type="text" autocomplete="off" class="form-control" name="hospitalId"
-                                        [(ngModel)]="model.hospitalId" #hospitalId="ngModel" placeholder="Hospital ID">
-    
-                                    <div *ngIf="editForm.submitted && !hospitalId.valid" class="text-danger">Hospital ID is required
+                                    <input id="hospitalId" type="text" autocomplete="off" class="form-control"
+                                        name="hospitalId" [(ngModel)]="model.hospitalId" #hospitalId="ngModel"
+                                        placeholder="Hospital ID">
+
+                                    <div *ngIf="editForm.submitted && !hospitalId.valid" class="text-danger">Hospital ID
+                                        is required
                                     </div>
                                 </div>
                             </div>
@@ -405,12 +548,14 @@
                                 <div class="col-sm-4">
                                     <label for="hospitalName" class="control-label">Hospital Name:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
-                                    <input id="hospitalName" type="text" autocomplete="off" class="form-control" name="hospitalName"
-                                        [(ngModel)]="model.hospitalName" #hospitalName="ngModel" placeholder="Hospital Name">
-    
-                                    <div *ngIf="editForm.submitted && !hospitalName.valid" class="text-danger">Hospital Name is required
+                                    <input id="hospitalName" type="text" autocomplete="off" class="form-control"
+                                        name="hospitalName" [(ngModel)]="model.hospitalName" #hospitalName="ngModel"
+                                        placeholder="Hospital Name">
+
+                                    <div *ngIf="editForm.submitted && !hospitalName.valid" class="text-danger">Hospital
+                                        Name is required
                                     </div>
                                 </div>
                             </div>
@@ -420,12 +565,14 @@
                                 <div class="col-sm-4">
                                     <label for="hospitalAddress" class="control-label">Hospital Address:</label>
                                 </div>
-    
+
                                 <div class="col-sm-8">
-                                    <input id="hospitalAddress" type="text" autocomplete="off" class="form-control" name="hospitalAddress"
-                                        [(ngModel)]="model.hospitalAddress" #hospitalAddress="ngModel" placeholder="Hospital Address">
-    
-                                    <div *ngIf="editForm.submitted && !hospitalAddress.valid" class="text-danger">Hospital Address is required
+                                    <input id="hospitalAddress" type="text" autocomplete="off" class="form-control"
+                                        name="hospitalAddress" [(ngModel)]="model.hospitalAddress"
+                                        #hospitalAddress="ngModel" placeholder="Hospital Address">
+
+                                    <div *ngIf="editForm.submitted && !hospitalAddress.valid" class="text-danger">
+                                        Hospital Address is required
                                     </div>
                                 </div>
                             </div>
@@ -465,4 +612,157 @@
         <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" data-backdrop="static" id="addLocation">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Add Location</h4>
+            </div>
+            <form class="form-horizontal" name="addLocationForm" (ngSubmit)="addLocationForm.form.valid && addLocation(addLocationForm)"
+                #addLocationForm="ngForm" novalidate>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-6 col-xs-12">
+                            <div class="form-group ">
+                                <div class="col-sm-2">
+                                    <label for="placeName" class="control-label">Place:</label>
+                                </div>
+
+                                <div class="col-sm-10">
+
+                                    <input name="placeId" id="placeId" [(ngModel)]="location.placeId" #placeId="ngModel"
+                                        type="hidden" class="form-control" />
+
+                                    <input id="placeName" type="text" autocomplete="off" class="form-control"
+                                        name="placeName" [(ngModel)]="location.placeName" #placeName="ngModel"
+                                        placeholder="Place" required>
+
+                                    <div *ngIf="addLocationForm.submitted && !placeName.valid" class="text-danger">Place is
+                                        required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group ">
+                                <div class="col-sm-2">
+                                    <label for="type" class="control-label">Type:</label>
+                                </div>
+
+                                <div class="col-sm-10">
+
+                                    <select name="type" #type="ngModel" [(ngModel)]="location.type" id="type"
+                                        class="form-control" required>
+                                        <option *ngFor="let type of types; let i = index" [value]="type.id">
+                                            {{type.text}}
+                                        </option>
+                                    </select>
+
+                                    <div *ngIf="addLocationForm.submitted && !type.valid" class="text-danger">Type is
+                                        required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label for="latitude" class="control-label">Latitude:</label>
+                                </div>
+
+                                <div class="col-sm-10">
+                                    <input id="latitude" type="text" autocomplete="off" class="form-control"
+                                        name="latitude" [(ngModel)]="location.latitude" #latitude="ngModel"
+                                        placeholder="Latitude" required>
+
+                                    <div *ngIf="addLocationForm.submitted && !latitude.valid" class="text-danger">Latitude is
+                                        required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label for="longitude" class="control-label">Longitude:</label>
+                                </div>
+
+                                <div class="col-sm-10">
+                                    <input id="longitude" type="text" autocomplete="off" class="form-control"
+                                        name="longitude" [(ngModel)]="location.longitude" #longitude="ngModel"
+                                        placeholder="Longitude" required>
+
+                                    <div *ngIf="addLocationForm.submitted && !longitude.valid" class="text-danger">Longitude is
+                                        required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="istarget" [(ngModel)]="location.istarget" #istarget="ngModel"
+                                                type="checkbox" id="istarget" name="istarget"> Has Root Location
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" [hidden]="!location.istarget">
+                                <label for="longitude" class="col-sm-2 control-label">Root Location</label>
+
+                                <div class="col-sm-10">
+                                    <div class="btn-group hierarchy-select" style="display: block;" data-resize="auto"
+                                        id="location_dropdown">
+                                        <button type="button" class="btn btn-default dropdown-toggle"
+                                            data-toggle="dropdown">
+                                            <span class="selected-label pull-left">&nbsp;</span>
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu open">
+                                            <div class="hs-searchbox">
+                                                <input type="text" class="form-control" autocomplete="off">
+                                            </div>
+                                            <ul class="dropdown-menu inner" role="menu">
+                                                <li data-value="" data-level="" data-default-selected="">
+                                                    <a href="#">Root Location</a>
+                                                </li>
+                                                <li *ngFor="let location of rootLocations; let i = index"
+                                                    [attr.data-value]="location.placeId"
+                                                    [attr.data-level]="location.level">
+                                                    <a href="#">{{location.placeName}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <input class="hidden hidden-field" name="location_dropdown" readonly="readonly"
+                                            aria-hidden="true" type="text" />
+
+                                        <input class="form-control" id="rootId" name="rootId" #rootId="ngModel"
+                                            readonly="readonly" [(ngModel)]="location.rootId" aria-hidden="true"
+                                            type="hidden" [required]="location && location.istarget ? true : null" />
+
+                                        <div *ngIf="addLocationForm.submitted && !rootId.valid" class="text-danger">Root
+                                            Location is
+                                            required
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
+                    <button [disabled]="!addLocationForm.form.valid" class="btn btn-info btn-flat">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>

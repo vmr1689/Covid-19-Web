@@ -12,7 +12,8 @@
     "hospitalAddress": "1800  James Street, Vijayawada",
     "hospitalId": "HCM-1",
     "hospitalName": "DHCM",
-    "token": ""
+    "token": "",
+    "placeName": "INDIA"
   },
   {
     "id": "2",
@@ -27,7 +28,8 @@
     "hospitalAddress": "276  Ella Street, Mumbai",
     "hospitalId": "HCM-2",
     "hospitalName": "DHL",
-    "token": ""
+    "token": "",
+    "placeName": "Maharashtra"
   },
   {
     "id": "3",
@@ -42,7 +44,8 @@
     "hospitalAddress": "410  Chandler Hollow Road, Bengaluru",
     "hospitalId": "HCM-3",
     "hospitalName": "PTS GH",
-    "token": ""
+    "token": "",
+    "placeName": "Andhra Pradesh"
   },
   {
     "id": "4",
@@ -57,7 +60,8 @@
     "hospitalAddress": "4607  Park Boulevard, ALwar",
     "hospitalId": "HCM-4",
     "hospitalName": "Apollo",
-    "token": ""
+    "token": "",
+    "placeName": "INDIA"
   },
   {
     "id": "5",
@@ -72,7 +76,8 @@
     "hospitalAddress": "3107  Hanifan Lane, Jabalpur",
     "hospitalId": "HCM-5",
     "hospitalName": "Stacyville Medical Centre",
-    "token": ""
+    "token": "",
+    "placeName": "Andhra Pradesh"
   },
   {
     "id": "6",
@@ -87,7 +92,8 @@
     "hospitalAddress": "927  Kelley Road, Noida",
     "hospitalId": "HCM-6",
     "hospitalName": "Stella",
-    "token": ""
+    "token": "",
+    "placeName": "INDIA"
   },
   {
     "id": "7",
@@ -102,7 +108,8 @@
     "hospitalAddress": "2586  Catherine Drive, Lucknow",
     "hospitalId": "HCM-7",
     "hospitalName": "PMCH",
-    "token": ""
+    "token": "",
+    "placeName": "Coimbatore"
   },
   
   {
@@ -118,6 +125,7 @@
     "hospitalAddress": "4857  Alexander Drive, Kanpur",
     "hospitalId": "HCM-9",
     "hospitalName": "Saint Peters",
-    "token": ""
+    "token": "",
+    "placeName": "Tamil Nadu"
   }
 ]
