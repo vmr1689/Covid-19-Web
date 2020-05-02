@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewChecked } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataTableDirective } from 'angular-datatables';
+import { Subject, Subscription, forkJoin } from 'rxjs';
 
-import { QuarantinedService, SpinnerService } from '../shared/services';
-import { QuarantinedPerson } from '../shared/models';
-import { Subject } from 'rxjs';
+import * as Helpers from '../shared/helpers';
+import { environment } from '../../environments/environment';
+import { QuarantinedService, SpinnerService, LocationService, AuthenticationService } from '../shared/services';
+import { QuarantinedPerson, User } from '../shared/models';
 
 declare var $;
 
@@ -24,14 +26,25 @@ export class QuarantinePatientComponent implements OnInit, AfterViewChecked, OnD
   public isDtInitialized = false;
 
   public persons: QuarantinedPerson[] = [];
+  public currentUser: User = {} as User;
+  public userSubscription: Subscription;
 
   constructor(
     private router: Router,
     private quarantinedService: QuarantinedService,
-    private spinnerService: SpinnerService) { }
+    private spinnerService: SpinnerService,
+    private locationService: LocationService,
+    private authService: AuthenticationService) { }
 
   ngOnInit(): void {
-    this.getAllPatients();
+    this.userSubscription = this.authService.currentUser.subscribe((response: any) => {
+      if (response) {
+        this.currentUser = response;
+        this.getAllAPIValues();
+      } else {
+        this.currentUser = {} as User;
+      }
+    });
   }
 
   ngAfterViewChecked() {
@@ -42,6 +55,39 @@ export class QuarantinePatientComponent implements OnInit, AfterViewChecked, OnD
     if (this.dtTrigger) {
       this.dtTrigger.unsubscribe();
     }
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+  }
+
+  public getAllAPIValues() {
+    const getAllPersons = this.quarantinedService.getAllQuarantinedPersons();
+    const getAllLocations = this.locationService.getAllLocationsDuplicate(environment.targetLocation);
+
+    this.spinnerService.show();
+
+    forkJoin([getAllLocations, getAllPersons]).subscribe(results => {
+      const locationsResult = results[0];
+      const personsResult = results[1];
+      let placeNames = [];
+
+      if (locationsResult) {
+        const currentUserLocations = Helpers.getPlaceLocations_Name_WithChild(locationsResult, this.currentUser.placeName);
+        if (currentUserLocations) {
+          placeNames = currentUserLocations.map(l => l.placeName);
+        }
+      }
+
+      if (personsResult && personsResult.length > 0) {
+        const persons = personsResult.filter(item => {
+          return placeNames.includes(item.city);
+        });
+        this.persons = persons;
+      }
+    }).add(() => {
+      this.rerender();
+      this.spinnerService.hide();
+    });
   }
 
   getAllPatients() {

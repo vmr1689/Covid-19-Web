@@ -203,7 +203,6 @@ export class UserComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   addUser(form: NgForm) {
-    debugger;
     this.spinnerService.show();
     const model = { ...this.model };
     if (form.valid) {

@@ -97,9 +97,8 @@
                                 </div>
 
                                 <div class="col-sm-9">
-                                    <input id="role" type="text" autocomplete="off" class="form-control"
-                                        name="role" [(ngModel)]="model.role" #role="ngModel"
-                                        placeholder="Longitude" required>
+                                    <input id="role" type="text" autocomplete="off" class="form-control" name="role"
+                                        [(ngModel)]="model.role" #role="ngModel" placeholder="Longitude" required>
 
                                     <div *ngIf="updateForm.submitted && !role.valid" class="text-danger">Role
                                         is required
@@ -117,7 +116,8 @@
                                         name="hospitalId" [(ngModel)]="model.hospitalId" #hospitalId="ngModel"
                                         placeholder="Hospital ID" required>
 
-                                    <div *ngIf="updateForm.submitted && !hospitalId.valid" class="text-danger">Hospital ID
+                                    <div *ngIf="updateForm.submitted && !hospitalId.valid" class="text-danger">Hospital
+                                        ID
                                         is required
                                     </div>
                                 </div>
@@ -130,11 +130,27 @@
 
                                 <div class="col-sm-9">
                                     <input id="hospitalAddress" type="text" autocomplete="off" class="form-control"
-                                        name="hospitalAddress" [(ngModel)]="model.hospitalAddress" #hospitalAddress="ngModel"
-                                        placeholder="Contact Url" required>
+                                        name="hospitalAddress" [(ngModel)]="model.hospitalAddress"
+                                        #hospitalAddress="ngModel" placeholder="Contact Url" required>
 
-                                    <div *ngIf="updateForm.submitted && !hospitalAddress.valid" class="text-danger">Hospital
+                                    <div *ngIf="updateForm.submitted && !hospitalAddress.valid" class="text-danger">
+                                        Hospital
                                         Address is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label for="placeName" class="control-label">Place:</label>
+                                </div>
+
+                                <div class="col-sm-9">
+                                    <input id="placeName" type="text" autocomplete="off" class="form-control"
+                                        name="placeName" [(ngModel)]="model.placeName" #placeName="ngModel"
+                                        placeholder="Place" required>
+
+                                    <div *ngIf="updateForm.submitted && !placeName.valid" class="text-danger">Place is
+                                        required
                                     </div>
                                 </div>
                             </div>

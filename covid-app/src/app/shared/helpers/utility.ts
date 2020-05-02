@@ -66,21 +66,21 @@ export function getDateFromDateStr(dateStr: any) {
     return moment(dateStr, 'DD/MM/YYYY HH:mm:ss').toDate();
 }
 
-export function restructureData(response: Location) {
+export function _restructureData(response: Location) {
     const resCopy = { ...response };
     let result: Location[] = [];
     resCopy.istarget = resCopy.type == 'Country';
     result.push(resCopy);
 
     if (Array.isArray(response.subordinates)) {
-        result = result.concat(this.flatData(response.subordinates, response, response.country));
+        result = result.concat(_flatData(response.subordinates, response, response.country));
     }
     let locations = [...result];
     locations = locations.sort((a, b) => a.placeName < b.placeName ? -1 : a.placeName > b.placeName ? 1 : 0);
     return locations;
 }
 
-export function flatData(subordinates: Location[], root: Location, country: string) {
+export function _flatData(subordinates: Location[], root: Location, country: string) {
     let result: Location[] = [];
 
     const subor = [...subordinates];
@@ -91,21 +91,21 @@ export function flatData(subordinates: Location[], root: Location, country: stri
         subCopy.country = country;
         result.push(subCopy);
         if (Array.isArray(sub.subordinates)) {
-            result = result.concat(this.flatData(sub.subordinates, sub));
+            result = result.concat(_flatData(sub.subordinates, sub, sub.country));
         }
     });
 
     return result;
 }
 
-export function searchTree(element: Location, placeId: number) {
+export function _searchTree(element: Location, placeId: number) {
     if (element.placeId == placeId) {
         return element;
     } else if (element.subordinates && element.subordinates.length > 0) {
         let i;
         let result = null;
         for (i = 0; result == null && i < element.subordinates.length; i++) {
-            result = searchTree(element.subordinates[i], placeId);
+            result = _searchTree(element.subordinates[i], placeId);
         }
         return result;
     }
@@ -113,22 +113,22 @@ export function searchTree(element: Location, placeId: number) {
 }
 
 export function getPlaceLocations(element: Location, placeId: number) {
-    const result = this.searchTree(element, placeId);
+    const result = _searchTree(element, placeId);
     if (result) {
-        const response = this.restructureData(result);
+        const response = _restructureData(result);
         return response;
     }
     return null;
 }
 
-export function searchTree_Name(element: Location, placeName: string) {
+export function _searchTree_Name(element: Location, placeName: string) {
     if (element.placeName.trim().toLowerCase() == placeName.trim().toLowerCase()) {
         return element;
     } else if (element.subordinates && element.subordinates.length > 0) {
         let i;
         let result = null;
         for (i = 0; result == null && i < element.subordinates.length; i++) {
-            result = searchTree_Name(element.subordinates[i], placeName);
+            result = _searchTree_Name(element.subordinates[i], placeName);
         }
         return result;
     }
@@ -137,9 +137,19 @@ export function searchTree_Name(element: Location, placeName: string) {
 
 export function getPlaceLocations_Name(element: Location, placeName: string) {
     placeName = placeName.trim().toLowerCase();
-    const result = this.searchTree_Name(element, placeName);
+    const result = _searchTree_Name(element, placeName);
     if (result) {
         return result;
+    }
+    return null;
+}
+
+export function getPlaceLocations_Name_WithChild(element: Location, placeName: string) {
+    placeName = placeName.trim().toLowerCase();
+    const result = _searchTree_Name(element, placeName);
+    if (result) {
+        const response = _restructureData(result);
+        return response;
     }
     return null;
 }
@@ -155,7 +165,7 @@ export function getLocationWithLevel(response: Location, level: number, country:
     if (Array.isArray(response.subordinates)) {
         let i = 0;
         for (i = 0; i < response.subordinates.length; i++) {
-            this.getLocationWithLevel(response.subordinates[i], response.level + 1, response.country);
+            getLocationWithLevel(response.subordinates[i], response.level + 1, response.country);
         }
     }
     return response;

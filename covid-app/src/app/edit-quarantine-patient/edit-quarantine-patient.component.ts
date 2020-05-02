@@ -2,14 +2,14 @@ import { Component, OnInit, ViewChild, OnDestroy, AfterViewChecked } from '@angu
 import { FormBuilder, FormGroup, Validators, AbstractControl, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DataTableDirective } from 'angular-datatables';
+import { Subject, Subscription, forkJoin } from 'rxjs';
 
 import * as Helpers from '../shared/helpers';
 import { STATUS_TYPES, GENDER_TYPES } from '.././seedConfig';
 import { environment } from '../../environments/environment';
 
-import { QuarantinedPerson, Location, GenderTypes, QuarantinedReference, Patient } from '../shared/models';
-import { QuarantinedService, LocationService, SpinnerService } from '../shared/services';
-import { Subject, Observable, forkJoin } from 'rxjs';
+import { QuarantinedPerson, User, Location, GenderTypes, QuarantinedReference, Patient } from '../shared/models';
+import { QuarantinedService, LocationService, SpinnerService, AuthenticationService } from '../shared/services';
 
 
 declare var $;
@@ -35,6 +35,8 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
   public submitted: boolean;
   public isReadOnly = true;
   public genderTypes: GenderTypes[] = GENDER_TYPES;
+  public currentUser: User = {} as User;
+  public userSubscription: Subscription;
 
   public form: FormGroup;
 
@@ -79,14 +81,23 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
     private quarantinedService: QuarantinedService,
     private locationService: LocationService,
     private spinnerService: SpinnerService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private authService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
       const patientId = Number.parseInt(params.get('patientId'));
       this.model.patientId = patientId;
-      this.getAllAPIValues();
+
+      this.userSubscription = this.authService.currentUser.subscribe((response: any) => {
+        if (response) {
+          this.currentUser = response;
+          this.getAllAPIValues();
+        } else {
+          this.currentUser = {} as User;
+        }
+      });
     });
 
     this.initLoginForm();
@@ -99,6 +110,9 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
   ngOnDestroy(): void {
     if (this.dtTrigger) {
       this.dtTrigger.unsubscribe();
+    }
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
     }
   }
 
@@ -259,7 +273,6 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
   public onSubmit(event: Event, form: any): void {
     event.stopPropagation();
     this.submitted = true;
-    debugger;
     if (this.form.valid) {
       const request: QuarantinedPerson = {
         patientId: this.patientId.value,
@@ -334,6 +347,13 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
     this.referenceModel = {} as QuarantinedReference;
     this.referenceModel.date = new Date();
     $('#addReference').modal('toggle');
+    $('#add_reference_location_dd').hierarchySelect({
+      value: this.referenceModel.placeName,
+      onChange: (value) => {
+        this.referenceModel.placeName = value;
+        console.log('[Three] value: "' + value + '"');
+      }
+    });
   }
 
   openEditReferencePopup($event, model: QuarantinedReference) {
@@ -341,6 +361,13 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
     this.referenceModel = { ...model };
     this.referenceModel.date = Helpers.getDateFromDateStr(this.referenceModel.dateStr);
     $('#editReference').modal('toggle');
+    $('#edit_reference_location_dd').hierarchySelect({
+      value: this.referenceModel.placeName,
+      onChange: (value) => {
+        this.referenceModel.placeName = value;
+        console.log('[Three] value: "' + value + '"');
+      }
+    });
   }
 
   openDeleteReferencePopup($event, model: QuarantinedReference) {

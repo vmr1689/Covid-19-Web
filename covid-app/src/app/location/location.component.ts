@@ -57,7 +57,6 @@ export class LocationComponent implements OnInit, AfterViewChecked, AfterViewIni
   ngOnInit(): void {
     this.userSubscription = this.authService.currentUser.subscribe((response: any) => {
       if (response) {
-        debugger;
         this.currentUser = response;
         this.quarantinePersonModel.quaratinedDate = new Date();
         this.getAllLocations();
@@ -85,7 +84,7 @@ export class LocationComponent implements OnInit, AfterViewChecked, AfterViewIni
 
   getAllLocations() {
     this.spinnerService.show();
-    this.locationService.getAllLocationsDuplicate(this.currentUser.placeName).subscribe((response: Location) => {
+    this.locationService.getAllLocationsDuplicate(environment.targetLocation).subscribe((response: Location) => {
       this.locations = [];
       this.tableLocations = [];
       this.dropdownLocations = [];
@@ -95,10 +94,18 @@ export class LocationComponent implements OnInit, AfterViewChecked, AfterViewIni
         response.country = response.placeName;
       }
       if (response) {
-        const result = this.restructureData(response);
-        this.locations = [...result];
-        this.tableLocations = [...result];
-        const locationsWithLevel = Helpers.getLocationWithLevel(response, 1, response.placeName);
+
+        const currentUserLocation: Location = Helpers.getPlaceLocations_Name(response, this.currentUser.placeName);
+        const currentUserLocationList = this.restructureData(currentUserLocation);
+
+        currentUserLocationList.forEach(item => {
+          item.country = response.country;
+        });
+
+        this.locations = [...currentUserLocationList];
+        this.tableLocations = [...currentUserLocationList];
+
+        const locationsWithLevel = Helpers.getLocationWithLevel(currentUserLocation, 1, this.country);
         this.rootLocations = this.restructureData(locationsWithLevel);
 
         console.log(this.rootLocations);
@@ -224,7 +231,6 @@ export class LocationComponent implements OnInit, AfterViewChecked, AfterViewIni
 
 
   addLocation(form: NgForm) {
-    debugger;
     const model = { ...this.model };
     let rootName = '';
     if (model.rootId && model.istarget) {

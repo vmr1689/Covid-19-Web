@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewChecked } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subject, Observable, forkJoin } from 'rxjs';
+import { Subject, Subscription, forkJoin } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 
 import * as Helpers from '../shared/helpers';
 import { environment } from '../../environments/environment';
-import { PatientService, LocationService, SpinnerService } from '../shared/services';
-import { Patient, ngBootstrapTable, Location } from '../shared/models';
+import { PatientService, LocationService, SpinnerService, AuthenticationService } from '../shared/services';
+import { Patient, ngBootstrapTable, Location, User } from '../shared/models';
 
 declare var $;
 
@@ -33,18 +33,29 @@ export class LocationPatientsComponent implements OnInit, AfterViewChecked, OnDe
   publiclocationTable: ngBootstrapTable;
   public model: any = {};
   public cities: Location[] = [];
+  public currentUser: User = {} as User;
+  public userSubscription: Subscription;
 
   constructor(
     private router: Router,
     private spinnerService: SpinnerService,
     private locationService: LocationService,
     private patientService: PatientService,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private authService: AuthenticationService) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
       this.locationId = Number.parseInt(params.get('locationId'));
-      this.getAllAPIValues();
+
+      this.userSubscription = this.authService.currentUser.subscribe((response: any) => {
+        if (response) {
+          this.currentUser = response;
+          this.getAllAPIValues();
+        } else {
+          this.currentUser = {} as User;
+        }
+      });
     });
   }
 
@@ -55,6 +66,9 @@ export class LocationPatientsComponent implements OnInit, AfterViewChecked, OnDe
   ngOnDestroy(): void {
     if (this.dtTrigger) {
       this.dtTrigger.unsubscribe();
+    }
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
     }
   }
 

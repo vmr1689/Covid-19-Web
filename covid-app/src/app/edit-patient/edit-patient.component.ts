@@ -2,13 +2,13 @@ import { Component, OnInit, ViewChild, AfterViewChecked, OnDestroy } from '@angu
 import { FormBuilder, FormGroup, Validators, AbstractControl, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DataTableDirective } from 'angular-datatables';
-import { Subject, Observable, forkJoin } from 'rxjs';
+import { Subject, Subscription, forkJoin } from 'rxjs';
 
 import * as Helpers from '../shared/helpers';
 import { STATUS_TYPES, GENDER_TYPES } from '.././seedConfig';
 import { environment } from '../../environments/environment';
-import { Patient, Location, GenderTypes, PatientDeviceInfo, PatientLocationInfo } from '../shared/models';
-import { PatientService, LocationService, SpinnerService } from '../shared/services';
+import { Patient, User, Location, GenderTypes, PatientDeviceInfo, PatientLocationInfo } from '../shared/models';
+import { PatientService, LocationService, SpinnerService, AuthenticationService } from '../shared/services';
 
 declare var $;
 
@@ -33,7 +33,9 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
   public submitted: boolean;
   public isReadOnly = true;
   public genderTypes: GenderTypes[] = GENDER_TYPES;
-
+  public currentUser: User = {} as User;
+  public userSubscription: Subscription;
+  
   public form: FormGroup;
 
   public patientId: AbstractControl;
@@ -61,7 +63,8 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
     private patientService: PatientService,
     private locationService: LocationService,
     private activatedRoute: ActivatedRoute,
-    private spinnerService: SpinnerService
+    private spinnerService: SpinnerService,
+    private authService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
@@ -69,7 +72,15 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
     this.activatedRoute.paramMap.subscribe(params => {
       const patientId = Number.parseInt(params.get('patientId'));
       this.model.patientId = patientId;
-      this.getAllAPIValues();
+
+      this.userSubscription = this.authService.currentUser.subscribe((response: any) => {
+        if (response) {
+          this.currentUser = response;
+          this.getAllAPIValues();
+        } else {
+          this.currentUser = {} as User;
+        }
+      });
     });
   }
 
@@ -80,6 +91,9 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
   ngOnDestroy(): void {
     if (this.dtTrigger) {
       this.dtTrigger.unsubscribe();
+    }
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
     }
   }
 

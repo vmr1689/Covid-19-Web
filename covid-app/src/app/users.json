@@ -22,14 +22,14 @@
     "username": "Kamlesh784@test.com",
     "phoneNumber": "+91 162 1097100",
     "isEmailConfirmed": true,
-    "role": "SuperAdmin",
+    "role": "Admin",
     "status": true,
-    "password": "Password2,",
+    "password": "Password1,",
     "hospitalAddress": "276  Ella Street, Mumbai",
     "hospitalId": "HCM-2",
     "hospitalName": "DHL",
     "token": "",
-    "placeName": "Maharashtra"
+    "placeName": "Gujarat"
   },
   {
     "id": "3",
@@ -38,14 +38,14 @@
     "username": "mane4yasu@test.com",
     "phoneNumber": "+91 244 7304019",
     "isEmailConfirmed": true,
-    "role": "SuperAdmin",
+    "role": "Admin",
     "status": false,
-    "password": "Password3,",
+    "password": "Password1,",
     "hospitalAddress": "410  Chandler Hollow Road, Bengaluru",
     "hospitalId": "HCM-3",
     "hospitalName": "PTS GH",
     "token": "",
-    "placeName": "Andhra Pradesh"
+    "placeName": "Ahmedabad"
   },
   {
     "id": "4",
@@ -93,7 +93,7 @@
     "hospitalId": "HCM-6",
     "hospitalName": "Stella",
     "token": "",
-    "placeName": "INDIA"
+    "placeName": "Surat"
   },
   {
     "id": "7",

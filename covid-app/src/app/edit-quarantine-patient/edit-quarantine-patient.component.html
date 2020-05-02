@@ -429,22 +429,47 @@
                                 </div>
 
                                 <div class="col-sm-7">
-
                                     <input name="referenceId" id="referenceId" [(ngModel)]="referenceModel.referenceId"
                                         #referenceId="ngModel" type="hidden" class="form-control" />
 
-                                    <select name="placeName" #placeName="ngModel" [(ngModel)]="referenceModel.placeName"
-                                        id="placeName" class="form-control" required>
-                                        <option *ngFor="let location of locations; let i = index"
-                                            value={{location.placeId}}>
-                                            {{location.placeName}}
-                                        </option>
-                                    </select>
+                                    <div class="btn-group hierarchy-select" style="display: block;" data-resize="auto"
+                                        id="add_reference_location_dd">
+                                        <button type="button" [disabled]="isReadOnly"
+                                            class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                            <span class="selected-label pull-left">&nbsp;</span>
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu open">
+                                            <div class="hs-searchbox">
+                                                <input type="text" class="form-control" autocomplete="off">
+                                            </div>
+                                            <ul class="dropdown-menu inner" role="menu">
+                                                <li data-value="" data-level="" data-default-selected="">
+                                                    <a href="#">Location</a>
+                                                </li>
 
+                                                <li *ngFor="let location of cities; let i = index"
+                                                    [attr.class]="location.subordinates.length > 0 ? 'disabled' : ''"
+                                                    [attr.data-value]="location.placeName"
+                                                    [attr.data-level]="location.level">
+                                                    <a href="#">{{location.placeName}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <input class="hidden hidden-field" name="add_reference_location_dd"
+                                            readonly="readonly" aria-hidden="true" type="text" />
 
-                                    <div *ngIf="f.submitted && !placeName.valid" class="text-danger">Location is
-                                        required
+                                        <input id="placeName" type="hidden" autocomplete="off" class="form-control"
+                                            name="placeName" [(ngModel)]="referenceModel.placeName" #placeName="ngModel"
+                                            placeholder="Location" required>
+
+                                        <div *ngIf="f.submitted && !placeName.valid" class="text-danger">Location is
+                                            required
+                                        </div>
+
                                     </div>
+
                                 </div>
                             </div>
 
@@ -637,23 +662,49 @@
                                 </div>
 
                                 <div class="col-sm-7">
-
                                     <input name="referenceId" id="referenceId" [(ngModel)]="referenceModel.referenceId"
                                         #referenceId="ngModel" type="hidden" class="form-control" />
 
-                                    <select name="placeName" #placeName="ngModel" [(ngModel)]="referenceModel.placeName"
-                                        id="placeName" class="form-control" required>
-                                        <option *ngFor="let location of locations; let i = index"
-                                            value={{location.placeId}}>
-                                            {{location.placeName}}
-                                        </option>
-                                    </select>
+                                    <div class="btn-group hierarchy-select" style="display: block;" data-resize="auto"
+                                        id="edit_reference_location_dd">
+                                        <button type="button" [disabled]="isReadOnly"
+                                            class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                            <span class="selected-label pull-left">&nbsp;</span>
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu open">
+                                            <div class="hs-searchbox">
+                                                <input type="text" class="form-control" autocomplete="off">
+                                            </div>
+                                            <ul class="dropdown-menu inner" role="menu">
+                                                <li data-value="" data-level="" data-default-selected="">
+                                                    <a href="#">Location</a>
+                                                </li>
 
+                                                <li *ngFor="let location of cities; let i = index"
+                                                    [attr.class]="location.subordinates.length > 0 ? 'disabled' : ''"
+                                                    [attr.data-value]="location.placeName"
+                                                    [attr.data-level]="location.level">
+                                                    <a href="#">{{location.placeName}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <input class="hidden hidden-field" name="edit_reference_location_dd"
+                                            readonly="readonly" aria-hidden="true" type="text" />
 
-                                    <div *ngIf="f.submitted && !placeName.valid" class="text-danger">Location is
-                                        required
+                                        <input id="placeName" type="hidden" autocomplete="off" class="form-control"
+                                            name="placeName" [(ngModel)]="referenceModel.placeName" #placeName="ngModel"
+                                            placeholder="Location" required>
+
+                                        <div *ngIf="f.submitted && !placeName.valid" class="text-danger">Location is
+                                            required
+                                        </div>
+
                                     </div>
+
                                 </div>
+                                
                             </div>
 
                             <div class="form-group">

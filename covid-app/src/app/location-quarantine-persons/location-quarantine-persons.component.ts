@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewChecked } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subject, forkJoin } from 'rxjs';
+import { Subject, Subscription, forkJoin } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 
 import * as Helpers from '../shared/helpers';
 import { environment } from '../../environments/environment';
-import { QuarantinedService, LocationService, SpinnerService } from '../shared/services';
-import { QuarantinedPerson, Location } from '../shared/models';
+import { QuarantinedService, LocationService, SpinnerService, AuthenticationService } from '../shared/services';
+import { QuarantinedPerson, Location, User } from '../shared/models';
 
 declare var $;
 
@@ -32,18 +32,29 @@ export class LocationQuarantinePersonsComponent implements OnInit, AfterViewChec
   public persons: QuarantinedPerson[] = [];
   public model: QuarantinedPerson = {} as QuarantinedPerson;
   public cities: Location[] = [];
+  public currentUser: User = {} as User;
+  public userSubscription: Subscription;
 
   constructor(
     private router: Router,
     private spinnerService: SpinnerService,
     private locationService: LocationService,
     private quarantinedService: QuarantinedService,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private authService: AuthenticationService) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
       this.locationId = Number.parseInt(params.get('locationId'));
-      this.getAllAPIValues();
+
+      this.userSubscription = this.authService.currentUser.subscribe((response: any) => {
+        if (response) {
+          this.currentUser = response;
+          this.getAllAPIValues();
+        } else {
+          this.currentUser = {} as User;
+        }
+      });
     });
   }
 
@@ -54,6 +65,9 @@ export class LocationQuarantinePersonsComponent implements OnInit, AfterViewChec
   ngOnDestroy(): void {
     if (this.dtTrigger) {
       this.dtTrigger.unsubscribe();
+    }
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
     }
   }
 
