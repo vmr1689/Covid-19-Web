@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --prod --build-optimizer=false",
+    "tomcat": "ng build --prod --build-optimizer=false --base-href=/covid-app/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

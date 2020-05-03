@@ -7,8 +7,8 @@ import { Subject, Subscription, forkJoin } from 'rxjs';
 import * as Helpers from '../shared/helpers';
 import { STATUS_TYPES, GENDER_TYPES } from '.././seedConfig';
 import { environment } from '../../environments/environment';
-import { Patient, User, Location, GenderTypes, PatientDeviceInfo, PatientLocationInfo } from '../shared/models';
-import { PatientService, LocationService, SpinnerService, AuthenticationService } from '../shared/services';
+import { Patient, User, Location, GenderTypes, PatientDeviceInfo, QuarantinedReference, PatientLocationInfo } from '../shared/models';
+import { PatientService, LocationService, SpinnerService, QuarantinedService, AuthenticationService } from '../shared/services';
 
 declare var $;
 
@@ -53,13 +53,16 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
   public deceased: AbstractControl;
   public statusUpdatedDate: AbstractControl;
   public cities: Location[] = [];
+  public referenceModel: QuarantinedReference = {} as QuarantinedReference;
 
+  references: QuarantinedReference[] = [];
   locations: PatientLocationInfo[] = [];
   devices: PatientDeviceInfo[] = [];
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
+    private quarantinedService: QuarantinedService,
     private patientService: PatientService,
     private locationService: LocationService,
     private activatedRoute: ActivatedRoute,
@@ -340,6 +343,73 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
     }
   }
 
+  CreateReferencePopup($event) {
+    $event.preventDefault();
+    this.referenceModel = {} as QuarantinedReference;
+    this.referenceModel.date = new Date();
+    $('#addReference').modal('toggle');
+    $('#add_reference_location_dd').hierarchySelect({
+      value: this.referenceModel.placeName,
+      onChange: (value) => {
+        this.referenceModel.placeName = value;
+        console.log('[Three] value: "' + value + '"');
+      }
+    });
+  }
+
+  openEditReferencePopup($event, model: QuarantinedReference) {
+    $event.preventDefault();
+    this.referenceModel = { ...model };
+    this.referenceModel.date = Helpers.getDateFromDateStr(this.referenceModel.dateStr);
+    $('#editReference').modal('toggle');
+    $('#edit_reference_location_dd').hierarchySelect({
+      value: this.referenceModel.placeName,
+      onChange: (value) => {
+        this.referenceModel.placeName = value;
+        console.log('[Three] value: "' + value + '"');
+      }
+    });
+  }
+
+  openDeleteReferencePopup($event, model: QuarantinedReference) {
+    $event.preventDefault();
+    this.referenceModel = { ...model };
+    this.referenceModel.date = Helpers.getDateFromDateStr(this.referenceModel.dateStr);
+    $('#deleteReference').modal('toggle');
+  }
+
+  addReference(form: NgForm) {
+    const referenceModel = { ...this.referenceModel };
+    this.spinnerService.show();
+
+    this.quarantinedService.addReference(referenceModel).subscribe((response: any) => {
+    }).add(() => {
+      $('#addReference').modal('toggle');
+      this.spinnerService.hide();
+    });
+  }
+
+  editReference(form: NgForm) {
+    const referenceModel = { ...this.referenceModel };
+    this.spinnerService.show();
+
+    this.quarantinedService.editReference(referenceModel).subscribe((response: any) => {
+    }).add(() => {
+      $('#editReference').modal('toggle');
+      this.spinnerService.hide();
+    });
+  }
+
+  deleteReference(data: QuarantinedReference) {
+    this.spinnerService.show();
+
+    this.quarantinedService.deleteReference(data.referenceId).subscribe((response: any) => {
+      $('#deleteReference').modal('toggle');
+    }).add(() => {
+      this.spinnerService.hide();
+    });
+  }
+
   nextTab() {
     $('.nav-tabs > .active').next('li').find('a').trigger('click');
   }
@@ -355,5 +425,9 @@ export class EditPatientComponent implements OnInit, AfterViewChecked, OnDestroy
 
   BackToList() {
     this.router.navigate(['/patients']);
+  }
+
+  calTrigDatepickerRef() {
+    $('#bsDatepickerRefAdd').click();
   }
 }

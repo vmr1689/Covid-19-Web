@@ -23,7 +23,8 @@
                             <li class="active"><a href="#tab_1" data-toggle="tab">General Information</a></li>
                             <li><a href="#tab_2" data-toggle="tab">Location Information</a></li>
                             <li><a href="#tab_3" data-toggle="tab">Bluetooth Device Information</a></li>
-                            <li><a href="#tab_4" data-toggle="tab">Status Information</a></li>
+                            <li><a href="#tab_4" data-toggle="tab">Contacted Person Information</a></li>
+                            <li><a href="#tab_5" data-toggle="tab">Status Information</a></li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="tab_1">
@@ -210,7 +211,7 @@
                                 <div class="row text-right">
                                     <div class="col-md-12">
                                         <button type="button" (click)="BackToList()" class="btn btn-default"
-                                            style="margin-right:5px">Cancel</button>
+                                            style="margin-right:5px">Back</button>
 
                                         <button type="button" (click)="previousTab()"
                                             class="pad_ex btn btn-default btn-flat prev-step"
@@ -247,7 +248,7 @@
                                 <div class="row text-right">
                                     <div class="col-md-12">
                                         <button type="button" (click)="BackToList()" class="btn btn-default"
-                                            style="margin-right:5px">Cancel</button>
+                                            style="margin-right:5px">Back</button>
 
                                         <button type="button" (click)="previousTab()"
                                             class="pad_ex btn btn-default btn-flat prev-step"
@@ -284,7 +285,7 @@
                                 <div class="row text-right">
                                     <div class="col-md-12">
                                         <button type="button" (click)="BackToList()" class="btn btn-default"
-                                            style="margin-right:5px">Cancel</button>
+                                            style="margin-right:5px">Back</button>
 
                                         <button type="button" (click)="previousTab()"
                                             class="pad_ex btn btn-default btn-flat prev-step"
@@ -298,6 +299,71 @@
                             </div>
 
                             <div class="tab-pane" id="tab_4">
+                                <div class="row">
+                                    <div class="col-md-12" style="padding-bottom: 10px">
+                                        <button type="button" (click)="CreateReferencePopup($event)"
+                                            class="btn btn-info btn-flat pull-right" data-toggle="modal">
+                                            Add Contacted Person
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+
+                                    <table datatable [dtOptions]="dtOptions" class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Person</th>
+                                                <th>Place</th>
+                                                <th>Phone Number</th>
+                                                <th>Date</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let data of references">
+                                                <td>{{data.referenceId}}</td>
+                                                <td>{{data.person}}</td>
+                                                <td>{{data.placeName}}</td>
+                                                <td>{{data.phoneNumber}}</td>
+                                                <td>{{data.dateStr}}</td>
+                                                <td>
+                                                    <button style="margin-right:5px" title="Edit Location"
+                                                        (click)="openEditReferencePopup($event, data)"
+                                                        class="btn btn-small btn-flat btn-warning">
+                                                        <i class="btn-icon-only fa fa-pencil"> </i>
+                                                    </button>
+
+                                                    <button style="margin-right:5px" title="Delete Location"
+                                                        (click)="openDeleteReferencePopup($event, data)"
+                                                        class="btn btn-small btn-flat btn-danger">
+                                                        <i class="btn-icon-only fa fa-trash"> </i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <br>
+                                </div>
+
+                                <div class="row text-right">
+                                    <div class="col-md-12">
+                                        <button type="button" (click)="BackToList()" class="btn btn-default"
+                                            style="margin-right:5px">Back</button>
+
+                                        <button type="button" (click)="previousTab()"
+                                            class="pad_ex btn btn-default btn-flat prev-step"
+                                            style="margin-right:5px">Previous</button>
+
+                                        <button type="button" (click)="nextTab()"
+                                            class="pad_ex btn btn-info btn-flat next-step">Next</button>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="tab_5">
                                 <div class="row">
                                     <div class="col-md-3">
 
@@ -377,7 +443,7 @@
                                 <div class="row text-right">
                                     <div class="col-md-12">
                                         <button type="button" (click)="BackToList()" class="btn btn-default"
-                                            style="margin-right:5px">Cancel</button>
+                                            style="margin-right:5px">Back</button>
 
                                         <button type="button" (click)="previousTab()"
                                             class="pad_ex btn btn-default btn-flat prev-step"
@@ -397,3 +463,496 @@
         </div>
     </div>
 </section>
+
+<div class="modal fade" data-backdrop="static" id="addReference">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Add Contacted Person</h4>
+            </div>
+            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && addReference(f)" #f="ngForm" novalidate>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-6 col-xs-12">
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label for="placeName" class="control-label">Location:</label>
+                                </div>
+
+                                <div class="col-sm-7">
+                                    <input name="referenceId" id="referenceId" [(ngModel)]="referenceModel.referenceId"
+                                        #referenceId="ngModel" type="hidden" class="form-control" />
+
+                                    <div class="btn-group hierarchy-select" style="display: block;" data-resize="auto"
+                                        id="add_reference_location_dd">
+                                        <button type="button" [disabled]="isReadOnly"
+                                            class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                            <span class="selected-label pull-left">&nbsp;</span>
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu open">
+                                            <div class="hs-searchbox">
+                                                <input type="text" class="form-control" autocomplete="off">
+                                            </div>
+                                            <ul class="dropdown-menu inner" role="menu">
+                                                <li data-value="" data-level="" data-default-selected="">
+                                                    <a href="#">Location</a>
+                                                </li>
+
+                                                <li *ngFor="let location of cities; let i = index"
+                                                    [attr.class]="location.subordinates.length > 0 ? 'disabled' : ''"
+                                                    [attr.data-value]="location.placeName"
+                                                    [attr.data-level]="location.level">
+                                                    <a href="#">{{location.placeName}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <input class="hidden hidden-field" name="add_reference_location_dd"
+                                            readonly="readonly" aria-hidden="true" type="text" />
+
+                                        <input id="placeName" type="hidden" autocomplete="off" class="form-control"
+                                            name="placeName" [(ngModel)]="referenceModel.placeName" #placeName="ngModel"
+                                            placeholder="Location" required>
+
+                                        <div *ngIf="f.submitted && !placeName.valid" class="text-danger">Location is
+                                            required
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label for="person" class="control-label">Full Name:</label>
+                                </div>
+
+                                <div class="col-sm-7">
+
+                                    <input id="person" type="text" autocomplete="off" class="form-control" name="person"
+                                        [(ngModel)]="referenceModel.person" #person="ngModel" placeholder="Full Name"
+                                        required>
+
+                                    <div *ngIf="f.submitted && !person.valid" class="text-danger">Patient is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label for="familyCount" class="control-label">Family Count:</label>
+                                </div>
+
+                                <div class="col-sm-7">
+                                    <input id="familyCount" type="text" autocomplete="off" class="form-control"
+                                        name="familyCount" [(ngModel)]="referenceModel.familyCount"
+                                        #familyCount="ngModel" placeholder="Family Count" required>
+
+                                    <div *ngIf="f.submitted && !familyCount.valid" class="text-danger">Family Count is
+                                        required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label for="date" class="control-label">Date:</label>
+                                </div>
+
+                                <div class="col-sm-7">
+                                    <div class="input-group">
+                                        <input class="form-control" [ngModelOptions]="{standalone: true}"
+                                            #date="ngModel" name="date" #datepickerFull="bsDatepicker" bsDatepicker
+                                            [(ngModel)]="referenceModel.date"
+                                            [bsConfig]="{ dateInputFormat: 'MM/DD/YYYY' }" id="bsDatepickerRefAdd"
+                                            required>
+
+                                        <div class="input-group-addon" (click)='calTrigDatepickerRef()'>
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+
+                                        <div *ngIf="f.submitted && !date.valid" class="text-danger">Date is required
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label for="reason" class="control-label">Reason:</label>
+                                </div>
+
+                                <div class="col-sm-7">
+                                    <input id="reason" type="text" autocomplete="off" class="form-control" name="reason"
+                                        [(ngModel)]="referenceModel.reason" #reason="ngModel" placeholder="Reason"
+                                        required>
+
+                                    <div *ngIf="f.submitted && !reason.valid" class="text-danger">Reason is required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-12">
+
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label for="phoneNumber" class="control-label">Phone Number:</label>
+                                </div>
+
+                                <div class="col-sm-7">
+                                    <input id="status" type="text" autocomplete="off" class="form-control"
+                                        name="phoneNumber" [(ngModel)]="referenceModel.phoneNumber"
+                                        #phoneNumber="ngModel" placeholder="Phone Number" required>
+
+                                    <div *ngIf="f.submitted && !phoneNumber.valid" class="text-danger">Phone Number is
+                                        required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label for="status" class="control-label">Status:</label>
+                                </div>
+
+                                <div class="col-sm-7">
+                                    <input id="status" type="text" autocomplete="off" class="form-control" name="status"
+                                        [(ngModel)]="referenceModel.status" #status="ngModel" placeholder="Status"
+                                        required>
+
+                                    <div *ngIf="f.submitted && !status.valid" class="text-danger">Status is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label for="primaryAddress" class="control-label">Primary Address:</label>
+                                </div>
+
+                                <div class="col-sm-7">
+                                    <input id="primaryAddress" type="text" autocomplete="off" class="form-control"
+                                        name="primaryAddress" [(ngModel)]="referenceModel.primaryAddress"
+                                        #primaryAddress="ngModel" placeholder="Primary Address" required>
+
+                                    <div *ngIf="f.submitted && !primaryAddress.valid" class="text-danger">Primary
+                                        Address is required
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label for="secondaryAddress" class="control-label">Secondary Address:</label>
+                                </div>
+
+                                <div class="col-sm-7">
+                                    <input id="secondaryAddress" type="text" autocomplete="off" class="form-control"
+                                        name="secondaryAddress" [(ngModel)]="referenceModel.secondaryAddress"
+                                        #secondaryAddress="ngModel" placeholder="Secondary Address" required>
+
+                                    <div *ngIf="f.submitted && !secondaryAddress.valid" class="text-danger">Secondary
+                                        Address is required
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label for="patientId" class="control-label">Patient ID:</label>
+                                </div>
+
+                                <div class="col-sm-7">
+                                    <input id="patientId" type="text" autocomplete="off" class="form-control"
+                                        name="patientId" [(ngModel)]="referenceModel.patientId" #patientId="ngModel"
+                                        placeholder="Patient ID" required>
+
+                                    <div *ngIf="f.submitted && !patientId.valid" class="text-danger">Patient ID is
+                                        required
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
+                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" data-backdrop="static" id="editReference">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Edit Contacted Person</h4>
+            </div>
+            <form class="form-horizontal" name="f" (ngSubmit)="f.form.valid && editReference(f)" #f="ngForm" novalidate>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 col-xs-12">
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label for="placeName" class="control-label">Location:</label>
+                                </div>
+
+                                <div class="col-sm-7">
+                                    <input name="referenceId" id="referenceId" [(ngModel)]="referenceModel.referenceId"
+                                        #referenceId="ngModel" type="hidden" class="form-control" />
+
+                                    <div class="btn-group hierarchy-select" style="display: block;" data-resize="auto"
+                                        id="edit_reference_location_dd">
+                                        <button type="button" [disabled]="isReadOnly"
+                                            class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                            <span class="selected-label pull-left">&nbsp;</span>
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu open">
+                                            <div class="hs-searchbox">
+                                                <input type="text" class="form-control" autocomplete="off">
+                                            </div>
+                                            <ul class="dropdown-menu inner" role="menu">
+                                                <li data-value="" data-level="" data-default-selected="">
+                                                    <a href="#">Location</a>
+                                                </li>
+
+                                                <li *ngFor="let location of cities; let i = index"
+                                                    [attr.class]="location.subordinates.length > 0 ? 'disabled' : ''"
+                                                    [attr.data-value]="location.placeName"
+                                                    [attr.data-level]="location.level">
+                                                    <a href="#">{{location.placeName}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <input class="hidden hidden-field" name="edit_reference_location_dd"
+                                            readonly="readonly" aria-hidden="true" type="text" />
+
+                                        <input id="placeName" type="hidden" autocomplete="off" class="form-control"
+                                            name="placeName" [(ngModel)]="referenceModel.placeName" #placeName="ngModel"
+                                            placeholder="Location" required>
+
+                                        <div *ngIf="f.submitted && !placeName.valid" class="text-danger">Location is
+                                            required
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label for="person" class="control-label">Full Name:</label>
+                                </div>
+
+                                <div class="col-sm-7">
+
+                                    <input id="person" type="text" autocomplete="off" class="form-control" name="person"
+                                        [(ngModel)]="referenceModel.person" #person="ngModel" placeholder="Full Name"
+                                        required>
+
+                                    <div *ngIf="f.submitted && !person.valid" class="text-danger">Patient is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label for="familyCount" class="control-label">Family Count:</label>
+                                </div>
+
+                                <div class="col-sm-7">
+                                    <input id="familyCount" type="text" autocomplete="off" class="form-control"
+                                        name="familyCount" [(ngModel)]="referenceModel.familyCount"
+                                        #familyCount="ngModel" placeholder="Family Count" required>
+
+                                    <div *ngIf="f.submitted && !familyCount.valid" class="text-danger">Family Count is
+                                        required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label for="date" class="control-label">Date:</label>
+                                </div>
+
+                                <div class="col-sm-7">
+                                    <div class="input-group">
+                                        <input class="form-control" [ngModelOptions]="{standalone: true}"
+                                            #date="ngModel" name="date" #datepickerFull="bsDatepicker" bsDatepicker
+                                            [(ngModel)]="referenceModel.date"
+                                            [bsConfig]="{ dateInputFormat: 'MM/DD/YYYY' }" id="bsDatepickerRefAdd"
+                                            required>
+
+                                        <div class="input-group-addon" (click)='calTrigDatepickerRef()'>
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+
+                                        <div *ngIf="f.submitted && !date.valid" class="text-danger">Date is required
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label for="reason" class="control-label">Reason:</label>
+                                </div>
+
+                                <div class="col-sm-7">
+                                    <input id="reason" type="text" autocomplete="off" class="form-control" name="reason"
+                                        [(ngModel)]="referenceModel.reason" #reason="ngModel" placeholder="Reason"
+                                        required>
+
+                                    <div *ngIf="f.submitted && !reason.valid" class="text-danger">Reason is required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-12">
+
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label for="phoneNumber" class="control-label">Phone Number:</label>
+                                </div>
+
+                                <div class="col-sm-7">
+                                    <input id="status" type="text" autocomplete="off" class="form-control"
+                                        name="phoneNumber" [(ngModel)]="referenceModel.phoneNumber"
+                                        #phoneNumber="ngModel" placeholder="Phone Number" required>
+
+                                    <div *ngIf="f.submitted && !phoneNumber.valid" class="text-danger">Phone Number is
+                                        required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label for="status" class="control-label">Status:</label>
+                                </div>
+
+                                <div class="col-sm-7">
+                                    <input id="status" type="text" autocomplete="off" class="form-control" name="status"
+                                        [(ngModel)]="referenceModel.status" #status="ngModel" placeholder="Status"
+                                        required>
+
+                                    <div *ngIf="f.submitted && !status.valid" class="text-danger">Status is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label for="primaryAddress" class="control-label">Primary Address:</label>
+                                </div>
+
+                                <div class="col-sm-7">
+                                    <input id="primaryAddress" type="text" autocomplete="off" class="form-control"
+                                        name="primaryAddress" [(ngModel)]="referenceModel.primaryAddress"
+                                        #primaryAddress="ngModel" placeholder="Primary Address" required>
+
+                                    <div *ngIf="f.submitted && !primaryAddress.valid" class="text-danger">Primary
+                                        Address is required
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label for="secondaryAddress" class="control-label">Secondary Address:</label>
+                                </div>
+
+                                <div class="col-sm-7">
+                                    <input id="secondaryAddress" type="text" autocomplete="off" class="form-control"
+                                        name="secondaryAddress" [(ngModel)]="referenceModel.secondaryAddress"
+                                        #secondaryAddress="ngModel" placeholder="Secondary Address" required>
+
+                                    <div *ngIf="f.submitted && !secondaryAddress.valid" class="text-danger">Secondary
+                                        Address is required
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <div class="col-sm-5">
+                                    <label for="patientId" class="control-label">Patient ID:</label>
+                                </div>
+
+                                <div class="col-sm-7">
+                                    <input id="patientId" type="text" autocomplete="off" class="form-control"
+                                        name="patientId" [(ngModel)]="referenceModel.patientId" #patientId="ngModel"
+                                        placeholder="Patient ID" required>
+
+                                    <div *ngIf="f.submitted && !patientId.valid" class="text-danger">Patient ID is
+                                        required
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
+                    <button [disabled]="!f.form.valid" class="btn btn-info btn-flat">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" data-backdrop="static" id="deleteReference">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Delete Reference</h4>
+            </div>
+            <div class="modal-body">
+                <p style="font-weight: bold;">
+                    Do you want to delete {{referenceModel.person}} ?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">No</button>
+                <button (click)="deleteReference(referenceModel)" class="btn btn-info btn-flat">Yes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
