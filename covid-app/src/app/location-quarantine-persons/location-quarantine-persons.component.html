@@ -145,7 +145,7 @@
                                             <a href="#">Reassign Location</a>
                                         </li>
                                         <li *ngFor="let location of cities; let i = index"
-                                            [attr.class]="location.subordinates.length > 0 ? 'disabled' : ''"
+                                            [attr.class]="location.subordinates && location.subordinates.length > 0 ? 'disabled' : ''"
                                             [attr.data-value]="location.placeName" [attr.data-level]="location.level">
                                             <a href="#">{{location.placeName}}</a>
                                         </li>

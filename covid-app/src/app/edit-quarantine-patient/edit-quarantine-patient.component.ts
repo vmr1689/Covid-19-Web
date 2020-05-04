@@ -408,4 +408,18 @@ export class EditQuarantinePatientComponent implements OnInit, AfterViewChecked,
       this.spinnerService.hide();
     });
   }
+
+  rerender(): void {
+    if (this.isDtInitialized) {
+      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        dtInstance.destroy();
+        setTimeout(() => {
+          this.dtTrigger.next();
+        });
+      });
+    } else {
+      this.isDtInitialized = true;
+      this.dtTrigger.next();
+    }
+  }
 }
